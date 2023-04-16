@@ -1,6 +1,4 @@
-﻿using Decimatio.Common.Interfaces;
-using System.Drawing;
-using System.Drawing.Imaging;
+﻿
 
 namespace Decimatio.Domain.Services
 {
@@ -15,20 +13,35 @@ namespace Decimatio.Domain.Services
             _qrGeneratorService = qRGeneratorService;
         }
 
-        public async Task<int> AddTicket(Ticket ticket)
+        public async Task<string> AddTicket(Ticket ticket)
         {
             Bitmap qrCodeImage;
             try
             {
+                using MemoryStream memoryStream = new MemoryStream();
+
                 var result = await _ticketRepository.AddTicket(ticket);
-                if (result == 1)
+                if (result != 0)
                 {
                     qrCodeImage = _qrGeneratorService.GenerateQRCodeTicket(ticket);
-                    qrCodeImage.Save("MiEntradaConcierto", ImageFormat.Png);
-                    return result;
+                    qrCodeImage.Save($"N° {ticket.IdTicket} - {ticket.IdUsuario}.PNG", ImageFormat.Png);
+
+                    byte[] imageBytes = memoryStream.ToArray();
+                    string base64Image = Convert.ToBase64String(imageBytes);
+
+                    //Generar insert TicketQR
+                    TicketQR ticketQR = new TicketQR()
+                    {
+                        IdTicket = result,
+                        Contenido= base64Image
+                    }; 
+
+                    await _ticketRepository.AddTicketQR(ticketQR);
+                    //Guardar imagen en Blob Storage Azure
+                    return base64Image;
                 }
                 else
-                    return 0;
+                    return null;
             }
             catch (Exception ex)
             {

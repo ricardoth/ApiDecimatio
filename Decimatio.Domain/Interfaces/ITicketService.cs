@@ -2,6 +2,6 @@
 {
     public interface ITicketService
     {
-        Task<int> AddTicket(Ticket ticket);
+        Task<string> AddTicket(Ticket ticket);
     }
 }

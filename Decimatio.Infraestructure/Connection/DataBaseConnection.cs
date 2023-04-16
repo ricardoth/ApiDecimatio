@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Decimatio.Infraestructure.Contracts;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
@@ -26,6 +25,28 @@ namespace Decimatio.Infraestructure.Connection
                 using (var conn = new SqlConnection(_connection.ConnectionString))
                 {
                     return await conn.ExecuteAsync(query, entity);
+                }
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                throw ex;
+            }
+            finally { stopwatch.Stop(); }
+        }
+
+        public async Task<long?> ExecuteScalar(string queryName, string query, object entity)
+        {
+            DateTime startTime = DateTime.Now;
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            bool isSuccess = true;
+
+            try
+            {
+                using (var conn = new SqlConnection(_connection.ConnectionString))
+                {
+                    long newId = await conn.ExecuteScalarAsync<long>(query, entity);
+                    return newId;
                 }
             }
             catch (Exception ex)

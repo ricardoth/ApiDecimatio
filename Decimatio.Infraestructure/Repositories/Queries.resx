@@ -137,7 +137,21 @@
            ,@MontoTotal
            ,@FechaTicket
            ,1
-           ,GETDATE())</value>
+           ,GETDATE()) 
+	SELECT CAST(SCOPE_IDENTITY() as int)</value>
     <comment>Insert Ticket</comment>
+  </data>
+  <data name="INSERT_TICKETQR" xml:space="preserve">
+    <value>INSERT INTO [dbo].[TicketQR]
+           ([IdTicket]
+           ,[Contenido]
+           ,[Activo]
+           ,[FechaCreacion])
+     VALUES
+           (@IdTicket
+           ,@Contenido
+           ,1
+           ,GETDATE())</value>
+    <comment>Insert Ticket QR</comment>
   </data>
 </root>

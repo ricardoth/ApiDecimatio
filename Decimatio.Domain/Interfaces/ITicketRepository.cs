@@ -2,6 +2,7 @@
 {
     public interface ITicketRepository
     {
-        Task<int> AddTicket(Ticket ticket);
+        Task<long> AddTicket(Ticket ticket);
+        Task<int> AddTicketQR(TicketQR ticketQR);
     }
 }

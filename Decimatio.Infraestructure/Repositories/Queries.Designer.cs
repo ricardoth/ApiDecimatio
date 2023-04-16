@@ -80,11 +80,30 @@ namespace Decimatio.Infraestructure.Repositories {
         ///           ,@MontoTotal
         ///           ,@FechaTicket
         ///           ,1
-        ///           ,GETDATE()).
+        ///           ,GETDATE()) 
+        ///	SELECT CAST(SCOPE_IDENTITY()  [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string INSERT_TICKET {
             get {
                 return ResourceManager.GetString("INSERT_TICKET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO [dbo].[TicketQR]
+        ///           ([IdTicket]
+        ///           ,[Contenido]
+        ///           ,[Activo]
+        ///           ,[FechaCreacion])
+        ///     VALUES
+        ///           (@IdTicket
+        ///           ,@Contenido
+        ///           ,1
+        ///           ,GETDATE()).
+        /// </summary>
+        internal static string INSERT_TICKETQR {
+            get {
+                return ResourceManager.GetString("INSERT_TICKETQR", resourceCulture);
             }
         }
     }

@@ -24,11 +24,10 @@ namespace Decimatio.Domain.Services
                 if (result != 0)
                 {
                     qrCodeImage = _qrGeneratorService.GenerateQRCodeTicket(ticket);
-                    qrCodeImage.Save($"N° {ticket.IdTicket} - {ticket.IdUsuario}.PNG", ImageFormat.Png);
+                    qrCodeImage.Save(memoryStream, ImageFormat.Png);
 
                     byte[] imageBytes = memoryStream.ToArray();
                     string base64Image = Convert.ToBase64String(imageBytes);
-
                     //Generar insert TicketQR
                     TicketQR ticketQR = new TicketQR()
                     {
@@ -37,6 +36,8 @@ namespace Decimatio.Domain.Services
                     }; 
 
                     await _ticketRepository.AddTicketQR(ticketQR);
+
+                    File.WriteAllBytes("Ticket "+result.ToString()+".png", imageBytes);
                     //Guardar imagen en Blob Storage Azure
                     return base64Image;
                 }
@@ -48,5 +49,6 @@ namespace Decimatio.Domain.Services
                 throw ex;
             }
         }
+
     }
 }

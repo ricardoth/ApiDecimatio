@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Decimatio.Infraestructure\Decimatio.Infraestructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Images\TicketQR\" />
+  </ItemGroup>
+
 </Project>

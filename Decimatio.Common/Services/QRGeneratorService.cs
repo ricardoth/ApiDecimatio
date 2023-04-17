@@ -13,5 +13,7 @@
             Bitmap qrCodeImage = new Bitmap(new MemoryStream(qrCode.GetGraphic(20)));
             return qrCodeImage;
         }
+
+
     }
 }

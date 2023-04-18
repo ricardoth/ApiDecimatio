@@ -61,6 +61,44 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a SELECT
+        ///	T.IdTicket,
+        ///	T.IdUsuario,
+        ///	CONCAT(U.Rut, &apos;-&apos;, U.DV) AS RutDV,
+        ///	U.Nombres,
+        ///	U.ApellidoP,
+        ///	U.ApellidoM,
+        ///	U.Correo,
+        ///	U.Telefono,
+        ///	U.Direccion,
+        ///
+        ///	T.IdEvento,
+        ///	E.NombreEvento,
+        ///	S.IdSector,
+        ///	S.Descripcion,
+        ///	L.Nombre AS NombreLugar,
+        ///	L.Ubicacion,
+        ///	L.Numeracion,
+        ///	T.FechaTicket,
+        ///	T.IdMedioPago,
+        ///	MP.NombreMedioPago,
+        ///	MP.Descripcion,
+        ///	T.MontoPago,
+        ///	T.MontoTotal,
+        ///	TQR.Contenido,
+        ///	T.FechaCreacion
+        ///	
+        ///FROM [dbo].[Ticket] T
+        ///	INNER JOIN [dbo].[Usuario] U ON U.IdUsuario = U.IdUsuario
+        ///	INNE [resto de la cadena truncado]&quot;;.
+        /// </summary>
+        internal static string GET_INFO_TICKET {
+            get {
+                return ResourceManager.GetString("GET_INFO_TICKET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a INSERT INTO [dbo].[Ticket]
         ///           ([IdUsuario]
         ///           ,[IdEvento]

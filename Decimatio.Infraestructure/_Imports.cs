@@ -8,3 +8,5 @@ global using Decimatio.Domain.Interfaces;
 global using Decimatio.Domain.Services;
 global using Decimatio.Common.Interfaces;
 global using Decimatio.Common.Services;
+global using AutoMapper;
+global using Decimatio.Domain.DTOs;

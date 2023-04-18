@@ -1,10 +1,4 @@
-﻿using Decimatio.Domain.Interfaces;
-using Decimatio.Infraestructure;
-using Decimatio.Infraestructure.Contracts;
-using Decimatio.Infraestructure.Repositories;
-using System.Reflection;
-
-namespace Decimatio.WebApi.Configuration
+﻿namespace Decimatio.WebApi.Configuration
 {
     public static class DependencyInjectorConfiguration
     {
@@ -16,7 +10,9 @@ namespace Decimatio.WebApi.Configuration
             {
                 //options.Filters.Add(new ApiValidStateFilterAttribute());
                 //options.Filters.Add(new ApiExceptionFilterAttribute(trace));
-            });
+            }).AddFluentValidation(c => c.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+
+            service.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             //service.AddMvc().AddFluentValidation();
 

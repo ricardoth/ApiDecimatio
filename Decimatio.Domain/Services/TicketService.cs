@@ -1,6 +1,4 @@
-﻿
-
-namespace Decimatio.Domain.Services
+﻿namespace Decimatio.Domain.Services
 {
     public class TicketService : ITicketService
     {
@@ -18,7 +16,7 @@ namespace Decimatio.Domain.Services
             Bitmap qrCodeImage;
             try
             {
-                using MemoryStream memoryStream = new MemoryStream();
+                using MemoryStream memoryStream = new();
 
                 var result = await _ticketRepository.AddTicket(ticket);
                 if (result != 0)
@@ -28,16 +26,16 @@ namespace Decimatio.Domain.Services
 
                     byte[] imageBytes = memoryStream.ToArray();
                     string base64Image = Convert.ToBase64String(imageBytes);
-                    //Generar insert TicketQR
+
                     TicketQR ticketQR = new TicketQR()
                     {
                         IdTicket = result,
                         Contenido= base64Image
-                    }; 
+                    };
 
-                    await _ticketRepository.AddTicketQR(ticketQR);
+                    var ticketQRResponse = await AddTicketQR(ticketQR);
 
-                    File.WriteAllBytes("Ticket "+result.ToString()+".png", imageBytes);
+                    //File.WriteAllBytes("Ticket "+result.ToString()+".png", imageBytes);
                     //Guardar imagen en Blob Storage Azure
                     return base64Image;
                 }
@@ -47,6 +45,20 @@ namespace Decimatio.Domain.Services
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public async Task<TicketQR> AddTicketQR(TicketQR ticketQR)
+        {
+            try
+            {
+                await _ticketRepository.AddTicketQR(ticketQR);
+                return ticketQR;
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

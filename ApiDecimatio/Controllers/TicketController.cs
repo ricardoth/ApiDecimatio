@@ -1,9 +1,8 @@
-﻿
-
-namespace Decimatio.WebApi.Controllers
+﻿namespace Decimatio.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;

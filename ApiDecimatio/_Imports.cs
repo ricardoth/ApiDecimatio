@@ -17,3 +17,4 @@ global using Decimatio.Domain.Entities;
 global using Decimatio.Domain.Interfaces;
 global using System.Net;
 global using AutoMapper;
+global using Microsoft.AspNetCore.Authorization;

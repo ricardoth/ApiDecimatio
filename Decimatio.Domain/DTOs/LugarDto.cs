@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.Entities
+﻿namespace Decimatio.Domain.DTOs
 {
-    public class Lugar
+    public class LugarDto
     {
         public int IdLugar { get; set; }
         public string NombreLugar { get; set; }

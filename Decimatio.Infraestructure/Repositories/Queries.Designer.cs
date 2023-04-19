@@ -61,36 +61,16 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT
-        ///	T.IdTicket,
-        ///	T.IdUsuario,
-        ///	CONCAT(U.Rut, &apos;-&apos;, U.DV) AS RutDV,
-        ///	U.Nombres,
-        ///	U.ApellidoP,
-        ///	U.ApellidoM,
-        ///	U.Correo,
-        ///	U.Telefono,
-        ///	U.Direccion,
-        ///
-        ///	T.IdEvento,
-        ///	E.NombreEvento,
-        ///	S.IdSector,
-        ///	S.Descripcion,
-        ///	L.Nombre AS NombreLugar,
-        ///	L.Ubicacion,
-        ///	L.Numeracion,
-        ///	T.FechaTicket,
-        ///	T.IdMedioPago,
-        ///	MP.NombreMedioPago,
-        ///	MP.Descripcion,
-        ///	T.MontoPago,
-        ///	T.MontoTotal,
-        ///	TQR.Contenido,
-        ///	T.FechaCreacion
-        ///	
-        ///FROM [dbo].[Ticket] T
-        ///	INNER JOIN [dbo].[Usuario] U ON U.IdUsuario = U.IdUsuario
-        ///	INNE [resto de la cadena truncado]&quot;;.
+        ///   Busca una cadena traducida similar a SELECT t.IdTicket, t.IdUsuario, t.IdEvento, t.IdSector, t.IdMedioPago,
+        ///        t.MontoPago, t.MontoTotal, t.FechaTicket, t.Activo, t.FechaCreacion, t.FechaModified,
+        ///        u.*, e.*, s.*, m.*, TQR.*, L.*
+        ///FROM Ticket t
+        ///INNER JOIN Usuario u ON t.IdUsuario = u.IdUsuario
+        ///INNER JOIN Evento e ON t.IdEvento = e.IdEvento
+        ///INNER JOIN [dbo].[Lugar] L ON L.IdLugar = E.IdLugar
+        ///INNER JOIN Sector s ON t.IdSector = s.IdSector
+        ///INNER JOIN MedioPago m ON t.IdMedioPago = m.IdMedioPago
+        ///LEFT JOIN TicketQR TQR ON TQR.IdT [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string GET_INFO_TICKET {
             get {

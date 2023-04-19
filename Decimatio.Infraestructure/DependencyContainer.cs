@@ -1,6 +1,4 @@
-﻿
-
-namespace Decimatio.Infraestructure
+﻿namespace Decimatio.Infraestructure
 {
     public static class DependencyContainer
     {
@@ -13,7 +11,9 @@ namespace Decimatio.Infraestructure
             services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<IQRGeneratorService, QRGeneratorService>();
-
+            services.AddScoped<IBlobFilesService, BlobFilesService>();
+            var blobConfig = configuration.GetSection(nameof(BlobContainerConfig)).Get<BlobContainerConfig>();
+            services.AddSingleton(blobConfig);
             // Connection
             services.AddScoped<IDataBaseConnection, DataBaseConnection>();
         }

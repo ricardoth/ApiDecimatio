@@ -1,8 +1,4 @@
-﻿using Decimatio.WebApi.Authentication;
-using Decimatio.WebApi.Models;
-using Microsoft.AspNetCore.Authentication;
-
-namespace Decimatio.WebApi.Configuration
+﻿namespace Decimatio.WebApi.Configuration
 {
     public static class DependencyInjectorConfiguration
     {
@@ -15,7 +11,6 @@ namespace Decimatio.WebApi.Configuration
                 //options.Filters.Add(new ApiExceptionFilterAttribute(trace));
             }).AddFluentValidation(c => c.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
-            //service.AddMvc().AddFluentValidation();
             #endregion
 
 
@@ -27,10 +22,22 @@ namespace Decimatio.WebApi.Configuration
 
             service.Configure<BasicAuthCredentials>(configuration.GetSection("BasicAuthCredentials"));
 
-
             service.AddRepositories(configuration);
-
             #endregion
+        }
+
+        public static void ConfigureCors(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    });
+            });
         }
     }
 }

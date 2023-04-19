@@ -1,14 +1,20 @@
-﻿namespace Decimatio.Domain.Services
+﻿namespace Decimatio.Infraestructure.Services
 {
     public class TicketService : ITicketService
     {
         private readonly ITicketRepository _ticketRepository;
         private readonly IQRGeneratorService _qrGeneratorService;
+        private readonly IBlobFilesService _blobFilesService;
+        private readonly IMapper _mapper;
 
-        public TicketService(ITicketRepository ticketRepository, IQRGeneratorService qRGeneratorService)
+        public TicketService(ITicketRepository ticketRepository, IQRGeneratorService qRGeneratorService, 
+            IBlobFilesService blobFilesService, BlobContainerConfig containerConfig,
+            IMapper mapper)
         {
             _ticketRepository = ticketRepository;
             _qrGeneratorService = qRGeneratorService;
+            _mapper = mapper;
+            _blobFilesService = blobFilesService;
         }
 
         public async Task<string> AddTicket(Ticket ticket)
@@ -21,11 +27,15 @@
                 var result = await _ticketRepository.AddTicket(ticket);
                 if (result != 0)
                 {
-                    qrCodeImage = _qrGeneratorService.GenerateQRCodeTicket(ticket);
+                    Ticket ticketWithInfo = await _ticketRepository.GetInfoTicket(result);
+                    var ticketDto = _mapper.Map<Ticket>(ticketWithInfo);
+
+                    qrCodeImage = _qrGeneratorService.GenerateQRCodeTicket(ticketDto);
                     qrCodeImage.Save(memoryStream, ImageFormat.Png);
 
                     byte[] imageBytes = memoryStream.ToArray();
                     string base64Image = Convert.ToBase64String(imageBytes);
+                    string fileName = $"Ticket N° {ticketDto.IdTicket} | Rut: {ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}.png";
 
                     TicketQR ticketQR = new TicketQR()
                     {
@@ -35,8 +45,8 @@
 
                     var ticketQRResponse = await AddTicketQR(ticketQR);
 
-                    //File.WriteAllBytes("Ticket "+result.ToString()+".png", imageBytes);
                     //Guardar imagen en Blob Storage Azure
+                    await _blobFilesService.AddTicketQRBlobStorage(imageBytes, fileName);
                     return base64Image;
                 }
                 else
@@ -62,5 +72,17 @@
             }
         }
 
+
+        //private async Task<int> AddTicketQRBlobStorage(byte[] imageBytes)
+        //{
+        //    var blobServiceClient = new BlobServiceClient(_containerConfig.ConnectionString);
+
+        //    var blobContainerClient = blobServiceClient.GetBlobContainerClient(_containerConfig.ContainerName);
+        //    var blobClient = blobContainerClient.GetBlobClient("ticketQR.png");
+        //    using var memoryStream = new MemoryStream(imageBytes);
+        //    var result = await blobClient.UploadAsync(memoryStream, overwrite: true);
+        //    return 1;
+
+        //}
     }
 }

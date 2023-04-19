@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.Entities
+﻿namespace Decimatio.Domain.DTOs
 {
-    public class Banda
+    public class BandaDto
     {
         public long IdBanda { get; set; }
         public string NombreBanda { get; set; }

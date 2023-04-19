@@ -1,9 +1,8 @@
-﻿namespace Decimatio.Domain.Entities
+﻿namespace Decimatio.Domain.DTOs
 {
-    public class TipoUsuario
+    public class TipoUsuarioDto
     {
         public short IdTipoUsuario { get; set; }
         public string NombreTipoUsuario { get; set; }
-        public bool Activo { get; set; }
     }
 }

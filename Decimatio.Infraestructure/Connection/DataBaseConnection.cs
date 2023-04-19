@@ -1,8 +1,4 @@
-﻿using Dapper;
-using System.Data.SqlClient;
-using System.Diagnostics;
-
-namespace Decimatio.Infraestructure.Connection
+﻿namespace Decimatio.Infraestructure.Connection
 {
     public class DataBaseConnection : IDataBaseConnection
     {
@@ -79,7 +75,54 @@ namespace Decimatio.Infraestructure.Connection
             }
         }
 
-        public async Task<IEnumerable<T>> GetListAsync<T>(string queryName, string query)
+        public async Task<Ticket> FirstOrDefaultWithObjectAsync<T>(string queryName, string query, long tickedId)
+        {
+            var st = DateTime.Now;
+            var w = Stopwatch.StartNew();
+            var success = true;
+
+            try
+            {
+                var ticketDictionary = new Dictionary<long, Ticket>();
+                using var conn = new SqlConnection(_connection.ConnectionString);
+                var tickets = (await conn.QueryAsync<Ticket, Usuario, Evento, Sector, MedioPago, Lugar,Ticket>(
+                    query,
+                    (ticket, usuario, evento, sector, medioPago, lugar) =>
+                    {
+                        if (!ticketDictionary.TryGetValue(ticket.IdTicket, out var ticketEntry))
+                        {
+                            ticketEntry = ticket;
+                            ticketDictionary.Add(ticketEntry.IdTicket, ticketEntry);
+
+                        }
+
+                        ticketEntry.Usuario = usuario;
+                        ticketEntry.Evento = evento;
+                        ticketEntry.Sector = sector;
+                        ticketEntry.MedioPago = medioPago;
+                        ticketEntry.Sector.Lugar = lugar;
+                        return ticketEntry;
+                    },
+                    new { IdTicket = tickedId },
+                    splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar"
+                )).Distinct().ToList();
+
+                var ticketResult = tickets.FirstOrDefault();
+
+                return ticketResult;
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                throw ex;
+            }
+            finally
+            {
+                w.Stop();
+            }
+        }
+
+        public async Task<IEnumerable<T>> GetListAsync<T>(string queryName, string query, object entity)
         {
             var st = DateTime.Now;
             var w = Stopwatch.StartNew();
@@ -88,7 +131,7 @@ namespace Decimatio.Infraestructure.Connection
             try
             {
                 using var conn = new SqlConnection(_connection.ConnectionString);
-                return await conn.QueryAsync<T>(query);
+                return await conn.QueryAsync<T>(query, entity);
             }
             catch (Exception ex)
             {

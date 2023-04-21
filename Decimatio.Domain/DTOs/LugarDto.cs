@@ -7,5 +7,6 @@
         public string Ubicacion { get; set; }
         public string Numeracion { get; set; }
         public DateTime FechaCreacion { get; set; }
+        public ComunaDto Comuna { get; set; }   
     }
 }

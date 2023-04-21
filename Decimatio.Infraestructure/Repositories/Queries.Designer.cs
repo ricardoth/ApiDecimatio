@@ -63,14 +63,15 @@ namespace Decimatio.Infraestructure.Repositories {
         /// <summary>
         ///   Busca una cadena traducida similar a SELECT t.IdTicket, t.IdUsuario, t.IdEvento, t.IdSector, t.IdMedioPago,
         ///        t.MontoPago, t.MontoTotal, t.FechaTicket, t.Activo, t.FechaCreacion, t.FechaModified,
-        ///        u.*, e.*, s.*, m.*, TQR.*, L.*
+        ///        u.*, e.*, s.*, m.*, TQR.*, L.*,
+        ///		c.*, r.*
         ///FROM Ticket t
         ///INNER JOIN Usuario u ON t.IdUsuario = u.IdUsuario
         ///INNER JOIN Evento e ON t.IdEvento = e.IdEvento
         ///INNER JOIN [dbo].[Lugar] L ON L.IdLugar = E.IdLugar
         ///INNER JOIN Sector s ON t.IdSector = s.IdSector
         ///INNER JOIN MedioPago m ON t.IdMedioPago = m.IdMedioPago
-        ///LEFT JOIN TicketQR TQR ON TQR.IdT [resto de la cadena truncado]&quot;;.
+        ///LEFT JOIN TicketQR T [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string GET_INFO_TICKET {
             get {

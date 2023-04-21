@@ -16,3 +16,5 @@ global using Dapper;
 global using System.Data.SqlClient;
 global using System.Diagnostics;
 global using Decimatio.Common.Options;
+global using Microsoft.Extensions.Hosting;
+global using System.Globalization;

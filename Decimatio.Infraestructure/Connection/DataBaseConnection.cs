@@ -85,9 +85,9 @@
             {
                 var ticketDictionary = new Dictionary<long, Ticket>();
                 using var conn = new SqlConnection(_connection.ConnectionString);
-                var tickets = (await conn.QueryAsync<Ticket, Usuario, Evento, Sector, MedioPago, Lugar,Ticket>(
+                var tickets = (await conn.QueryAsync<Ticket, Usuario, Evento, Sector, MedioPago, Lugar, Comuna,Ticket>(
                     query,
-                    (ticket, usuario, evento, sector, medioPago, lugar) =>
+                    (ticket, usuario, evento, sector, medioPago, lugar, comuna) =>
                     {
                         if (!ticketDictionary.TryGetValue(ticket.IdTicket, out var ticketEntry))
                         {
@@ -101,10 +101,11 @@
                         ticketEntry.Sector = sector;
                         ticketEntry.MedioPago = medioPago;
                         ticketEntry.Sector.Lugar = lugar;
+                        ticketEntry.Sector.Lugar.Comuna = comuna;
                         return ticketEntry;
                     },
                     new { IdTicket = tickedId },
-                    splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar"
+                    splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar,IdComuna"
                 )).Distinct().ToList();
 
                 var ticketResult = tickets.FirstOrDefault();

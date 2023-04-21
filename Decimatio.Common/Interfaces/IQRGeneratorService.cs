@@ -3,5 +3,6 @@
     public interface IQRGeneratorService
     {
         Bitmap GenerateQRCodeTicket<T>(T obj);
+        Task<Bitmap> RenderHtmlToBitmapAsync(string htmlContent);
     }
 }

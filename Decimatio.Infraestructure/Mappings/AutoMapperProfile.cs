@@ -11,6 +11,8 @@
             CreateMap<Sector, SectorDto>().ReverseMap();
             CreateMap<MedioPago, MedioPagoDto>().ReverseMap();
             CreateMap<Lugar, LugarDto>().ReverseMap();
+            CreateMap<Domain.Entities.Region, RegionDto>().ReverseMap();
+            CreateMap<Comuna, ComunaDto>().ReverseMap();
         }
     }
 }

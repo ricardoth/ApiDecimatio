@@ -31,7 +31,19 @@
                 Ticket ticketWithInfo = await _ticketRepository.GetInfoTicket(result);
                 var ticketDto = _mapper.Map<TicketBodyQRDto>(ticketWithInfo);
 
-                string base64QRImage = GeneratoQRCodeBase64(ticketDto);
+                var json = new TicketInfoDto()
+                {
+                    IdTicket = result,
+                    FechaTicket = ticketDto.FechaTicket,
+                    MontoTotal = ticketDto.MontoTotal,
+                    RutUsuario = $"{ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}",
+                    Nombres = ticketDto.Usuario.Nombres,
+                    ApellidoP = ticketDto.Usuario.ApellidoP,
+                    ApellidoM = ticketDto.Usuario.ApellidoM,
+                    Correo = ticketDto.Usuario.Correo
+                };
+
+                string base64QRImage = GeneratoQRCodeBase64(json);
 
                 TicketQR ticketQR = new TicketQR()
                 {
@@ -54,7 +66,7 @@
             }
         }
 
-        private string GeneratoQRCodeBase64(TicketBodyQRDto ticket)
+        private string GeneratoQRCodeBase64(TicketInfoDto ticket)
         {
             using MemoryStream memoryStream = new();
             Bitmap qrCodeImage = _qrGeneratorService.GenerateQRCodeTicket(ticket);
@@ -98,7 +110,7 @@
         public async Task<Bitmap> EscribirPlantilla(string base64Image, TicketBodyQRDto ticket)
         {
             string projectRootPath = _hostEnviroment.ContentRootPath;
-            string htmlTemplatePath = Path.Combine(projectRootPath, "Template", "plantillaticket.html");
+            string htmlTemplatePath = Path.Combine(projectRootPath, "Template", "plantillaEticket.html");
             string htmlTemplate = File.ReadAllText(htmlTemplatePath);
 
             string formatDay = ticket.Evento.Fecha.ToString("dddd", new CultureInfo("es-ES"));

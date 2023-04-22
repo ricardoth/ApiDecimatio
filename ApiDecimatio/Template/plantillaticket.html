@@ -22,8 +22,8 @@
 
 		body,
 		html {
-			height: 100vh;
-			display: grid;
+			/* height: 100vh; */
+			/* display: grid; */
 			font-family: "Staatliches", cursive;
 			color: black;
 			font-size: 14px;
@@ -31,10 +31,10 @@
 		}
 
 		.ticket {
-			margin: auto;
+			/* margin: auto; */
 			display: flex;
 			background: white;
-			box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+			/* box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; */
 		}
 
 		.left {
@@ -110,7 +110,7 @@
 
 		.date .june-29 {
 			color: #d83565;
-			font-size: 20px;
+			
 		}
 
 		.show-name {
@@ -174,7 +174,7 @@
 
 		.right .right-info-container {
 			height: 271px;
-			padding: 10px 10px 10px 35px;
+			padding: 10px 10px 10px 100px;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-around;
@@ -185,8 +185,9 @@
 			font-size: 15px;
 		}
 
-		.barcode {
-			height: 100px;
+        .barcode {
+            height: 130px;
+            width: 130px;
 		}
 
 		.barcode img {
@@ -249,12 +250,13 @@
 					<h5>Sector: {NombreSectorUser}</h5>
               		<p>{HoraEventoUser} HRS<span>
 				</div>
-				<div class="barcode">
-				<img src="data:image/png;base64, {Base64Image}" alt="Código QR" />
-				</div>
 				<p class="ticket-number">
 					N° {IdTicketUser}
 				</p>
+				<div class="barcode">
+					<img src="data:image/png;base64, {Base64Image}" alt="Código QR" />
+				</div>
+				
             </div>
         </div>
     </div>

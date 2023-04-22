@@ -12,7 +12,7 @@ namespace Decimatio.Common.Services
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(jsonString, QRCodeGenerator.ECCLevel.Q);
             PngByteQRCode qrCode = new PngByteQRCode(qrCodeData);
             
-            Bitmap qrCodeImage = new Bitmap(new MemoryStream(qrCode.GetGraphic(10)));
+            Bitmap qrCodeImage = new Bitmap(new MemoryStream(qrCode.GetGraphic(20)));
             return qrCodeImage;
         }
 

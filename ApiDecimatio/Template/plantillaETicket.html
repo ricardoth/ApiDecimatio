@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- So that mobile will display zoomed in -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- enable media queries for windows phone 8 -->
+    <meta name="format-detection" content="telephone=no" /> <!-- disable auto telephone linking in iOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link href="https://fonts.cdnfonts.com/css/old-english-five" rel="stylesheet">
+    <title>ETicket</title>
+
+    <style type="text/css">
+        @import url("https://fonts.googleapis.com/css2?family=Staatliches&display=swap");
+		@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap");
+/* body,
+		html {
+			height: 100vh;
+			display: grid;
+			color: black;
+			font-size: 14px;
+			letter-spacing: 0.1em;
+		} */
+
+        body {
+			font-family: "Staatliches", cursive;
+            /* display: grid; */
+            margin: 0;
+            padding: 0;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%; 
+        }
+
+        .ticket {
+			margin: auto;
+			display: flex;
+			background: white;
+			/* box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; */
+		}
+
+        .admit-one {
+			position: absolute;
+			color: darkgray;
+			/* height: 271px; */
+			/* padding: 0 10px; */
+			/* letter-spacing: 0.15em; */
+			 display: flex; 
+			 text-align: center; 
+		     justify-content: space-around;
+			writing-mode: vertical-rl;
+			transform: rotate(-180deg);
+		}
+
+		.admit-one span:nth-child(2) {
+			color: white;
+			font-weight: 400;
+		}
+
+        .left {
+			display: flex;
+            width: 470px;
+		}
+
+        .center {
+            margin: 0 10px;
+        }
+
+        .image {
+			background-image: url("https://lastfm.freetls.fastly.net/i/u/ar0/0c9a5726ff83a1a6c06518b2ca8fe8c8");
+			background-size: cover;
+			opacity: 0.85;
+            height: 100%;
+            width: 100%;
+		}
+
+        .left .ticket-number {
+            /* height: 270px;
+            width: 175px; */
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            padding-right: 10px;
+            padding-top: 300px;
+            color: white;
+
+        }
+
+
+
+        .ticket-info {
+            padding-left: 30px;
+            text-align: center;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+
+        .date {
+            border-top: 1px solid gray;
+            border-bottom: 1px solid gray;
+            font-weight: 300;
+            padding-top: 10px;
+        }
+
+        .date span {
+            width: 100px;
+            justify-content: space-between;
+        }
+
+        .date span:first-child {
+            text-align: left;
+        }
+
+        .date span:last-child {
+            text-align: right;
+        }
+
+        .date .june-29 {
+            color: #d83565;
+        }
+
+
+		.show-name h1 {
+			font-size: 28px;
+			font-weight: 600;
+			letter-spacing: 0.1em;
+			color: black;
+		}
+
+        .show-name h2 {
+			font-size: 14px;
+			letter-spacing: 0.1em;
+			color: black;
+		}
+
+		.location {
+            padding-top: 10px;
+            font-size: 17px;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			width: 100%;
+			border-top: 1px solid gray;
+		}
+
+        .right {
+			width: 180px;
+			border-left: 1.5px dashed #404040;
+            /* padding-left: 20px; */
+		}
+
+        .right .right-info-container {
+            padding-left: 40px;
+        }
+
+        /* .right .right-info-container {
+			 display: flex; 
+		    flex-direction: column;
+			justify-content: space-between; 
+			align-items: center; 
+		} */
+
+        .barcode {
+			height: 160px;
+            width: 160px;
+		}
+  
+		.barcode img {
+			height: 100%;
+		} 
+
+		.right .ticket-number {
+			color: gray;
+		}
+
+        .ios-footer a {
+            color: #aaaaaa !important;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket">
+        <div class="left">
+            <div class="image">
+                <p class="ticket-number">
+                    N° {IdTicket}
+                </p>
+            </div>
+
+            <div class="ticket-info">
+                <p class="date">
+                    <span>{DiaEvento}</span>
+                    <span class="june-29">{FechaEvento}</span>
+                    <span>{AnioEvento}</span>
+                </p>
+                <h3>Kerygma Presenta</h3>
+                <div class="show-name">
+                    <h1>{NombreEvento}</h1>
+                    <small>Sector: {NombreSector}</small>
+                </div>
+
+                <div class="time">
+                    <p>Valor: {MontoTotal}</p>
+                    <p>{HoraEvento} Hrs</p>
+                </div>
+                <p class="location">
+                    <span>{NombreLugar}</span>
+                    <span class="separator"><i class="fa-solid fa-skull-crossbones"></i></span><span>{Comuna},{Pais}</span>
+                </p>
+            </div>
+        </div>
+        <div class="center"></div>
+        <div class="right">
+			<p class="admit-one">
+				<span>ACCESO ÚNICO</span>
+				<span>ACCESO ÚNICO</span>
+			</p>
+            <div class="right-info-container">
+				<div class="show-name">
+					<h2>{NombreEventoUser}</h2>
+				</div>
+				<div class="time">
+					<h5>Sector: {NombreSectorUser}</h5>
+              		<p>{HoraEventoUser} Hrs<span>
+				</div>
+                <p class="ticket-number">
+					N° {IdTicketUser}
+				</p>
+				<div class="barcode">
+				    <img src="data:image/png;base64, {Base64Image}" alt="Código QR" />
+				</div>
+				
+            </div>
+        </div>
+    </div>
+</body>
+</html>

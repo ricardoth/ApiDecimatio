@@ -110,7 +110,7 @@
         public async Task<Bitmap> EscribirPlantilla(string base64Image, TicketBodyQRDto ticket)
         {
             string projectRootPath = _hostEnviroment.ContentRootPath;
-            string htmlTemplatePath = Path.Combine(projectRootPath, "Template", "plantillaEticket.html");
+            string htmlTemplatePath = Path.Combine(projectRootPath, "Template", "IaETicket.html");
             string htmlTemplate = File.ReadAllText(htmlTemplatePath);
 
             string formatDay = ticket.Evento.Fecha.ToString("dddd", new CultureInfo("es-ES"));
@@ -123,7 +123,7 @@
           
 
             string htmlWithImage = htmlTemplate.Replace("{Base64Image}", base64Image)
-                                    .Replace("{DiaEvento}", formatDay)
+                                    .Replace("{DiaEvento}", formatDay.ToUpper())
                                     .Replace("{FechaEvento}", formatDate)
                                     .Replace("{AnioEvento}", anio)
                                     .Replace("{NombreEvento}", ticket.Evento.NombreEvento)
@@ -131,6 +131,8 @@
                                     .Replace("{MontoTotal}", montoTotalFormat.ToString())
                                     .Replace("{Pais}", pais)
                                     .Replace("{Comuna}", comuna)
+                                    .Replace("{Direccion}", ticket.Sector.Lugar.Ubicacion)
+                                    .Replace("{Numeracion}", ticket.Sector.Lugar.Numeracion)
                                     .Replace("{HoraEvento}", formatHora)
                                     .Replace("{NombreLugar}", ticket.Sector.Lugar.NombreLugar)
                                     .Replace("{NombreEventoUser}", ticket.Evento.NombreEvento)

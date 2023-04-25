@@ -22,7 +22,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthorization();
+
+app.UseCors(options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
 
 app.MapControllers();
 

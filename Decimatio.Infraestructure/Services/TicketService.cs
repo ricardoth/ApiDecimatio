@@ -58,7 +58,6 @@
                 string base64HtmlTicket = await SaveTicketImageToBlobStorage(base64QRImage, ticketDto, fileName);
 
                 return base64HtmlTicket;
-
             }
             catch (Exception ex)
             {
@@ -109,8 +108,8 @@
 
         public async Task<Bitmap> EscribirPlantilla(string base64Image, TicketBodyQRDto ticket)
         {
-            string projectRootPath = _hostEnviroment.ContentRootPath;
-            string htmlTemplatePath = Path.Combine(projectRootPath, "Template", "IaETicket.html");
+            string currentDirectory = Directory.GetCurrentDirectory() + "\\Template";
+            string htmlTemplatePath = Path.Combine(currentDirectory, "IaETicket.html");
             string htmlTemplate = File.ReadAllText(htmlTemplatePath);
 
             string formatDay = ticket.Evento.Fecha.ToString("dddd", new CultureInfo("es-ES"));
@@ -141,7 +140,7 @@
                                     .Replace("{HoraEventoUser}", formatHora)
                                     .Replace("{IdTicket}", ticket.IdTicket.ToString())
                                     .Replace("{IdTicketUser}", ticket.IdTicket.ToString());
-            Bitmap htmlAsBitmap = await _qrGeneratorService.RenderHtmlToBitmapAsync(htmlWithImage);
+            var htmlAsBitmap = await _qrGeneratorService.RenderHtmlToBitmapAsync(htmlWithImage);
             return htmlAsBitmap;
 
         }

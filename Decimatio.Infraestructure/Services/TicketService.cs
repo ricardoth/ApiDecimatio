@@ -1,4 +1,7 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using System.Drawing;
+using System.IO;
+
+namespace Decimatio.Infraestructure.Services
 {
     public class TicketService : ITicketService
     {
@@ -76,18 +79,23 @@
 
         private string GetTicketFileName(TicketBodyQRDto ticketDto)
         {
-            return $"Ticket N° {ticketDto.IdTicket} | Rut: {ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}.png";
+            return $"Ticket N° {ticketDto.IdTicket} | Rut: {ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}.pdf";
         }
 
         private async Task<string> SaveTicketImageToBlobStorage(string base64QRImage, TicketBodyQRDto ticketDto, string fileName)
         {
-            Bitmap ticketResultImage = await EscribirPlantilla(base64QRImage, ticketDto);
-            using MemoryStream stream = new MemoryStream();
-            ticketResultImage.Save(stream, ImageFormat.Png);
-            byte[] ticketResultBytes = stream.ToArray();
+            //Bitmap ticketResultImage = await EscribirPlantilla(base64QRImage, ticketDto);
+            //using MemoryStream stream = new MemoryStream();
+            //ticketResultImage.Save(stream, ImageFormat.Png);
+            //byte[] ticketResultBytes = stream.ToArray();
 
-            await _blobFilesService.AddTicketQRBlobStorage(ticketResultBytes, fileName);
-            return Convert.ToBase64String(ticketResultBytes);
+            //PDf
+            var ticketResultImage = await EscribirPlantilla(base64QRImage, ticketDto);
+            //using MemoryStream stream = new MemoryStream(ticketResultImage);
+            //byte[] ticketResultBytes = stream.ToArray();
+
+            await _blobFilesService.AddTicketQRBlobStorage(ticketResultImage, fileName);
+            return Convert.ToBase64String(ticketResultImage);
         }
 
         public async Task<TicketQR> AddTicketQR(TicketQR ticketQR)
@@ -106,11 +114,15 @@
             }
         }
 
-        public async Task<Bitmap> EscribirPlantilla(string base64Image, TicketBodyQRDto ticket)
+        public async Task<byte[]> EscribirPlantilla(string base64Image, TicketBodyQRDto ticket)
         {
             string currentDirectory = Directory.GetCurrentDirectory() + "\\Template";
             string htmlTemplatePath = Path.Combine(currentDirectory, "IaETicket.html");
             string htmlTemplate = File.ReadAllText(htmlTemplatePath);
+            string logoImage = Path.Combine(currentDirectory, "decimatio2.jpg");
+
+            byte[] logoBytes = File.ReadAllBytes(logoImage);
+            string logoBase64Image = Convert.ToBase64String(logoBytes);
 
             string formatDay = ticket.Evento.Fecha.ToString("dddd", new CultureInfo("es-ES"));
             string anio = ticket.Evento.Fecha.ToString("yyyy", new CultureInfo("es-ES"));
@@ -122,6 +134,7 @@
           
 
             string htmlWithImage = htmlTemplate.Replace("{Base64Image}", base64Image)
+                                    .Replace("{LogoImage}", logoBase64Image)
                                     .Replace("{DiaEvento}", formatDay.ToUpper())
                                     .Replace("{FechaEvento}", formatDate)
                                     .Replace("{AnioEvento}", anio)
@@ -140,8 +153,10 @@
                                     .Replace("{HoraEventoUser}", formatHora)
                                     .Replace("{IdTicket}", ticket.IdTicket.ToString())
                                     .Replace("{IdTicketUser}", ticket.IdTicket.ToString());
-            var htmlAsBitmap = await _qrGeneratorService.RenderHtmlToBitmapAsync(htmlWithImage);
-            return htmlAsBitmap;
+            //var htmlAsBitmap = await _qrGeneratorService.RenderHtmlToBitmapAsync(htmlWithImage);
+            var htmlPdf = await _qrGeneratorService.RenderHtmlToPdfAsync(htmlWithImage);
+
+            return htmlPdf;
 
         }
     }

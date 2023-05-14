@@ -4,5 +4,6 @@
     {
         Bitmap GenerateQRCodeTicket<T>(T obj);
         Task<Bitmap> RenderHtmlToBitmapAsync(string htmlContent);
+        Task<byte[]> RenderHtmlToPdfAsync(string htmlContent);
     }
 }

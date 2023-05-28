@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.IO;
-
-namespace Decimatio.Infraestructure.Services
+﻿namespace Decimatio.Infraestructure.Services
 {
     public class TicketService : ITicketService
     {

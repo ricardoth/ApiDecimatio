@@ -33,7 +33,7 @@
         {
             try
             {
-                var renderer = new IronPdf.HtmlToPdf();
+                var renderer = new HtmlToPdf();
                 var pdf = renderer.RenderHtmlAsPdf(htmlContent);
                 using var memoryStram = new MemoryStream();
                 pdf.Stream.CopyTo(memoryStram);

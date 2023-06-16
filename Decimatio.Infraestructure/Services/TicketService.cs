@@ -6,17 +6,14 @@
         private readonly IQRGeneratorService _qrGeneratorService;
         private readonly IBlobFilesService _blobFilesService;
         private readonly IMapper _mapper;
-        private readonly IHostEnvironment _hostEnviroment;
 
         public TicketService(ITicketRepository ticketRepository, IQRGeneratorService qRGeneratorService, 
-            IBlobFilesService blobFilesService, BlobContainerConfig containerConfig,
-            IMapper mapper, IHostEnvironment hostEnvironment)
+            IBlobFilesService blobFilesService, IMapper mapper )
         {
             _ticketRepository = ticketRepository;
             _qrGeneratorService = qRGeneratorService;
             _mapper = mapper;
             _blobFilesService = blobFilesService;
-            _hostEnviroment = hostEnvironment;
         }
 
         public async Task<string> AddTicket(Ticket ticket)
@@ -81,16 +78,7 @@
 
         private async Task<string> SaveTicketImageToBlobStorage(string base64QRImage, TicketBodyQRDto ticketDto, string fileName)
         {
-            //Bitmap ticketResultImage = await EscribirPlantilla(base64QRImage, ticketDto);
-            //using MemoryStream stream = new MemoryStream();
-            //ticketResultImage.Save(stream, ImageFormat.Png);
-            //byte[] ticketResultBytes = stream.ToArray();
-
-            //PDf
             var ticketResultImage = await EscribirPlantilla(base64QRImage, ticketDto);
-            //using MemoryStream stream = new MemoryStream(ticketResultImage);
-            //byte[] ticketResultBytes = stream.ToArray();
-
             await _blobFilesService.AddTicketQRBlobStorage(ticketResultImage, fileName);
             return Convert.ToBase64String(ticketResultImage);
         }
@@ -150,7 +138,6 @@
                                     .Replace("{HoraEventoUser}", formatHora)
                                     .Replace("{IdTicket}", ticket.IdTicket.ToString())
                                     .Replace("{IdTicketUser}", ticket.IdTicket.ToString());
-            //var htmlAsBitmap = await _qrGeneratorService.RenderHtmlToBitmapAsync(htmlWithImage);
             var htmlPdf = await _qrGeneratorService.RenderHtmlToPdfAsync(htmlWithImage);
 
             return htmlPdf;

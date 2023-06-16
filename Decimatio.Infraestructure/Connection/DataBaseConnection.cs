@@ -31,6 +31,8 @@
             finally { stopwatch.Stop(); }
         }
 
+        
+
         public async Task<long?> ExecuteScalar(string queryName, string query, object entity)
         {
             DateTime startTime = DateTime.Now;
@@ -53,6 +55,29 @@
             finally { stopwatch.Stop(); }
         }
 
+        public async Task<T?> ExecuteScalar<T>(string queryName, string query, object entity)
+        {
+
+            DateTime startTime = DateTime.Now;
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            bool isSuccess = true;
+
+            try
+            {
+                using (var conn = new SqlConnection(_connection.ConnectionString))
+                {
+                    var newObject = await conn.ExecuteScalarAsync<T>(query, entity);
+                    return newObject;
+                }
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                throw ex;
+            }
+            finally { stopwatch.Stop(); }
+        }
+
         public async Task<T> FirstOrDefaultAsync<T>(string queryName, string query, object entity)
         {
             var st = DateTime.Now;
@@ -62,7 +87,7 @@
             try
             {
                 using var conn = new SqlConnection(_connection.ConnectionString);
-                return await conn.QueryFirstOrDefaultAsync<T>(query);
+                return await conn.QueryFirstOrDefaultAsync<T>(query, entity);
             }
             catch (Exception ex)
             {
@@ -123,7 +148,7 @@
             }
         }
 
-        public async Task<IEnumerable<T>> GetListAsync<T>(string queryName, string query, object entity)
+        public async Task<IEnumerable<T>> GetListAsync<T>(string queryName, string query)
         {
             var st = DateTime.Now;
             var w = Stopwatch.StartNew();
@@ -132,7 +157,7 @@
             try
             {
                 using var conn = new SqlConnection(_connection.ConnectionString);
-                return await conn.QueryAsync<T>(query, entity);
+                return await conn.QueryAsync<T>(query);
             }
             catch (Exception ex)
             {
@@ -144,6 +169,51 @@
                 w.Stop();
             }
 
+        }
+
+        public async Task<T> QuerySingleAsync<T>(string queryName, string query, object entity)
+        {
+            var st = DateTime.Now;
+            var w = Stopwatch.StartNew();
+            var success = true;
+
+            try
+            {
+                using var conn = new SqlConnection(_connection.ConnectionString);
+                return await conn.QuerySingleAsync<T>(query, entity);
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                throw ex;
+            }
+            finally
+            {
+                w.Stop();
+            }
+        }
+
+        public async Task<T> ExecuteAsync<T>(string queryName, string query, object entity)
+        {
+            var st = DateTime.Now;
+            var w = Stopwatch.StartNew();
+            var success = true;
+
+            try
+            {
+                using var conn = new SqlConnection(_connection.ConnectionString);
+                await conn.ExecuteAsync(query, entity);
+                return (T)entity;
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                throw ex;
+            }
+            finally
+            {
+                w.Stop();
+            }
         }
     }
 }

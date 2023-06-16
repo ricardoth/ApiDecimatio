@@ -117,6 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DELETE_MEDIO_PAGO" xml:space="preserve">
+    <value>DELETE FROM dbo.MedioPago WHERE IdMedioPago = @IdMedioPago</value>
+    <comment>Eliminar MedioPago</comment>
+  </data>
+  <data name="GET_EVENTOS" xml:space="preserve">
+    <value>SELECT [IdEvento]
+      ,[IdLugar]
+      ,[NombreEvento]
+      ,[Direccion]
+      ,[Fecha]
+      ,[Activo]
+  FROM [Decimatio].[dbo].[Evento]</value>
+    <comment>Get All Eventos</comment>
+  </data>
   <data name="GET_INFO_TICKET" xml:space="preserve">
     <value>SELECT t.IdTicket, t.IdUsuario, t.IdEvento, t.IdSector, t.IdMedioPago,
         t.MontoPago, t.MontoTotal, t.FechaTicket, t.Activo, t.FechaCreacion, t.FechaModified,
@@ -133,6 +147,59 @@ INNER JOIN Comuna c on c.IdComuna = L.IdComuna
 INNER JOIN Region r on r.IdRegion = c.IdRegion
 WHERE T.IdTicket = @IdTicket</value>
     <comment>GET TICKET CON INFO USUARIO Y QR</comment>
+  </data>
+  <data name="GET_MEDIOS_PAGOS" xml:space="preserve">
+    <value>SELECT  [IdMedioPago]
+      ,[NombreMedioPago]
+      ,[Descripcion]
+      ,[Activo]
+  FROM [Decimatio].[dbo].[MedioPago]</value>
+  </data>
+  <data name="GET_MEDIO_PAGO" xml:space="preserve">
+    <value>SELECT  [IdMedioPago]
+      ,[NombreMedioPago]
+      ,[Descripcion]
+      ,[Activo]
+  FROM [Decimatio].[dbo].[MedioPago] WHERE IdMedioPago = @IdMedioPago</value>
+    <comment>Get Solo un Medio Pago</comment>
+  </data>
+  <data name="GET_SECTORES" xml:space="preserve">
+    <value>SELECT [IdSector]
+      ,[IdLugar]
+      ,[NombreSector]
+      ,[Capacidad]
+      ,[Activo]
+  FROM [Decimatio].[dbo].[Sector]</value>
+    <comment>Get All Sectores</comment>
+  </data>
+  <data name="GET_USUARIOS" xml:space="preserve">
+    <value>SELECT [IdUsuario]
+      ,U.[IdTipoUsuario]
+	  ,NombreTipoUsuario
+      ,[Rut]
+      ,[DV]
+      ,[Nombres]
+      ,[ApellidoP]
+      ,[ApellidoM]
+      ,[Direccion]
+      ,[Telefono]
+      ,[Correo]
+      ,U.[Activo]
+      ,U.[FechaCreacion]
+  FROM [Decimatio].[dbo].[Usuario] U
+	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario</value>
+    <comment>Get All Users</comment>
+  </data>
+  <data name="INSERT_MEDIO_PAGO" xml:space="preserve">
+    <value>INSERT INTO [dbo].[MedioPago]
+           ([NombreMedioPago]
+           ,[Descripcion]
+           ,[Activo])
+     VALUES
+           (@NombreMedioPago
+  ,@Descripcion
+           ,@Activo)</value>
+    <comment>Insert MedioPago</comment>
   </data>
   <data name="INSERT_TICKET" xml:space="preserve">
     <value>INSERT INTO [dbo].[Ticket]
@@ -170,5 +237,11 @@ WHERE T.IdTicket = @IdTicket</value>
            ,1
            ,GETDATE())</value>
     <comment>Insert Ticket QR</comment>
+  </data>
+  <data name="UPDATE_MEDIO_PAGO" xml:space="preserve">
+    <value>UPDATE dbo.MedioPago SET [NombreMedioPago] =@NombreMedioPago
+           ,[Descripcion] = @Descripcion
+           ,[Activo] = @Activo WHERE IdMedioPago = @IdMedioPago</value>
+    <comment>Actualiza MedioPago</comment>
   </data>
 </root>

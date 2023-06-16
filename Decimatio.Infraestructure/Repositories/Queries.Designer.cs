@@ -61,6 +61,30 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a DELETE FROM dbo.MedioPago WHERE IdMedioPago = @IdMedioPago.
+        /// </summary>
+        internal static string DELETE_MEDIO_PAGO {
+            get {
+                return ResourceManager.GetString("DELETE_MEDIO_PAGO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT [IdEvento]
+        ///      ,[IdLugar]
+        ///      ,[NombreEvento]
+        ///      ,[Direccion]
+        ///      ,[Fecha]
+        ///      ,[Activo]
+        ///  FROM [Decimatio].[dbo].[Evento].
+        /// </summary>
+        internal static string GET_EVENTOS {
+            get {
+                return ResourceManager.GetString("GET_EVENTOS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT t.IdTicket, t.IdUsuario, t.IdEvento, t.IdSector, t.IdMedioPago,
         ///        t.MontoPago, t.MontoTotal, t.FechaTicket, t.Activo, t.FechaCreacion, t.FechaModified,
         ///        u.*, e.*, s.*, m.*, TQR.*, L.*,
@@ -76,6 +100,85 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string GET_INFO_TICKET {
             get {
                 return ResourceManager.GetString("GET_INFO_TICKET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT  [IdMedioPago]
+        ///      ,[NombreMedioPago]
+        ///      ,[Descripcion]
+        ///      ,[Activo]
+        ///  FROM [Decimatio].[dbo].[MedioPago] WHERE IdMedioPago = @IdMedioPago.
+        /// </summary>
+        internal static string GET_MEDIO_PAGO {
+            get {
+                return ResourceManager.GetString("GET_MEDIO_PAGO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT  [IdMedioPago]
+        ///      ,[NombreMedioPago]
+        ///      ,[Descripcion]
+        ///      ,[Activo]
+        ///  FROM [Decimatio].[dbo].[MedioPago].
+        /// </summary>
+        internal static string GET_MEDIOS_PAGOS {
+            get {
+                return ResourceManager.GetString("GET_MEDIOS_PAGOS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT [IdSector]
+        ///      ,[IdLugar]
+        ///      ,[NombreSector]
+        ///      ,[Capacidad]
+        ///      ,[Activo]
+        ///  FROM [Decimatio].[dbo].[Sector].
+        /// </summary>
+        internal static string GET_SECTORES {
+            get {
+                return ResourceManager.GetString("GET_SECTORES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT [IdUsuario]
+        ///      ,U.[IdTipoUsuario]
+        ///	  ,NombreTipoUsuario
+        ///      ,[Rut]
+        ///      ,[DV]
+        ///      ,[Nombres]
+        ///      ,[ApellidoP]
+        ///      ,[ApellidoM]
+        ///      ,[Direccion]
+        ///      ,[Telefono]
+        ///      ,[Correo]
+        ///      ,U.[Activo]
+        ///      ,U.[FechaCreacion]
+        ///  FROM [Decimatio].[dbo].[Usuario] U
+        ///	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario.
+        /// </summary>
+        internal static string GET_USUARIOS {
+            get {
+                return ResourceManager.GetString("GET_USUARIOS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO [dbo].[MedioPago]
+        ///           ([NombreMedioPago]
+        ///           ,[Descripcion]
+        ///           ,[Activo])
+        ///     VALUES
+        ///           (@NombreMedioPago
+        ///  ,@Descripcion
+        ///           ,@Activo).
+        /// </summary>
+        internal static string INSERT_MEDIO_PAGO {
+            get {
+                return ResourceManager.GetString("INSERT_MEDIO_PAGO", resourceCulture);
             }
         }
         
@@ -123,6 +226,17 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string INSERT_TICKETQR {
             get {
                 return ResourceManager.GetString("INSERT_TICKETQR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE dbo.MedioPago SET [NombreMedioPago] =@NombreMedioPago
+        ///           ,[Descripcion] = @Descripcion
+        ///           ,[Activo] = @Activo WHERE IdMedioPago = @IdMedioPago.
+        /// </summary>
+        internal static string UPDATE_MEDIO_PAGO {
+            get {
+                return ResourceManager.GetString("UPDATE_MEDIO_PAGO", resourceCulture);
             }
         }
     }

@@ -9,7 +9,16 @@
 
             // Repositories
             services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<IMedioPagoRepository, MedioPagoRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<ISectorRepository, SectorRepository>();
+            services.AddScoped<IEventoRepository, EventoRepository>();
+            
+            services.AddScoped<IMedioPagoService, MedioPagoService>();
             services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<ISectorService, SectorService>();
+            services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<IQRGeneratorService, QRGeneratorService>();
             services.AddScoped<IBlobFilesService, BlobFilesService>();
             var blobConfig = configuration.GetSection(nameof(BlobContainerConfig)).Get<BlobContainerConfig>();

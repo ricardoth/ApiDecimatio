@@ -1,5 +1,8 @@
-﻿namespace Decimatio.WebApi.Controllers
+﻿using System.Collections;
+
+namespace Decimatio.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController : ControllerBase
@@ -18,7 +21,10 @@
         {
             var result = await _usuarioService.GetAllUsers();
             if (!result.Any()) return BadRequest();
-            return Ok(result);
+
+
+            var response = new ApiResponse<IEnumerable<Usuario>>(result); 
+            return Ok(response);
         }
     }
 }

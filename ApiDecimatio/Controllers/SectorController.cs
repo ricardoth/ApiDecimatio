@@ -1,5 +1,6 @@
 ﻿namespace Decimatio.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SectorController : ControllerBase
@@ -16,7 +17,8 @@
         {
             var result = await _sectorService.GetAllSectores();
             if (!result.Any()) return BadRequest();
-            return Ok(result);
+            var response = new ApiResponse<IEnumerable<Sector>>(result);
+            return Ok(response);
         }
     }
 }

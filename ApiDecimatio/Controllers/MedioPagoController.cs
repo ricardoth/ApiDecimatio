@@ -1,5 +1,6 @@
 ﻿namespace Decimatio.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MedioPagoController : ControllerBase
@@ -19,7 +20,8 @@
             var result = await _medioPagoService.GetMediosPagosAsync();
             if (result == null) 
                 return BadRequest();
-            return Ok(result);
+            var response = new ApiResponse<IEnumerable<MedioPago>>(result);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]

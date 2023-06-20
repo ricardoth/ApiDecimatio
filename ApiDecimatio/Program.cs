@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Azure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +10,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.UseDependencyInjectorConfiguration(builder.Configuration);
 builder.Services.ConfigureCors();
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(builder.Configuration["BlobContainerConfig:ConnectionString:blob"], preferMsi: true);
+    clientBuilder.AddQueueServiceClient(builder.Configuration["BlobContainerConfig:ConnectionString:queue"], preferMsi: true);
+});
 
 var app = builder.Build();
 
@@ -25,7 +31,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.UseCors(options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
 

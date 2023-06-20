@@ -1,5 +1,6 @@
 ﻿namespace Decimatio.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EventoController : ControllerBase
@@ -16,7 +17,8 @@
         {
             var result = await _eventoService.GetAllEventos();
             if (!result.Any()) return BadRequest();
-            return Ok(result);
+            var response = new ApiResponse<IEnumerable<Evento>>(result);
+            return Ok(response);
         }
     }
 }

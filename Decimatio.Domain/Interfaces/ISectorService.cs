@@ -3,5 +3,6 @@
     public interface ISectorService 
     {
         Task<IEnumerable<Sector>> GetAllSectores();
+        Task<IEnumerable<Sector>> GetSectoresByEvento(int idEvento);
     }
 }

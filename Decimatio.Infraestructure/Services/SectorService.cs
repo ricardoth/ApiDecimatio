@@ -22,5 +22,19 @@
 				throw;
 			}
         }
+
+        public async Task<IEnumerable<Sector>> GetSectoresByEvento(int idEvento)
+        {
+            try
+            {
+                var result = await _sectorRepository.GetSectoresByEvento(idEvento);
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }

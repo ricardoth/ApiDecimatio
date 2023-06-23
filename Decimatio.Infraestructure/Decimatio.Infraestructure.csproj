@@ -22,17 +22,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Repositories\Queries.Designer.cs">
+    <Compile Update="Repositories\Querys.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Queries.resx</DependentUpon>
+      <DependentUpon>Querys.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Repositories\Queries.resx">
+    <EmbeddedResource Update="Repositories\Querys.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Queries.Designer.cs</LastGenOutput>
+      <LastGenOutput>Querys.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

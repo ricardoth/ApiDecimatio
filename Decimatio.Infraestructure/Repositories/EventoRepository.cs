@@ -11,7 +11,7 @@
 
         public async Task<IEnumerable<Evento>> GetAllEventos()
         {
-            var result = await _connection.GetListAsync<Evento>("GET_EVENTOS", Queries.GET_EVENTOS);
+            var result = await _connection.GetListAsync<Evento>("GET_EVENTOS", Querys.GET_EVENTOS);
             return result;
         }
     }

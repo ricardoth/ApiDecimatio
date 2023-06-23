@@ -10,7 +10,18 @@
 
         public async Task<IEnumerable<Usuario>> GetAllUsers()
         {
-            var result = await _connection.GetListAsync<Usuario>("GET_USUARIOS", Queries.GET_USUARIOS);
+            var result = await _connection.GetListAsync<Usuario>("GET_USUARIOS", Querys.GET_USUARIOS);
+            return result;
+        }
+
+        public async Task<Usuario> GetById(int idUsuario)
+        {
+            var dictionary = new Dictionary<string, object>
+            {
+                { "@IdUsuario", idUsuario}
+            };
+            var dynamicParam = new DynamicParameters(dictionary);
+            var result = await _connection.FirstOrDefaultAsync<Usuario>("GET_USUARIO_ID", Querys.GET_USUARIO_ID, dynamicParam);
             return result;
         }
     }

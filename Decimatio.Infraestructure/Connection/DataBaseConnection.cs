@@ -168,7 +168,28 @@
             {
                 w.Stop();
             }
+        }
 
+        public async Task<IEnumerable<T>> GetListAsync<T>(string queryName, string query, object entity)
+        {
+            var st = DateTime.Now;
+            var w = Stopwatch.StartNew();
+            var success = true;
+
+            try
+            {
+                using var conn = new SqlConnection(_connection.ConnectionString);
+                return await conn.QueryAsync<T>(query, entity);
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                throw ex;
+            }
+            finally
+            {
+                w.Stop();
+            }
         }
 
         public async Task<T> QuerySingleAsync<T>(string queryName, string query, object entity)

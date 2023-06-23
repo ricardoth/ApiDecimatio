@@ -22,5 +22,19 @@
                 throw;
             }
         }
+
+        public async Task<Usuario> GetById(int idUsuario)
+        {
+            try
+            {
+                var result = await _usuarioRepository.GetById(idUsuario);
+                return result;  
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -172,6 +172,18 @@ WHERE T.IdTicket = @IdTicket</value>
   FROM [Decimatio].[dbo].[Sector]</value>
     <comment>Get All Sectores</comment>
   </data>
+  <data name="GET_SECTORES_BY_EVENTO" xml:space="preserve">
+    <value>SELECT S.[IdSector]
+      ,S.[IdLugar]
+      ,S.[NombreSector]
+      ,S.[Capacidad]
+      ,S.[Activo]
+  FROM [Decimatio].[dbo].[Sector] S
+	JOIN Lugar L ON L.IdLugar = S.IdLugar
+	JOIN Evento E ON E.IdLugar = L.IdLugar
+  WHERE E.IdEvento = @IdEvento</value>
+    <comment>Get all Sectores por Id Evento</comment>
+  </data>
   <data name="GET_USUARIOS" xml:space="preserve">
     <value>SELECT [IdUsuario]
       ,U.[IdTipoUsuario]
@@ -189,6 +201,23 @@ WHERE T.IdTicket = @IdTicket</value>
   FROM [Decimatio].[dbo].[Usuario] U
 	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario</value>
     <comment>Get All Users</comment>
+  </data>
+  <data name="GET_USUARIO_ID" xml:space="preserve">
+    <value>SELECT [IdUsuario]
+      ,[IdTipoUsuario]
+      ,[Rut]
+      ,[DV]
+      ,[Nombres]
+      ,[ApellidoP]
+      ,[ApellidoM]
+      ,[Direccion]
+      ,[Telefono]
+      ,[Correo]
+      ,[Activo]
+      ,[FechaCreacion]
+  FROM [Decimatio].[dbo].[Usuario]
+  WHERE IdUsuario = @IdUsuario</value>
+    <comment>Get Usuario por Id</comment>
   </data>
   <data name="INSERT_MEDIO_PAGO" xml:space="preserve">
     <value>INSERT INTO [dbo].[MedioPago]

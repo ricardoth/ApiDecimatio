@@ -22,14 +22,14 @@ namespace Decimatio.Infraestructure.Repositories {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Queries {
+    internal class Querys {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Queries() {
+        internal Querys() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Decimatio.Infraestructure.Repositories.Queries", typeof(Queries).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Decimatio.Infraestructure.Repositories.Querys", typeof(Querys).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -140,6 +140,45 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string GET_SECTORES {
             get {
                 return ResourceManager.GetString("GET_SECTORES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT S.[IdSector]
+        ///      ,S.[IdLugar]
+        ///      ,S.[NombreSector]
+        ///      ,S.[Capacidad]
+        ///      ,S.[Activo]
+        ///  FROM [Decimatio].[dbo].[Sector] S
+        ///	JOIN Lugar L ON L.IdLugar = S.IdLugar
+        ///	JOIN Evento E ON E.IdLugar = L.IdLugar
+        ///  WHERE E.IdEvento = @IdEvento.
+        /// </summary>
+        internal static string GET_SECTORES_BY_EVENTO {
+            get {
+                return ResourceManager.GetString("GET_SECTORES_BY_EVENTO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT [IdUsuario]
+        ///      ,[IdTipoUsuario]
+        ///      ,[Rut]
+        ///      ,[DV]
+        ///      ,[Nombres]
+        ///      ,[ApellidoP]
+        ///      ,[ApellidoM]
+        ///      ,[Direccion]
+        ///      ,[Telefono]
+        ///      ,[Correo]
+        ///      ,[Activo]
+        ///      ,[FechaCreacion]
+        ///  FROM [Decimatio].[dbo].[Usuario]
+        ///  WHERE IdUsuario = @IdUsuario.
+        /// </summary>
+        internal static string GET_USUARIO_ID {
+            get {
+                return ResourceManager.GetString("GET_USUARIO_ID", resourceCulture);
             }
         }
         

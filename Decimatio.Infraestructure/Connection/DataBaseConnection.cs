@@ -100,7 +100,43 @@
             }
         }
 
-        public async Task<Ticket> FirstOrDefaultWithObjectAsync<T>(string queryName, string query, long tickedId)
+        public async Task<Evento> FirstOrDefaultEventoWithObjectAsync<T>(string queryName, string query, long eventoId)
+        {
+            var st = DateTime.Now;
+            var w = Stopwatch.StartNew();
+            var success = true;
+
+            try
+            {
+                var eventoDictionary = new Dictionary<long, Evento>();
+                using var conn = new SqlConnection(_connection.ConnectionString);
+                var eventos = (await conn.QueryAsync<Evento, Lugar, Evento>(
+                    query,
+                    (evento, lugar) =>
+                    {
+                        evento.Lugar = lugar;
+                        return evento;
+                    },
+                    new { IdEvento = eventoId },
+                    splitOn: "NombreLugar"
+                )).Distinct().ToList();
+
+                var eventoResult = eventos.FirstOrDefault();
+
+                return eventoResult;
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                throw ex;
+            }
+            finally
+            {
+                w.Stop();
+            }
+        }
+
+        public async Task<Ticket> FirstOrDefaultTicketWithObjectAsync<T>(string queryName, string query, long tickedId)
         {
             var st = DateTime.Now;
             var w = Stopwatch.StartNew();
@@ -125,8 +161,8 @@
                         ticketEntry.Evento = evento;
                         ticketEntry.Sector = sector;
                         ticketEntry.MedioPago = medioPago;
-                        ticketEntry.Sector.Lugar = lugar;
-                        ticketEntry.Sector.Lugar.Comuna = comuna;
+                        ticketEntry.Evento.Lugar = lugar;
+                        ticketEntry.Evento.Lugar.Comuna = comuna;
                         return ticketEntry;
                     },
                     new { IdTicket = tickedId },

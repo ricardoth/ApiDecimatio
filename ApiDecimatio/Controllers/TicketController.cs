@@ -17,7 +17,7 @@
         }
 
         [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GenerarTicket([FromBody]TicketDto ticketDto)
         {

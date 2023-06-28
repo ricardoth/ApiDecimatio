@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <Folder Include="Images\TicketQR\" />
+    <Folder Include="Template\Flyers\" />
   </ItemGroup>
 
 </Project>

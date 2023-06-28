@@ -20,5 +20,16 @@
             var response = new ApiResponse<IEnumerable<Evento>>(result);
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var result = await _eventoService.GetById(id);
+            if (result == null)
+                return BadRequest();
+
+            var response = new ApiResponse<Evento>(result);
+            return Ok(response);
+        }
     }
 }

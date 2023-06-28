@@ -131,6 +131,23 @@
   FROM [Decimatio].[dbo].[Evento]</value>
     <comment>Get All Eventos</comment>
   </data>
+  <data name="GET_EVENTO_ID" xml:space="preserve">
+    <value>SELECT 
+	   E.IdEvento
+      ,E.IdLugar
+      ,E.NombreEvento
+      ,E.Direccion
+      ,E.Fecha
+	  ,E.Flyer
+      ,E.Activo
+	  ,L.NombreLugar
+	  ,L.Ubicacion
+	  ,L.Numeracion
+  FROM [Decimatio].[dbo].[Evento] E
+	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
+  WHERE IdEvento = @IdEvento</value>
+    <comment>Get Evento By Id</comment>
+  </data>
   <data name="GET_INFO_TICKET" xml:space="preserve">
     <value>SELECT t.IdTicket, t.IdUsuario, t.IdEvento, t.IdSector, t.IdMedioPago,
         t.MontoPago, t.MontoTotal, t.FechaTicket, t.Activo, t.FechaCreacion, t.FechaModified,
@@ -164,25 +181,43 @@ WHERE T.IdTicket = @IdTicket</value>
     <comment>Get Solo un Medio Pago</comment>
   </data>
   <data name="GET_SECTORES" xml:space="preserve">
-    <value>SELECT [IdSector]
-      ,[IdLugar]
-      ,[NombreSector]
-      ,[Capacidad]
-      ,[Activo]
-  FROM [Decimatio].[dbo].[Sector]</value>
+    <value>SELECT S.[IdSector]
+      ,S.IdEvento
+      ,S.[NombreSector]
+      ,S.[CapacidadDisponible]
+	  ,S.[CapacidadActual]
+      ,S.[CapacidadTotal]
+	  ,S.Precio
+      ,S.[Activo]
+  FROM [Decimatio].[dbo].[Sector] S</value>
     <comment>Get All Sectores</comment>
   </data>
   <data name="GET_SECTORES_BY_EVENTO" xml:space="preserve">
     <value>SELECT S.[IdSector]
-      ,S.[IdLugar]
+      ,S.[IdEvento]
       ,S.[NombreSector]
-      ,S.[Capacidad]
+      ,S.[CapacidadDisponible]
+	  ,S.[CapacidadActual]
+      ,S.[CapacidadTotal]
+      ,S.Precio
       ,S.[Activo]
   FROM [Decimatio].[dbo].[Sector] S
-	JOIN Lugar L ON L.IdLugar = S.IdLugar
-	JOIN Evento E ON E.IdLugar = L.IdLugar
+	JOIN Evento E ON E.IdEvento = S.IdEvento
   WHERE E.IdEvento = @IdEvento</value>
     <comment>Get all Sectores por Id Evento</comment>
+  </data>
+  <data name="GET_SECTOR_ID" xml:space="preserve">
+    <value>SELECT S.[IdSector]
+      ,S.IdEvento
+      ,S.[NombreSector]
+	  ,S.[CapacidadDisponible]
+	  ,S.[CapacidadActual]
+      ,S.[CapacidadTotal]
+	  ,S.Precio
+      ,S.[Activo]
+  FROM [Decimatio].[dbo].[Sector] S
+  WHERE S.IdSector = @IdSector</value>
+    <comment>Get Sector por Id</comment>
   </data>
   <data name="GET_USUARIOS" xml:space="preserve">
     <value>SELECT [IdUsuario]

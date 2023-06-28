@@ -17,7 +17,7 @@ namespace Decimatio.WebApi.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Get()
         {
@@ -29,7 +29,7 @@ namespace Decimatio.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Get(int id)
         { 

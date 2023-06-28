@@ -5,7 +5,8 @@
         Task<IEnumerable<T>> GetListAsync<T>(string queryName, string query);
         Task<IEnumerable<T>> GetListAsync<T>(string queryName, string query, object entity);
         Task<T> FirstOrDefaultAsync<T>(string queryName, string query, object entity);
-        Task<Ticket> FirstOrDefaultWithObjectAsync<T>(string queryName, string query, long tickedId);
+        Task<Ticket> FirstOrDefaultTicketWithObjectAsync<T>(string queryName, string query, long tickedId);
+        Task<Evento> FirstOrDefaultEventoWithObjectAsync<T>(string queryName, string query, long eventoId);
         Task<int?> ExecuteAsync(string queryName, string query, object entity);
         Task<long?> ExecuteScalar(string queryName, string query, object entity);
         Task<T?> ExecuteScalar<T>(string queryName, string query, object entity);

@@ -3,5 +3,6 @@
     public interface IBlobFilesService
     {
         Task AddTicketQRBlobStorage(byte[] imageBytes, string fileName);
+        Task<string> GetImageFromBlobStorage(string imageName);
     }
 }

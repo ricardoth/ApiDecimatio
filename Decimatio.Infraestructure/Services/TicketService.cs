@@ -115,7 +115,7 @@
             string formatHora = ticket.Evento.Fecha.ToString("HH:mm");
             long montoTotalFormat = (long)ticket.MontoTotal;
             string pais = "Chile";
-            string comuna = ticket.Sector.Lugar.Comuna.NombreComuna;
+            string comuna = ticket.Evento.Lugar.Comuna.NombreComuna;
           
 
             string htmlWithImage = htmlTemplate.Replace("{Base64Image}", base64Image)
@@ -128,10 +128,10 @@
                                     .Replace("{MontoTotal}", montoTotalFormat.ToString())
                                     .Replace("{Pais}", pais)
                                     .Replace("{Comuna}", comuna)
-                                    .Replace("{Direccion}", ticket.Sector.Lugar.Ubicacion)
-                                    .Replace("{Numeracion}", ticket.Sector.Lugar.Numeracion)
+                                    .Replace("{Direccion}", ticket.Evento.Lugar.Ubicacion)
+                                    .Replace("{Numeracion}", ticket.Evento.Lugar.Numeracion)
                                     .Replace("{HoraEvento}", formatHora)
-                                    .Replace("{NombreLugar}", ticket.Sector.Lugar.NombreLugar)
+                                    .Replace("{NombreLugar}", ticket.Evento.Lugar.NombreLugar)
                                     .Replace("{NombreEventoUser}", ticket.Evento.NombreEvento)
                                     .Replace("{Titulo}", ticket.Evento.NombreEvento)
                                     .Replace("{NombreSectorUser}", ticket.Sector.NombreSector)

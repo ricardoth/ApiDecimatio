@@ -23,6 +23,20 @@
 			}
         }
 
+        public async Task<Sector> GetById(int idSector)
+        {
+            try
+            {
+                var result = await _sectorRepository.GetById(idSector);
+                return result;  
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"Ha ocurrido un error en capa Services, error: {ex.Message}" ,ex);
+            }
+        }
+
         public async Task<IEnumerable<Sector>> GetSectoresByEvento(int idEvento)
         {
             try

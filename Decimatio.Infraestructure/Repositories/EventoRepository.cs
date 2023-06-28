@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Repositories
+﻿using Decimatio.Domain.Entities;
+
+namespace Decimatio.Infraestructure.Repositories
 {
     public class EventoRepository : IEventoRepository
     {
@@ -11,7 +13,13 @@
 
         public async Task<IEnumerable<Evento>> GetAllEventos()
         {
-            var result = await _connection.GetListAsync<Evento>("GET_EVENTOS", Querys.GET_EVENTOS);
+            var result = await _connection.GetListAsync<Evento>("GET_EVENTOS", Queries.GET_EVENTOS);
+            return result;
+        }
+
+        public async Task<Evento> GetById(int idEvento)
+        {
+            var result = await _connection.FirstOrDefaultEventoWithObjectAsync<Evento>("GET_EVENTO_ID", Queries.GET_EVENTO_ID, idEvento);
             return result;
         }
     }

@@ -22,14 +22,14 @@ namespace Decimatio.Infraestructure.Repositories {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Querys {
+    internal class Queries {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Querys() {
+        internal Queries() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Decimatio.Infraestructure.Repositories.Querys", typeof(Querys).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Decimatio.Infraestructure.Repositories.Queries", typeof(Queries).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -66,6 +66,28 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string DELETE_MEDIO_PAGO {
             get {
                 return ResourceManager.GetString("DELETE_MEDIO_PAGO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT 
+        ///	   E.IdEvento
+        ///      ,E.IdLugar
+        ///      ,E.NombreEvento
+        ///      ,E.Direccion
+        ///      ,E.Fecha
+        ///	  ,E.Flyer
+        ///      ,E.Activo
+        ///	  ,L.NombreLugar
+        ///	  ,L.Ubicacion
+        ///	  ,L.Numeracion
+        ///  FROM [Decimatio].[dbo].[Evento] E
+        ///	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
+        ///  WHERE IdEvento = @IdEvento.
+        /// </summary>
+        internal static string GET_EVENTO_ID {
+            get {
+                return ResourceManager.GetString("GET_EVENTO_ID", resourceCulture);
             }
         }
         
@@ -130,12 +152,33 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT [IdSector]
-        ///      ,[IdLugar]
-        ///      ,[NombreSector]
-        ///      ,[Capacidad]
-        ///      ,[Activo]
-        ///  FROM [Decimatio].[dbo].[Sector].
+        ///   Busca una cadena traducida similar a SELECT S.[IdSector]
+        ///      ,S.IdEvento
+        ///      ,S.[NombreSector]
+        ///	  ,S.[CapacidadDisponible]
+        ///	  ,S.[CapacidadActual]
+        ///      ,S.[CapacidadTotal]
+        ///	  ,S.Precio
+        ///      ,S.[Activo]
+        ///  FROM [Decimatio].[dbo].[Sector] S
+        ///  WHERE S.IdSector = @IdSector.
+        /// </summary>
+        internal static string GET_SECTOR_ID {
+            get {
+                return ResourceManager.GetString("GET_SECTOR_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT S.[IdSector]
+        ///      ,S.IdEvento
+        ///      ,S.[NombreSector]
+        ///      ,S.[CapacidadDisponible]
+        ///	  ,S.[CapacidadActual]
+        ///      ,S.[CapacidadTotal]
+        ///	  ,S.Precio
+        ///      ,S.[Activo]
+        ///  FROM [Decimatio].[dbo].[Sector] S.
         /// </summary>
         internal static string GET_SECTORES {
             get {
@@ -145,13 +188,15 @@ namespace Decimatio.Infraestructure.Repositories {
         
         /// <summary>
         ///   Busca una cadena traducida similar a SELECT S.[IdSector]
-        ///      ,S.[IdLugar]
+        ///      ,S.[IdEvento]
         ///      ,S.[NombreSector]
-        ///      ,S.[Capacidad]
+        ///      ,S.[CapacidadDisponible]
+        ///	  ,S.[CapacidadActual]
+        ///      ,S.[CapacidadTotal]
+        ///      ,S.Precio
         ///      ,S.[Activo]
         ///  FROM [Decimatio].[dbo].[Sector] S
-        ///	JOIN Lugar L ON L.IdLugar = S.IdLugar
-        ///	JOIN Evento E ON E.IdLugar = L.IdLugar
+        ///	JOIN Evento E ON E.IdEvento = S.IdEvento
         ///  WHERE E.IdEvento = @IdEvento.
         /// </summary>
         internal static string GET_SECTORES_BY_EVENTO {

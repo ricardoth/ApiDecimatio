@@ -12,18 +12,18 @@
 
         public async Task<IEnumerable<MedioPago>> GetMedioPagos()
         {
-            var result = await _connection.GetListAsync<MedioPago>("GET_MEDIOS_PAGOS", Querys.GET_MEDIOS_PAGOS);
+            var result = await _connection.GetListAsync<MedioPago>("GET_MEDIOS_PAGOS", Queries.GET_MEDIOS_PAGOS);
             return result;
         }
 
         public async Task AddMedioPago(MedioPago medioPago)
         {
-            await _connection.ExecuteScalar("INSERT_MEDIO_PAGO", Querys.INSERT_MEDIO_PAGO, medioPago);
+            await _connection.ExecuteScalar("INSERT_MEDIO_PAGO", Queries.INSERT_MEDIO_PAGO, medioPago);
         }
 
         public async Task<MedioPago> GetMedioPago(int id)
         {
-            var result = await _connection.FirstOrDefaultAsync<MedioPago>("GET_MEDIO_PAGO", Querys.GET_MEDIO_PAGO,  new { IdMedioPago = id });
+            var result = await _connection.FirstOrDefaultAsync<MedioPago>("GET_MEDIO_PAGO", Queries.GET_MEDIO_PAGO,  new { IdMedioPago = id });
             return result;
         }
 

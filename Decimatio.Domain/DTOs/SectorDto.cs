@@ -4,6 +4,6 @@
     {
         public long IdSector { get; set; }
         public string NombreSector { get; set; }
-        public LugarDto Lugar { get; set; }
+        public EventoDto Evento { get; set; }
     }
 }

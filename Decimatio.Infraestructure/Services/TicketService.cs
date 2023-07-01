@@ -16,6 +16,7 @@
             _blobFilesService = blobFilesService;
         }
 
+        #region Agregar Ticket
         public async Task<string> AddTicket(Ticket ticket)
         {
             try
@@ -62,26 +63,8 @@
             }
         }
 
-        private string GeneratoQRCodeBase64(TicketInfoDto ticket)
-        {
-            using MemoryStream memoryStream = new();
-            Bitmap qrCodeImage = _qrGeneratorService.GenerateQRCodeTicket(ticket);
-            qrCodeImage.Save(memoryStream, ImageFormat.Png);
-            byte[] imageBytes = memoryStream.ToArray();
-            return Convert.ToBase64String(imageBytes);
-        }
 
-        private string GetTicketFileName(TicketBodyQRDto ticketDto)
-        {
-            return $"Ticket N° {ticketDto.IdTicket} | Rut: {ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}.pdf";
-        }
-
-        private async Task<string> SaveTicketImageToBlobStorage(string base64QRImage, TicketBodyQRDto ticketDto, string fileName)
-        {
-            var ticketResultImage = await EscribirPlantilla(base64QRImage, ticketDto);
-            await _blobFilesService.AddTicketQRBlobStorage(ticketResultImage, fileName);
-            return Convert.ToBase64String(ticketResultImage);
-        }
+       
 
         public async Task<TicketQR> AddTicketQR(TicketQR ticketQR)
         {
@@ -99,6 +82,39 @@
             }
         }
 
+
+        #endregion
+
+        #region Agregar Más de un Ticket
+        public async Task<string> AddTickets(IEnumerable<Ticket> tickets)
+        {
+            List<string> strList = new List<string>();
+            try
+            {
+                if (!tickets.Any())
+                    return null;
+
+
+                foreach (var ticket in tickets)
+                {
+                    var objTicket = await AddTicket(ticket);
+                    strList.Add(objTicket.ToString());
+                }
+
+                string ticketsPdf64 = await _qrGeneratorService.MergePdfFiles(strList);
+                return ticketsPdf64;
+            }
+            catch (Exception ex)
+            {
+
+                throw new InvalidOperationException($"Error al Crear el Ticket", ex);
+            }
+        }
+        #endregion
+
+
+
+        #region Creación QR y Generación del PDF
         public async Task<byte[]> EscribirPlantilla(string base64Image, TicketBodyQRDto ticket)
         {
             string currentDirectory = Directory.GetCurrentDirectory() + "\\Template";
@@ -116,7 +132,7 @@
             long montoTotalFormat = (long)ticket.MontoTotal;
             string pais = "Chile";
             string comuna = ticket.Evento.Lugar.Comuna.NombreComuna;
-          
+
 
             string htmlWithImage = htmlTemplate.Replace("{Base64Image}", base64Image)
                                     .Replace("{LogoImage}", logoBase64Image)
@@ -143,5 +159,27 @@
             return htmlPdf;
 
         }
+
+        private string GeneratoQRCodeBase64(TicketInfoDto ticket)
+        {
+            using MemoryStream memoryStream = new();
+            Bitmap qrCodeImage = _qrGeneratorService.GenerateQRCodeTicket(ticket);
+            qrCodeImage.Save(memoryStream, ImageFormat.Png);
+            byte[] imageBytes = memoryStream.ToArray();
+            return Convert.ToBase64String(imageBytes);
+        }
+
+        private string GetTicketFileName(TicketBodyQRDto ticketDto)
+        {
+            return $"Ticket N° {ticketDto.IdTicket} | Rut: {ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}.pdf";
+        }
+
+        private async Task<string> SaveTicketImageToBlobStorage(string base64QRImage, TicketBodyQRDto ticketDto, string fileName)
+        {
+            var ticketResultImage = await EscribirPlantilla(base64QRImage, ticketDto);
+            await _blobFilesService.AddTicketQRBlobStorage(ticketResultImage, fileName);
+            return Convert.ToBase64String(ticketResultImage);
+        }
+        #endregion
     }
 }

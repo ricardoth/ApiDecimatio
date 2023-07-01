@@ -30,5 +30,18 @@
             var item = await _ticketService.AddTicket(ticket);
             return Ok(item);
         }
+
+        [HttpPost("GenerarTickets")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GenerarTickets([FromBody]IEnumerable<TicketDto> ticketsDto)
+        {
+            var tickets = _mapper.Map<IEnumerable<Ticket>>(ticketsDto);
+            var result = await _ticketService.AddTickets(tickets);
+            if (result == null)
+                return BadRequest();
+
+            return Ok(result);
+        }
     }
 }

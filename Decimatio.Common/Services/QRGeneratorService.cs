@@ -45,5 +45,27 @@
             }
         }
 
+        public async Task<string> MergePdfFiles(List<string> strList)
+        {
+            try
+            {
+                var pdfList = new List<PdfDocument>();
+                foreach (var item in strList)
+                {
+                    byte[] pdfByte = Convert.FromBase64String(item);
+                    var pdf = new PdfDocument(new MemoryStream(pdfByte));
+                    pdfList.Add(pdf);
+                }
+                PdfDocument mergedPdf = PdfDocument.Merge(pdfList);
+                var outputStream = new MemoryStream();
+                mergedPdf.Stream.CopyTo(outputStream);
+                var ms = outputStream.ToArray();
+                return Convert.ToBase64String(ms);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al generar el PDF: {ex.Message}", ex);
+            }
+        }
     }
 }

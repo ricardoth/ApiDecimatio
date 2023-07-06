@@ -136,7 +136,7 @@
             }
         }
 
-        public async Task<Ticket> FirstOrDefaultTicketWithObjectAsync<T>(string queryName, string query, long tickedId)
+        public async Task<IEnumerable<Ticket>> GetListTicketWithObjectAsync<T>(string queryName, string query, long? tickedId)
         {
             var st = DateTime.Now;
             var w = Stopwatch.StartNew();
@@ -169,9 +169,7 @@
                     splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar,IdComuna"
                 )).Distinct().ToList();
 
-                var ticketResult = tickets.FirstOrDefault();
-
-                return ticketResult;
+                return tickets;
             }
             catch (Exception ex)
             {

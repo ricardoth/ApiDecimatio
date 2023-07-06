@@ -20,6 +20,7 @@
             services.AddScoped<ISectorService, SectorService>();
             services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<IQRGeneratorService, QRGeneratorService>();
+            services.AddScoped<IEmailService, EmailService>();  
             services.AddScoped<IBlobFilesService, BlobFilesService>();
             var blobConfig = configuration.GetSection(nameof(BlobContainerConfig)).Get<BlobContainerConfig>();
             services.AddSingleton(blobConfig);

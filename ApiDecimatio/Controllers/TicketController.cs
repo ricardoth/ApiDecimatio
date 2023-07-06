@@ -16,6 +16,18 @@
             _mapper = mapper;
         }
 
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Get()
+        {
+            var result = await _ticketService.GetAllTickets();
+            if (!result.Any())
+                return BadRequest();
+
+            return Ok(result);
+        }
+
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -43,5 +55,7 @@
 
             return Ok(result);
         }
+
+
     }
 }

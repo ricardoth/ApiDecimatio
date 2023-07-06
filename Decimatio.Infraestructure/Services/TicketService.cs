@@ -5,16 +5,35 @@
         private readonly ITicketRepository _ticketRepository;
         private readonly IQRGeneratorService _qrGeneratorService;
         private readonly IBlobFilesService _blobFilesService;
+        private readonly IEmailService _emailService;   
         private readonly IMapper _mapper;
 
         public TicketService(ITicketRepository ticketRepository, IQRGeneratorService qRGeneratorService, 
-            IBlobFilesService blobFilesService, IMapper mapper )
+            IBlobFilesService blobFilesService, IMapper mapper, IEmailService emailService)
         {
             _ticketRepository = ticketRepository;
             _qrGeneratorService = qRGeneratorService;
             _mapper = mapper;
             _blobFilesService = blobFilesService;
+            _emailService = emailService;
         }
+
+        #region Get All Tickets
+
+        public async Task<IEnumerable<Ticket>> GetAllTickets()
+        {
+            try
+            {
+                var result = await _ticketRepository.GetAllTicket();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ha ocurrido un error en TicketService {ex.Message}", ex);
+            }        
+        }
+        #endregion
+
 
         #region Agregar Ticket
         public async Task<string> AddTicket(Ticket ticket)

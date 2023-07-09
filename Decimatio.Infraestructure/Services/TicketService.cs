@@ -1,4 +1,8 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using Decimatio.Domain.CustomEntities;
+using Decimatio.Domain.QueryFilters;
+using Microsoft.Extensions.Options;
+
+namespace Decimatio.Infraestructure.Services
 {
     public class TicketService : ITicketService
     {
@@ -7,25 +11,36 @@
         private readonly IBlobFilesService _blobFilesService;
         private readonly IEmailService _emailService;   
         private readonly IMapper _mapper;
+        private readonly PaginationOptions _paginationOptions;
 
         public TicketService(ITicketRepository ticketRepository, IQRGeneratorService qRGeneratorService, 
-            IBlobFilesService blobFilesService, IMapper mapper, IEmailService emailService)
+            IBlobFilesService blobFilesService, IMapper mapper, IEmailService emailService,
+            IOptions<PaginationOptions> paginationOptions)
         {
             _ticketRepository = ticketRepository;
             _qrGeneratorService = qRGeneratorService;
             _mapper = mapper;
             _blobFilesService = blobFilesService;
             _emailService = emailService;
+            _paginationOptions = paginationOptions.Value;
         }
 
         #region Get All Tickets
 
-        public async Task<IEnumerable<Ticket>> GetAllTickets()
+        public async Task<PagedList<Ticket>> GetAllTickets(TicketQueryFilter filtros)
         {
+            filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
+            filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
             try
             {
-                var result = await _ticketRepository.GetAllTicket();
-                return result;
+
+                var tickets = await _ticketRepository.GetAllTicket();
+
+                if (filtros.IdTicket > 0)
+                    tickets = tickets.Where(x => x.IdTicket == filtros.IdTicket);
+
+                var pagedTickets = PagedList<Ticket>.Create(tickets, filtros.PageNumber, filtros.PageSize);
+                return pagedTickets;
             }
             catch (Exception ex)
             {

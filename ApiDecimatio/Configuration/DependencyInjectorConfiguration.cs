@@ -1,4 +1,6 @@
-﻿namespace Decimatio.WebApi.Configuration
+﻿using Decimatio.Domain.CustomEntities;
+
+namespace Decimatio.WebApi.Configuration
 {
     public static class DependencyInjectorConfiguration
     {
@@ -16,6 +18,7 @@
 
             #region Others Dependencies
             service.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            service.Configure<PaginationOptions>(configuration.GetSection("Pagination"));
 
             service.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);

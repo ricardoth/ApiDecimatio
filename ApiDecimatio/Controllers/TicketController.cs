@@ -1,4 +1,8 @@
-﻿namespace Decimatio.WebApi.Controllers
+﻿using Decimatio.Domain.CustomEntities;
+using Decimatio.Domain.QueryFilters;
+using Newtonsoft.Json;
+
+namespace Decimatio.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,13 +23,31 @@
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetTickets([FromQuery] TicketQueryFilter filtros)
         {
-            var result = await _ticketService.GetAllTickets();
-            if (!result.Any())
+            var tickets = await _ticketService.GetAllTickets(filtros);
+            if (!tickets.Any())
                 return BadRequest();
 
-            return Ok(result);
+            var metaData = new MetaData
+            {
+                TotalCount = tickets.TotalCount,
+                PageSize = tickets.PageSize,
+                CurrentPage = tickets.CurrentPage,
+                TotalPages = tickets.TotalPages,
+                HasNextPage = tickets.HasNextPage,
+                HasPreviousPage = tickets.HasPreviousPage,
+                NextPageUrl = "",// _uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString(),
+                PreviousPageUrl = "",//_uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString()
+            };
+
+            var response = new ApiResponse<IEnumerable<Ticket>>(tickets)
+            {
+                Meta = metaData
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
+            return Ok(response);
         }
 
         [HttpPost]

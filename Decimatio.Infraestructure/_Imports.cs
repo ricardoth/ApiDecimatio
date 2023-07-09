@@ -18,3 +18,4 @@ global using System.Diagnostics;
 global using Decimatio.Common.Options;
 global using Microsoft.Extensions.Hosting;
 global using System.Globalization;
+global using Decimatio.Domain.QueryFilters;

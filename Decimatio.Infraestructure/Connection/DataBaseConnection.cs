@@ -136,6 +136,50 @@
             }
         }
 
+        public async Task<TicketQR> GetTicketQRAsync<T>(string queryName, string query, long? tickedId)
+        {
+            var st = DateTime.Now;
+            var w = Stopwatch.StartNew();
+            var success = true;
+
+            try
+            {
+                var ticketDictionary = new Dictionary<long, TicketQR>();
+                using var conn = new SqlConnection(_connection.ConnectionString);
+
+                var tickets = (await conn.QueryAsync<TicketQR, Ticket, TicketQR>(
+                    query,
+                    (ticketQR, ticket) =>
+                    {
+                        if (!ticketDictionary.TryGetValue(ticketQR.IdTicketQR, out var ticketEntry))
+                        {
+                            ticketEntry = ticketQR;
+                            ticketDictionary.Add(ticketEntry.IdTicketQR, ticketEntry);
+
+                        }
+
+                        ticketEntry.Ticket = ticket;
+                        return ticketEntry;
+                    },
+                    new { IdTicket = tickedId },
+                    splitOn: "IdTicket"
+                )).Distinct().ToList();
+
+                var ticketResult = tickets.FirstOrDefault();
+
+                return ticketResult;
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                throw ex;
+            }
+            finally
+            {
+                w.Stop();
+            }
+        }
+
         public async Task<IEnumerable<Ticket>> GetListTicketWithObjectAsync<T>(string queryName, string query, long? tickedId)
         {
             var st = DateTime.Now;

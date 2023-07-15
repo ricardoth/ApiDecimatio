@@ -19,3 +19,5 @@ global using Decimatio.Common.Options;
 global using Microsoft.Extensions.Hosting;
 global using System.Globalization;
 global using Decimatio.Domain.QueryFilters;
+global using Decimatio.Domain.CustomEntities;
+global using Microsoft.Extensions.Options;

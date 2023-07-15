@@ -121,6 +121,17 @@
     <value>DELETE FROM dbo.MedioPago WHERE IdMedioPago = @IdMedioPago</value>
     <comment>Eliminar MedioPago</comment>
   </data>
+  <data name="DELETE_TICKET" xml:space="preserve">
+    <value>UPDATE dbo.Ticket
+SET Activo = 0,
+FechaModified = GETDATE()
+WHERE IdTicket = @IdTicket
+
+UPDATE dbo.TicketQR
+SET Activo = 0
+WHERE IdTicket = @IdTicket</value>
+    <comment>Desactiva el Ticket con su QR</comment>
+  </data>
   <data name="GET_EVENTOS" xml:space="preserve">
     <value>SELECT [IdEvento]
       ,[IdLugar]
@@ -234,6 +245,13 @@ LEFT JOIN TicketQR TQR ON TQR.IdTicket = T.IdTicket
 INNER JOIN Comuna c on c.IdComuna = L.IdComuna
 INNER JOIN Region r on r.IdRegion = c.IdRegion</value>
     <comment>Get All Tickets</comment>
+  </data>
+  <data name="GET_TICKET_ID" xml:space="preserve">
+    <value>SELECT TQ.* , T.*
+FROM dbo.Ticket T
+	LEFT JOIN dbo.TicketQR TQ ON T.IdTicket =  TQ.IdTicket
+WHERE T.IdTicket = @IdTicket</value>
+    <comment>Get Ticket QR</comment>
   </data>
   <data name="GET_USUARIOS" xml:space="preserve">
     <value>SELECT [IdUsuario]

@@ -70,6 +70,22 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE dbo.Ticket
+        ///SET Activo = 0,
+        ///FechaModified = GETDATE()
+        ///WHERE IdTicket = @IdTicket
+        ///
+        ///UPDATE dbo.TicketQR
+        ///SET Activo = 0
+        ///WHERE IdTicket = @IdTicket.
+        /// </summary>
+        internal static string DELETE_TICKET {
+            get {
+                return ResourceManager.GetString("DELETE_TICKET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT 
         ///	   E.IdEvento
         ///      ,E.IdLugar
@@ -202,6 +218,18 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string GET_SECTORES_BY_EVENTO {
             get {
                 return ResourceManager.GetString("GET_SECTORES_BY_EVENTO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT TQ.* , T.*
+        ///FROM dbo.Ticket T
+        ///	LEFT JOIN dbo.TicketQR TQ ON T.IdTicket =  TQ.IdTicket
+        ///WHERE T.IdTicket = @IdTicket.
+        /// </summary>
+        internal static string GET_TICKET_ID {
+            get {
+                return ResourceManager.GetString("GET_TICKET_ID", resourceCulture);
             }
         }
         

@@ -6,5 +6,9 @@
         Task<int> AddTicketQR(TicketQR ticketQR);
         Task<Ticket> GetInfoTicket(long idTicket);
         Task<IEnumerable<Ticket>> GetAllTicket();
+        Task<TicketQR> GetTicketQR(long idTicket);
+
+        Task<bool> DeleteDownTicket(long idTicket);
+
     }
 }

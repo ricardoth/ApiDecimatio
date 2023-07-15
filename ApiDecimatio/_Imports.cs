@@ -21,3 +21,7 @@ global using System.Text;
 global using System.Text.Encodings.Web;
 global using ZXing;
 global using ZXing.Common;
+
+global using Decimatio.Domain.CustomEntities;
+global using Decimatio.Domain.QueryFilters;
+global using Newtonsoft.Json;

@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Repositories
+﻿using Decimatio.Domain.Entities;
+
+namespace Decimatio.Infraestructure.Repositories
 {
     public class TicketRepository : ITicketRepository
     {
@@ -31,10 +33,23 @@
 
         public async Task<IEnumerable<Ticket>> GetAllTicket()
         {
-            var result = await _connection.GetListTicketWithObjectAsync<Ticket>("GET_INFO_TICKET", Queries.GET_TICKETS, null);
+            var result = await _connection.GetListTicketWithObjectAsync<Ticket>("GET_TICKETS", Queries.GET_TICKETS, null);
             if (!result.Any()) throw new Exception("No se encuentran tickets ");
 
             return result;
+        }
+
+        public async Task<TicketQR> GetTicketQR(long idTicket)
+        {
+            var result = await _connection.GetTicketQRAsync<TicketQR>("GET_TICKET_ID", Queries.GET_TICKET_ID, idTicket);
+            return result ?? throw new Exception("No se encuentran tickets ");
+        }
+
+        public async Task<bool> DeleteDownTicket(long idTicket)
+        {
+            var result = await _connection.ExecuteAsync("DELETE_TICKET", Queries.DELETE_TICKET, new { IdTicket = idTicket });
+            return result == 1 ? true : false;
+        
         }
     }
 }

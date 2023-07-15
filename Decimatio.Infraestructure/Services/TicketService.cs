@@ -1,8 +1,4 @@
-﻿using Decimatio.Domain.CustomEntities;
-using Decimatio.Domain.QueryFilters;
-using Microsoft.Extensions.Options;
-
-namespace Decimatio.Infraestructure.Services
+﻿namespace Decimatio.Infraestructure.Services
 {
     public class TicketService : ITicketService
     {
@@ -25,7 +21,7 @@ namespace Decimatio.Infraestructure.Services
             _paginationOptions = paginationOptions.Value;
         }
 
-        #region Get All Tickets
+        #region Get All Tickets y QR
 
         public async Task<PagedList<Ticket>> GetAllTickets(TicketQueryFilter filtros)
         {
@@ -39,6 +35,15 @@ namespace Decimatio.Infraestructure.Services
                 if (filtros.IdTicket > 0)
                     tickets = tickets.Where(x => x.IdTicket == filtros.IdTicket);
 
+                if (filtros.IdUsuario > 0)
+                    tickets = tickets.Where(x => x.IdUsuario == filtros.IdUsuario);
+
+                if (filtros.IdEvento > 0)
+                    tickets = tickets.Where(x => x.IdEvento == filtros.IdEvento);
+
+                if (filtros.IdSector > 0)
+                    tickets = tickets.Where(x => x.IdSector == filtros.IdSector);
+
                 var pagedTickets = PagedList<Ticket>.Create(tickets, filtros.PageNumber, filtros.PageSize);
                 return pagedTickets;
             }
@@ -46,6 +51,19 @@ namespace Decimatio.Infraestructure.Services
             {
                 throw new Exception($"Ha ocurrido un error en TicketService {ex.Message}", ex);
             }        
+        }
+
+        public async Task<TicketQR> GetTicketQR(int idTicket)
+        {
+            try
+            {
+                var ticket = await _ticketRepository.GetTicketQR(idTicket);
+                return ticket; 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ha ocurrido un error en TicketService {ex.Message}", ex);
+            }
         }
         #endregion
 
@@ -98,8 +116,6 @@ namespace Decimatio.Infraestructure.Services
         }
 
 
-       
-
         public async Task<TicketQR> AddTicketQR(TicketQR ticketQR)
         {
             if (ticketQR == null)
@@ -116,7 +132,18 @@ namespace Decimatio.Infraestructure.Services
             }
         }
 
-
+        public async Task<bool> DeleteDownTicket(long idTicket)
+        {
+            try
+            {
+                var result = await _ticketRepository.DeleteDownTicket(idTicket);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error al eliminar el Ticket, Ha ocurrido un error en Services", ex);
+            }
+        }
         #endregion
 
         #region Agregar Más de un Ticket
@@ -145,7 +172,6 @@ namespace Decimatio.Infraestructure.Services
             }
         }
         #endregion
-
 
 
         #region Creación QR y Generación del PDF
@@ -214,6 +240,8 @@ namespace Decimatio.Infraestructure.Services
             await _blobFilesService.AddTicketQRBlobStorage(ticketResultImage, fileName);
             return Convert.ToBase64String(ticketResultImage);
         }
+
+        
         #endregion
     }
 }

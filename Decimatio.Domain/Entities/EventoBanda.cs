@@ -7,7 +7,7 @@
         public long IdBanda { get; set; }
         public DateTime FechaCreacion { get; set; }
 
-        public Banda Banda { get; set; }
-        public Evento Evento { get; set; }
+        public Banda? Banda { get; set; }
+        public Evento? Evento { get; set; }
     }
 }

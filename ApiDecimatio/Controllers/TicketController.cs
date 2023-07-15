@@ -1,8 +1,4 @@
-﻿using Decimatio.Domain.CustomEntities;
-using Decimatio.Domain.QueryFilters;
-using Newtonsoft.Json;
-
-namespace Decimatio.WebApi.Controllers
+﻿namespace Decimatio.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -50,6 +46,19 @@ namespace Decimatio.WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("GetTicketQR")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetTicketQR([FromQuery] int idTicket)
+        {
+            var ticket = await _ticketService.GetTicketQR(idTicket);
+            if (ticket == null)
+                return BadRequest();
+
+            var response = new ApiResponse<TicketQR>(ticket);
+            return Ok(response);
+        }
+
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -78,6 +87,31 @@ namespace Decimatio.WebApi.Controllers
             return Ok(result);
         }
 
+        [HttpDelete("{idTicket}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> DeleteTicket(int idTicket)
+        {
+            try
+            {
+                if (idTicket == 0)
+                    return NoContent();
+                
+                var result = await _ticketService.DeleteDownTicket(idTicket);
+
+                if (!result)
+                    return BadRequest();
+
+                var response = new ApiResponse<bool>(result);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
 
     }
 }

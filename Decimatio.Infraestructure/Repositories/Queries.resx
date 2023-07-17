@@ -327,11 +327,13 @@ WHERE T.IdTicket = @IdTicket</value>
     <value>INSERT INTO [dbo].[TicketQR]
            ([IdTicket]
            ,[Contenido]
+           ,[NombreTicketComprobante]
            ,[Activo]
            ,[FechaCreacion])
      VALUES
            (@IdTicket
            ,@Contenido
+           ,@NombreTicketComprobante
            ,1
            ,GETDATE())</value>
     <comment>Insert Ticket QR</comment>

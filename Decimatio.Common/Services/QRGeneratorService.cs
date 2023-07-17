@@ -31,11 +31,12 @@
 
         public async Task<byte[]> RenderHtmlToPdfAsync(string htmlContent)
         {
+            using var memoryStram = new MemoryStream();
             try
             {
                 var renderer = new HtmlToPdf();
                 var pdf = renderer.RenderHtmlAsPdf(htmlContent);
-                using var memoryStram = new MemoryStream();
+               
                 pdf.Stream.CopyTo(memoryStram);
                 return memoryStram.ToArray();
             }
@@ -43,10 +44,12 @@
             {
                 throw new Exception($"Error al generar el PDF: {ex.Message}", ex);
             }
+            finally { memoryStram.Close(); }
         }
 
         public async Task<string> MergePdfFiles(List<string> strList)
         {
+            var outputStream = new MemoryStream();
             try
             {
                 var pdfList = new List<PdfDocument>();
@@ -57,7 +60,7 @@
                     pdfList.Add(pdf);
                 }
                 PdfDocument mergedPdf = PdfDocument.Merge(pdfList);
-                var outputStream = new MemoryStream();
+
                 mergedPdf.Stream.CopyTo(outputStream);
                 var ms = outputStream.ToArray();
                 return Convert.ToBase64String(ms);
@@ -66,6 +69,7 @@
             {
                 throw new Exception($"Error al generar el PDF: {ex.Message}", ex);
             }
+            finally { outputStream.Close(); }
         }
     }
 }

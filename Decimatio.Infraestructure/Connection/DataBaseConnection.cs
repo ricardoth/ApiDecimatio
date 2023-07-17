@@ -22,13 +22,17 @@
                 {
                     return await conn.ExecuteAsync(query, entity);
                 }
+
             }
             catch (Exception ex)
             {
                 isSuccess = false;
                 throw ex;
             }
-            finally { stopwatch.Stop(); }
+            finally 
+            {
+                stopwatch.Stop(); 
+            }
         }
 
         

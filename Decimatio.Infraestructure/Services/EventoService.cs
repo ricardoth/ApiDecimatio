@@ -4,12 +4,13 @@
     {
 		private readonly IEventoRepository _eventoRepository;
         private readonly IBlobFilesService _blobFilesService;
+        private readonly BlobContainerConfig _containerConfig;
 
-        public EventoService(IEventoRepository eventoRepository, IBlobFilesService blobFilesService)
+        public EventoService(IEventoRepository eventoRepository, IBlobFilesService blobFilesService, BlobContainerConfig containerConfig)
         {
             _eventoRepository = eventoRepository;
             _blobFilesService = blobFilesService;
-
+            _containerConfig = containerConfig;
         }
 
         public async Task<IEnumerable<Evento>> GetAllEventos()
@@ -21,8 +22,7 @@
 			}
 			catch (Exception ex)
 			{
-
-				throw;
+				throw new Exception($"Ha ocurrido un error en EventoService: {ex.Message}", ex);
 			}
         }
 
@@ -34,7 +34,7 @@
 				if (result == null)
 					throw new Exception("Ha ocurrido un error al obtener el evento desde el Repositorio");
 
-				var flyer = await _blobFilesService.GetImageFromBlobStorage(result.Flyer);
+				var flyer = await _blobFilesService.GetImageFromBlobStorage(result.Flyer, _containerConfig.FolderFlyerName);
 				result.Flyer = flyer;	
 
 				return result;
@@ -42,8 +42,7 @@
 			}
 			catch (Exception ex)
 			{
-
-				throw;
+				throw new Exception($"Ha ocurrido un error en EventoService: {ex.Message}", ex);
 			}
         }
     }

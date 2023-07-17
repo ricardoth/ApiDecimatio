@@ -346,11 +346,13 @@ namespace Decimatio.Infraestructure.Repositories {
         ///   Busca una cadena traducida similar a INSERT INTO [dbo].[TicketQR]
         ///           ([IdTicket]
         ///           ,[Contenido]
+        ///           ,[NombreTicketComprobante]
         ///           ,[Activo]
         ///           ,[FechaCreacion])
         ///     VALUES
         ///           (@IdTicket
         ///           ,@Contenido
+        ///           ,@NombreTicketComprobante
         ///           ,1
         ///           ,GETDATE()).
         /// </summary>

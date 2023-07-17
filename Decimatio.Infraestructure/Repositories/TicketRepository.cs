@@ -48,7 +48,7 @@ namespace Decimatio.Infraestructure.Repositories
         public async Task<bool> DeleteDownTicket(long idTicket)
         {
             var result = await _connection.ExecuteAsync("DELETE_TICKET", Queries.DELETE_TICKET, new { IdTicket = idTicket });
-            return result == 1 ? true : false;
+            return result > 0;
         
         }
     }

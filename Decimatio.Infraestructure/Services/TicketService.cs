@@ -102,9 +102,10 @@
                     Ticket = ticket,
                 };
 
-                await AddTicketQR(ticketQR);
-
                 string fileName = GetTicketFileName(ticketDto);
+
+                ticketQR.NombreTicketComprobante = fileName;
+                await AddTicketQR(ticketQR);
                 string base64HtmlTicket = await SaveTicketImageToBlobStorage(base64QRImage, ticketDto, fileName);
 
                 return base64HtmlTicket;
@@ -223,10 +224,22 @@
         private string GeneratoQRCodeBase64(TicketInfoDto ticket)
         {
             using MemoryStream memoryStream = new();
-            Bitmap qrCodeImage = _qrGeneratorService.GenerateQRCodeTicket(ticket);
-            qrCodeImage.Save(memoryStream, ImageFormat.Png);
-            byte[] imageBytes = memoryStream.ToArray();
-            return Convert.ToBase64String(imageBytes);
+            try
+            {
+                Bitmap qrCodeImage = _qrGeneratorService.GenerateQRCodeTicket(ticket);
+                qrCodeImage.Save(memoryStream, ImageFormat.Png);
+                byte[] imageBytes = memoryStream.ToArray();
+                return Convert.ToBase64String(imageBytes);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ha ocurrido un error al generar el TicketQR");
+            }
+            finally
+            {
+                memoryStream.Close();
+            }
+           
         }
 
         private string GetTicketFileName(TicketBodyQRDto ticketDto)

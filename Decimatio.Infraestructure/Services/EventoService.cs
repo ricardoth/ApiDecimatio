@@ -34,11 +34,11 @@
 				if (result == null)
 					throw new Exception("Ha ocurrido un error al obtener el evento desde el Repositorio");
 
-				var flyer = await _blobFilesService.GetImageFromBlobStorage(result.Flyer, _containerConfig.FolderFlyerName);
-				result.Flyer = flyer;	
+				string imageNamePath = _containerConfig.FolderFlyerName + result.Flyer;
 
+                var flyer = await _blobFilesService.GetImageFromBlobStorage(imageNamePath);
+				result.Flyer = flyer;	
 				return result;
-				
 			}
 			catch (Exception ex)
 			{

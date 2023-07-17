@@ -21,11 +21,11 @@ namespace Decimatio.Common.Services
 
             try
             {
-                string timeStamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+                //string timeStamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
                 var blobServiceClient = new BlobServiceClient(_containerConfig.ConnectionString);
                 var blobContainerClient = blobServiceClient.GetBlobContainerClient(_containerConfig.ContainerName);
-                string filePathName = $"{_containerConfig.FolderName}{timeStamp}_{fileName}";
-                var blobClient = blobContainerClient.GetBlobClient(filePathName);
+                //string filePathName = $"{_containerConfig.FolderName}{timeStamp}_{fileName}";
+                var blobClient = blobContainerClient.GetBlobClient(fileName);
                 var result = await blobClient.UploadAsync(memoryStream, overwrite: true);
             }
             catch (Exception ex)
@@ -38,36 +38,23 @@ namespace Decimatio.Common.Services
             }
         }
 
-        public async Task<string> GetImageFromBlobStorage(string imageName, string folderName)
+        public async Task<string> GetImageFromBlobStorage(string imageNamePath)
         {
             MemoryStream memoryStream = new MemoryStream();
+            var containerClient = _blobServiceClient.GetBlobContainerClient(_containerConfig.ContainerName);
+            var blobClient = containerClient.GetBlobClient(imageNamePath);
 
-            try
-            {
-                var containerClient = _blobServiceClient.GetBlobContainerClient(_containerConfig.ContainerName);
-                var filePathName = $"{folderName}{imageName}";
-                var blobClient = containerClient.GetBlobClient(filePathName);
+            if (!await blobClient.ExistsAsync())
+                throw new Exception($"La imagen no existe en el contenedor {imageNamePath}");
 
-                if (!await blobClient.ExistsAsync())
-                    throw new Exception($"La imagen no existe en el contenedor {imageName}");
+            BlobDownloadInfo downloadInfo = await blobClient.DownloadAsync();
 
-                BlobDownloadInfo downloadInfo = await blobClient.DownloadAsync();
+            await downloadInfo.Content.CopyToAsync(memoryStream);
 
-                await downloadInfo.Content.CopyToAsync(memoryStream);
-
-                byte[] imageBytes = memoryStream.ToArray();
-                string base64String = Convert.ToBase64String(imageBytes);
-                return base64String;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("No se pudo obtener la imagen desde Azure Blob Storage", ex);
-            }
-            finally
-            {
-                memoryStream.Close();
-            }
-
+            byte[] imageBytes = memoryStream.ToArray();
+            string base64String = Convert.ToBase64String(imageBytes);
+            memoryStream.Close();
+            return base64String;
         }
         
     }

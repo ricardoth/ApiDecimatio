@@ -59,6 +59,24 @@
             return Ok(response);
         }
 
+        [HttpGet("GetTicketVoucherPDF")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetTicketVoucherPDF([FromQuery] int idTicket)
+        {
+            if (idTicket == 0)
+                return NotFound();
+
+            var ticket = await _ticketService.GetTicketVoucherPDF(idTicket);
+            if (ticket == null)
+                return BadRequest();
+
+            var response = new ApiResponse<TicketQR>(ticket);
+            return Ok(response);
+
+        }
+
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -93,24 +111,16 @@
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> DeleteTicket(int idTicket)
         {
-            try
-            {
-                if (idTicket == 0)
-                    return NoContent();
+            if (idTicket == 0)
+                return NoContent();
                 
-                var result = await _ticketService.DeleteDownTicket(idTicket);
+            var result = await _ticketService.DeleteDownTicket(idTicket);
 
-                if (!result)
-                    return BadRequest();
+            if (!result)
+                return BadRequest();
 
-                var response = new ApiResponse<bool>(result);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
         }
 
     }

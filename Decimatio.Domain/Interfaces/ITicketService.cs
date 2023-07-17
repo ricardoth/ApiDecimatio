@@ -6,6 +6,7 @@
         Task<string> AddTickets(IEnumerable<Ticket> tickets);
         Task<PagedList<Ticket>> GetAllTickets(TicketQueryFilter filtros);
         Task<TicketQR> GetTicketQR(int idTicket);
+        Task<TicketQR> GetTicketVoucherPDF(int idTicket);
         Task<bool> DeleteDownTicket(long idTicket);
     }
 }

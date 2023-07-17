@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using Google.Protobuf.WellKnownTypes;
+
+namespace Decimatio.Infraestructure.Services
 {
     public class TicketService : ITicketService
     {
@@ -8,10 +10,11 @@
         private readonly IEmailService _emailService;   
         private readonly IMapper _mapper;
         private readonly PaginationOptions _paginationOptions;
+        private readonly BlobContainerConfig _containerConfig;
 
         public TicketService(ITicketRepository ticketRepository, IQRGeneratorService qRGeneratorService, 
             IBlobFilesService blobFilesService, IMapper mapper, IEmailService emailService,
-            IOptions<PaginationOptions> paginationOptions)
+            IOptions<PaginationOptions> paginationOptions, BlobContainerConfig containerConfig)
         {
             _ticketRepository = ticketRepository;
             _qrGeneratorService = qRGeneratorService;
@@ -19,6 +22,7 @@
             _blobFilesService = blobFilesService;
             _emailService = emailService;
             _paginationOptions = paginationOptions.Value;
+            _containerConfig = containerConfig;
         }
 
         #region Get All Tickets y QR
@@ -59,6 +63,27 @@
             {
                 var ticket = await _ticketRepository.GetTicketQR(idTicket);
                 return ticket; 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ha ocurrido un error en TicketService {ex.Message}", ex);
+            }
+        }
+
+        public async Task<TicketQR> GetTicketVoucherPDF(int idTicket)
+        {
+            try
+            {
+                var ticket = await _ticketRepository.GetInfoTicket(idTicket);
+                var ticketDto = _mapper.Map<TicketBodyQRDto>(ticket);
+
+                string fileName = GetTicketFileName(ticketDto);
+                var ticketQR = await GetTicketQR(idTicket);
+
+                var comprobante = await _blobFilesService.GetImageFromBlobStorage(fileName);
+                ticketQR.NombreTicketComprobante = comprobante;
+
+                return ticketQR;
             }
             catch (Exception ex)
             {
@@ -244,7 +269,10 @@
 
         private string GetTicketFileName(TicketBodyQRDto ticketDto)
         {
-            return $"Ticket N° {ticketDto.IdTicket} | Rut: {ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}.pdf";
+            //string timeStamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            string fileName = $"Ticket N° {ticketDto.IdTicket} | Rut: {ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}.pdf";
+            string filePathName = $"{_containerConfig.FolderName}{fileName}";
+            return filePathName;
         }
 
         private async Task<string> SaveTicketImageToBlobStorage(string base64QRImage, TicketBodyQRDto ticketDto, string fileName)

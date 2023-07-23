@@ -23,6 +23,20 @@
             }
         }
 
+        public async Task<IEnumerable<Usuario>> GetAllUsersFilter(string filtro)
+        {
+            try
+            {
+                var result = await _usuarioRepository.GetAllUsersFilter(filtro);
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<Usuario> GetById(int idUsuario)
         {
             try

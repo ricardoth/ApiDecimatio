@@ -123,12 +123,12 @@
   </data>
   <data name="DELETE_TICKET" xml:space="preserve">
     <value>UPDATE dbo.Ticket
-SET Activo = 0,
+SET Activo = @Activo,
 FechaModified = GETDATE()
 WHERE IdTicket = @IdTicket
 
 UPDATE dbo.TicketQR
-SET Activo = 0
+SET Activo = @Activo
 WHERE IdTicket = @IdTicket</value>
     <comment>Desactiva el Ticket con su QR</comment>
   </data>
@@ -270,6 +270,28 @@ WHERE T.IdTicket = @IdTicket</value>
   FROM [Decimatio].[dbo].[Usuario] U
 	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario</value>
     <comment>Get All Users</comment>
+  </data>
+  <data name="GET_USUARIOS_FILTRO" xml:space="preserve">
+    <value>SELECT [IdUsuario]
+      ,U.[IdTipoUsuario]
+	  ,NombreTipoUsuario
+      ,[Rut]
+      ,[DV]
+      ,[Nombres]
+      ,[ApellidoP]
+      ,[ApellidoM]
+      ,[Direccion]
+      ,[Telefono]
+      ,[Correo]
+      ,U.[Activo]
+      ,U.[FechaCreacion]
+  FROM [Decimatio].[dbo].[Usuario] U
+	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario
+  WHERE Nombres LIKE '%'+@Filtro+'%'
+	OR ApellidoP LIKE '%'+ @Filtro+'%'
+	OR ApellidoM LIKE '%'+ @Filtro+'%'
+	OR CAST(Rut AS VARCHAR) LIKE '%'+ @Filtro+'%'</value>
+    <comment>Get usuarios por filtro nombre, rut y otros</comment>
   </data>
   <data name="GET_USUARIO_ID" xml:space="preserve">
     <value>SELECT [IdUsuario]

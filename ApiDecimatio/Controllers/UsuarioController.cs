@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace Decimatio.WebApi.Controllers
+﻿namespace Decimatio.WebApi.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -32,13 +30,27 @@ namespace Decimatio.WebApi.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Get(int id)
-        { 
+        {
             var result = await _usuarioService.GetById(id);
             if (result == null)
                 return BadRequest();
 
             var response = new ApiResponse<Usuario>(result);
-            return Ok(response);    
+            return Ok(response);
+        }
+
+        [HttpGet("GetUsersFilter")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Get([FromQuery]string? filtro)
+        {
+            var result = await _usuarioService.GetAllUsersFilter(filtro);
+            //if (!result.Any()) return BadRequest();
+
+            var response = new ApiResponse<IEnumerable<Usuario>>(result);
+            return Ok(response);
+
         }
     }
 }

@@ -8,7 +8,7 @@
         Task<IEnumerable<Ticket>> GetAllTicket();
         Task<TicketQR> GetTicketQR(long idTicket);
 
-        Task<bool> DeleteDownTicket(long idTicket);
+        Task<bool> DeleteDownTicket(long idTicket, bool activo);
 
     }
 }

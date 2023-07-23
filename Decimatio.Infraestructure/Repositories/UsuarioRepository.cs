@@ -24,5 +24,17 @@
             var result = await _connection.FirstOrDefaultAsync<Usuario>("GET_USUARIO_ID", Queries.GET_USUARIO_ID, dynamicParam);
             return result;
         }
+
+        public async Task<IEnumerable<Usuario>> GetAllUsersFilter(string filtro)
+        {
+            var dictionary = new Dictionary<string, object>
+            {
+                { "@Filtro", filtro }
+            };
+
+            var dynamicParam = new DynamicParameters(dictionary);
+            var result = await _connection.GetListAsync<Usuario>("GET_USUARIOS_FILTRO", Queries.GET_USUARIOS_FILTRO, dynamicParam);
+            return result;
+        }
     }
 }

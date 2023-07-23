@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.Entities;
-
-namespace Decimatio.Infraestructure.Repositories
+﻿namespace Decimatio.Infraestructure.Repositories
 {
     public class TicketRepository : ITicketRepository
     {
@@ -45,9 +43,9 @@ namespace Decimatio.Infraestructure.Repositories
             return result ?? throw new Exception("No se encuentran tickets ");
         }
 
-        public async Task<bool> DeleteDownTicket(long idTicket)
+        public async Task<bool> DeleteDownTicket(long idTicket, bool activo)
         {
-            var result = await _connection.ExecuteAsync("DELETE_TICKET", Queries.DELETE_TICKET, new { IdTicket = idTicket });
+            var result = await _connection.ExecuteAsync("DELETE_TICKET", Queries.DELETE_TICKET, new { IdTicket = idTicket, Activo = activo });
             return result > 0;
         
         }

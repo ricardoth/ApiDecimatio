@@ -71,12 +71,12 @@ namespace Decimatio.Infraestructure.Repositories {
         
         /// <summary>
         ///   Busca una cadena traducida similar a UPDATE dbo.Ticket
-        ///SET Activo = 0,
+        ///SET Activo = @Activo,
         ///FechaModified = GETDATE()
         ///WHERE IdTicket = @IdTicket
         ///
         ///UPDATE dbo.TicketQR
-        ///SET Activo = 0
+        ///SET Activo = @Activo
         ///WHERE IdTicket = @IdTicket.
         /// </summary>
         internal static string DELETE_TICKET {
@@ -294,6 +294,33 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string GET_USUARIOS {
             get {
                 return ResourceManager.GetString("GET_USUARIOS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT [IdUsuario]
+        ///      ,U.[IdTipoUsuario]
+        ///	  ,NombreTipoUsuario
+        ///      ,[Rut]
+        ///      ,[DV]
+        ///      ,[Nombres]
+        ///      ,[ApellidoP]
+        ///      ,[ApellidoM]
+        ///      ,[Direccion]
+        ///      ,[Telefono]
+        ///      ,[Correo]
+        ///      ,U.[Activo]
+        ///      ,U.[FechaCreacion]
+        ///  FROM [Decimatio].[dbo].[Usuario] U
+        ///	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario
+        ///  WHERE Nombres LIKE &apos;%&apos;+@Filtro+&apos;%&apos;
+        ///	OR ApellidoP LIKE &apos;%&apos;+ @Filtro+&apos;%&apos;
+        ///	OR ApellidoM LIKE &apos;%&apos;+ @Filtro+&apos;%&apos;
+        ///	OR CAST(Rut AS VARCHAR) LIKE &apos;%&apos;+ @F [resto de la cadena truncado]&quot;;.
+        /// </summary>
+        internal static string GET_USUARIOS_FILTRO {
+            get {
+                return ResourceManager.GetString("GET_USUARIOS_FILTRO", resourceCulture);
             }
         }
         

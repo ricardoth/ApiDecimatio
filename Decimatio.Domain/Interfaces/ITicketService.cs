@@ -7,6 +7,6 @@
         Task<PagedList<Ticket>> GetAllTickets(TicketQueryFilter filtros);
         Task<TicketQR> GetTicketQR(int idTicket);
         Task<TicketQR> GetTicketVoucherPDF(int idTicket);
-        Task<bool> DeleteDownTicket(long idTicket);
+        Task<bool> DeleteDownTicket(long idTicket, bool activo);
     }
 }

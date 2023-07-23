@@ -1,6 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
-
-namespace Decimatio.Infraestructure.Services
+﻿namespace Decimatio.Infraestructure.Services
 {
     public class TicketService : ITicketService
     {
@@ -158,11 +156,11 @@ namespace Decimatio.Infraestructure.Services
             }
         }
 
-        public async Task<bool> DeleteDownTicket(long idTicket)
+        public async Task<bool> DeleteDownTicket(long idTicket, bool activo)
         {
             try
             {
-                var result = await _ticketRepository.DeleteDownTicket(idTicket);
+                var result = await _ticketRepository.DeleteDownTicket(idTicket, activo);
                 return result;
             }
             catch (Exception ex)

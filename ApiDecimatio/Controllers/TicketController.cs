@@ -105,16 +105,16 @@
             return Ok(result);
         }
 
-        [HttpDelete("{idTicket}")]
+        [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> DeleteTicket(int idTicket)
+        public async Task<IActionResult> DeleteTicket([FromQuery]int idTicket, bool activo)
         {
             if (idTicket == 0)
                 return NoContent();
                 
-            var result = await _ticketService.DeleteDownTicket(idTicket);
+            var result = await _ticketService.DeleteDownTicket(idTicket, activo);
 
             if (!result)
                 return BadRequest();

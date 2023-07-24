@@ -2,6 +2,6 @@
 {
     public interface IEmailService
     {
-        Task SendEmail(string toAddress, string subject, string body, string pdfBase64);
+        Task SendEmail(EmailTicketDto emailDto);
     }
 }

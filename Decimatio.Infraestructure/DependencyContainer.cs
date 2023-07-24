@@ -24,6 +24,9 @@
             services.AddScoped<IBlobFilesService, BlobFilesService>();
             var blobConfig = configuration.GetSection(nameof(BlobContainerConfig)).Get<BlobContainerConfig>();
             services.AddSingleton(blobConfig);
+
+            var emailConfig = configuration.GetSection(nameof(EmailConfig)).Get<EmailConfig>();
+            services.AddSingleton(emailConfig);
             // Connection
             services.AddScoped<IDataBaseConnection, DataBaseConnection>();
         }

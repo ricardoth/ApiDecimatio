@@ -1,48 +1,46 @@
-﻿using System.Net.Mime;
-
-namespace Decimatio.Common.Services
+﻿namespace Decimatio.Common.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly SmtpClient _smtpClient;
+        private readonly EmailConfig _emailConfig;
 
-        public EmailService()
+        public EmailService(EmailConfig emailConfig)
         {
-            _smtpClient = new SmtpClient
-            {
-                Host = "smpt-mail.outlook.com",
-                Port = 587,
-                EnableSsl = true,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("tutorialseu-dev@outlook.com", "Test12345678!")
-            };
-
+            _emailConfig = emailConfig;
         }
 
-        public async Task SendEmail(string toAddress, string subject, string body, string pdfBase64)
+        public async Task SendEmail(EmailTicketDto emailDto)
         {
-            var fromAddress = new MailAddress("tutorialseu-dev@outlook.com", "Quarzo");
+            var email = new MimeMessage();
+            email.Subject = emailDto.GetSubject();
+            email.From.Add(new MailboxAddress("Remitente", _emailConfig.From));
+            email.To.Add(new MailboxAddress("Destinatario", emailDto.GetAddress()));
 
-            using (var message = new MailMessage(fromAddress, new MailAddress(toAddress)) 
-            {
-                Subject = subject,
-                Body = body
-            })
-            {
-                byte[] pdfBytes = Convert.FromBase64String(pdfBase64);
-                MemoryStream ms = new MemoryStream(pdfBytes);
-                Attachment attachment = new Attachment(ms, "Ticket.pdf", MediaTypeNames.Application.Pdf);
-                message.Attachments.Add(attachment);
+            var bodyBuilder = new BodyBuilder { HtmlBody = emailDto.GetBody() };
+            //Attach pdf
+            byte[] pdfBytes = Convert.FromBase64String(emailDto.GetPdfBase64());
+            MemoryStream ms = new MemoryStream(pdfBytes);
 
-                try
-                {
-                    _smtpClient.Send(message);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception($"Error al generar el Correo: {ex.Message}", ex);
-                }
-            }
+            var attachments = new MimePart("application", "pdf")
+            {
+                Content = new MimeContent(ms, ContentEncoding.Default),
+                ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
+                ContentTransferEncoding = ContentEncoding.Base64,
+                FileName = $"Ticket N° {emailDto.GetTicketBodyQRDto().IdTicket}"
+            };
+
+            bodyBuilder.Attachments.Add(attachments);
+            email.Body = bodyBuilder.ToMessageBody();
+
+            using (var smtp = new SmtpClient())
+            {
+                smtp.Connect(_emailConfig.Host, Convert.ToInt32(_emailConfig.Port),
+                                MailKit.Security.SecureSocketOptions.StartTls);
+                smtp.Authenticate(_emailConfig.From, _emailConfig.Password);
+                var response = await smtp.SendAsync(email);
+                smtp.Disconnect(true);
+            };
+            ms.Close();
         }
     }
 }

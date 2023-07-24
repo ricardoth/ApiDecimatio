@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using Decimatio.Domain.Entities;
+
+namespace Decimatio.Infraestructure.Services
 {
     public class TicketService : ITicketService
     {
@@ -131,6 +133,12 @@
                 await AddTicketQR(ticketQR);
                 string base64HtmlTicket = await SaveTicketImageToBlobStorage(base64QRImage, ticketDto, fileName);
 
+                string htmlTemplateEmail = await EscribirPlantillaEmail(ticketDto);
+
+                var emailDto = new EmailTicketDto(json.Correo, fileName, htmlTemplateEmail, base64HtmlTicket, ticketDto);
+
+                await _emailService.SendEmail(emailDto);
+
                 return base64HtmlTicket;
             }
             catch (Exception ex)
@@ -187,6 +195,7 @@
                 }
 
                 string ticketsPdf64 = await _qrGeneratorService.MergePdfFiles(strList);
+               
                 return ticketsPdf64;
             }
             catch (Exception ex)
@@ -242,6 +251,23 @@
 
             return htmlPdf;
 
+        }
+
+        public async Task<string> EscribirPlantillaEmail(TicketBodyQRDto ticketBodyQR)
+        {
+            string currentDirectory = Directory.GetCurrentDirectory() + "\\Template";
+            string htmlTemplatePath = Path.Combine(currentDirectory, "plantillaEmailTicketConfirm.html");
+            string htmlTemplate = File.ReadAllText(htmlTemplatePath);
+            long montoTotalFormat = (long)ticketBodyQR.MontoTotal;
+
+            string htmlTemplateEmail = htmlTemplate.Replace("{IdTicket}", ticketBodyQR.IdTicket.ToString())
+                                        .Replace("{NombreUser}", $"{ticketBodyQR.Usuario.Nombres} {ticketBodyQR.Usuario.ApellidoP}")
+                                        .Replace("{NombreEvento}", ticketBodyQR.Evento.NombreEvento)
+                                        .Replace("{NombreLugar}", ticketBodyQR.Evento.Lugar.NombreLugar)
+                                        .Replace("{NombreSector}", ticketBodyQR.Sector.NombreSector)
+                                        .Replace("{MontoTotal}", montoTotalFormat.ToString());
+
+            return htmlTemplateEmail;
         }
 
         private string GeneratoQRCodeBase64(TicketInfoDto ticket)

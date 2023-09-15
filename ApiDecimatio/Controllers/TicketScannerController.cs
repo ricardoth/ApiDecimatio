@@ -4,9 +4,24 @@
     [ApiController]
     public class TicketScannerController : ControllerBase
     {
-        public TicketScannerController()
+        private readonly IAccesoEventoService _accesoEventoService;
+        private readonly IMapper _mapper;
+
+        public TicketScannerController(IAccesoEventoService accesoEventoService, IMapper mapper)
         {
-            
+            _accesoEventoService = accesoEventoService;
+            _mapper = mapper;
+        }
+
+        [HttpPost("ValidarAccesoTicket")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ValidarAccesoTicket(TicketAccesoDto ticketAccesoDto)
+        {
+            var ticketAcceso = _mapper.Map<TicketAcceso>(ticketAccesoDto);
+            var result = await _accesoEventoService.ValidarAccesoTicket(ticketAcceso);
+            var response = new ApiResponse<AccesoEventoStatus>(result);
+            return Ok(response);
         }
 
         [HttpGet]

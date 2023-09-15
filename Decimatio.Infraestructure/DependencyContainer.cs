@@ -13,12 +13,14 @@
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<ISectorRepository, SectorRepository>();
             services.AddScoped<IEventoRepository, EventoRepository>();
-            
+            services.AddScoped<IAccesoEventoRepository, AccesoEventoRepository>();
+
             services.AddScoped<IMedioPagoService, MedioPagoService>();
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<ISectorService, SectorService>();
             services.AddScoped<IEventoService, EventoService>();
+            services.AddScoped<IAccesoEventoService, AccesoEventoService>();
             services.AddScoped<IQRGeneratorService, QRGeneratorService>();
             services.AddScoped<IEmailService, EmailService>();  
             services.AddScoped<IBlobFilesService, BlobFilesService>();

@@ -6,6 +6,5 @@
         public long IdTicket { get; set; }
         public DateTime? FechaHoraEntrada { get; set; }
         public DateTime? FechaHoraSalida { get; set; }
-        public Ticket Ticket { get; set; }
     }
 }

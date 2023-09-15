@@ -1,8 +1,7 @@
 ﻿namespace Decimatio.Domain.Interfaces
 {
-    public interface IAccesoEventoRepository
+    public interface IAccesoEventoService
     {
         Task<AccesoEventoStatus> ValidarAccesoTicket(TicketAcceso ticketAcceso);
-        Task<int> RegistroAccesoEvento(AccesoEvento evento);
     }
 }

@@ -325,6 +325,37 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO dbo.AccesoEvento
+        ///(
+        ///	IdTicket,
+        ///	FechaHoraEntrada,
+        ///	FechaHoraSalida
+        ///)
+        ///
+        ///VALUES (
+        ///	@IdTicket,
+        ///	@FechaHoraEntrada,
+        ///	NULL
+        ///).
+        /// </summary>
+        internal static string INSERT_ACCESO_EVENTO_IN {
+            get {
+                return ResourceManager.GetString("INSERT_ACCESO_EVENTO_IN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE dbo.AccesoEvento
+        ///SET FechaHoraSalida = @FechaHoraSalida
+        ///WHERE IdAccesoEvento = @IdAccesoEvento.
+        /// </summary>
+        internal static string INSERT_ACCESO_EVENTO_OUT {
+            get {
+                return ResourceManager.GetString("INSERT_ACCESO_EVENTO_OUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a INSERT INTO [dbo].[MedioPago]
         ///           ([NombreMedioPago]
         ///           ,[Descripcion]
@@ -397,6 +428,31 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string UPDATE_MEDIO_PAGO {
             get {
                 return ResourceManager.GetString("UPDATE_MEDIO_PAGO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a IF EXISTS (SELECT 1 FROM dbo.Ticket T
+        ///	INNER JOIN dbo.TicketQR TQ ON TQ.IdTicket = T.IdTicket
+        ///	INNER JOIN dbo.Usuario U ON U.IdUsuario = T.IdUsuario
+        ///WHERE T.IdTicket = @IdTicket
+        ///	AND U.Rut = @Rut
+        ///	AND U.Dv  = @Dv
+        ///	AND T.Activo = 1
+        ///	AND TQ.Activo = 1)
+        ///BEGIN
+        ///	SELECT 1 AS StatusCode,
+        ///		&apos;TICKET VÁLIDO PARA EL INGRESO AL EVENTO&apos; AS OutputMessage
+        ///END
+        ///ELSE
+        ///BEGIN
+        ///	SELECT 0 AS StatusCode,
+        ///		&apos;NO ES VÁLIDO EL TICKET, NO PUEDE INGRESAR AL EVENTO&apos; AS OutputMessage
+        ///END.
+        /// </summary>
+        internal static string VALIDAR_ACCESO_TICKET {
+            get {
+                return ResourceManager.GetString("VALIDAR_ACCESO_TICKET", resourceCulture);
             }
         }
     }

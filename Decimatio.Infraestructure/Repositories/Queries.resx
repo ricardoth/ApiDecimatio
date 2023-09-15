@@ -310,6 +310,27 @@ WHERE T.IdTicket = @IdTicket</value>
   WHERE IdUsuario = @IdUsuario</value>
     <comment>Get Usuario por Id</comment>
   </data>
+  <data name="INSERT_ACCESO_EVENTO_IN" xml:space="preserve">
+    <value>INSERT INTO dbo.AccesoEvento
+(
+	IdTicket,
+	FechaHoraEntrada,
+	FechaHoraSalida
+)
+
+VALUES (
+	@IdTicket,
+	@FechaHoraEntrada,
+	NULL
+)</value>
+    <comment>Registra un acceso de la persona con Ticket</comment>
+  </data>
+  <data name="INSERT_ACCESO_EVENTO_OUT" xml:space="preserve">
+    <value>UPDATE dbo.AccesoEvento
+SET FechaHoraSalida = @FechaHoraSalida
+WHERE IdAccesoEvento = @IdAccesoEvento</value>
+    <comment>Registra una salida de una persona del evento</comment>
+  </data>
   <data name="INSERT_MEDIO_PAGO" xml:space="preserve">
     <value>INSERT INTO [dbo].[MedioPago]
            ([NombreMedioPago]
@@ -365,5 +386,25 @@ WHERE T.IdTicket = @IdTicket</value>
            ,[Descripcion] = @Descripcion
            ,[Activo] = @Activo WHERE IdMedioPago = @IdMedioPago</value>
     <comment>Actualiza MedioPago</comment>
+  </data>
+  <data name="VALIDAR_ACCESO_TICKET" xml:space="preserve">
+    <value>IF EXISTS (SELECT 1 FROM dbo.Ticket T
+	INNER JOIN dbo.TicketQR TQ ON TQ.IdTicket = T.IdTicket
+	INNER JOIN dbo.Usuario U ON U.IdUsuario = T.IdUsuario
+WHERE T.IdTicket = @IdTicket
+	AND U.Rut = @Rut
+	AND U.Dv  = @Dv
+	AND T.Activo = 1
+	AND TQ.Activo = 1)
+BEGIN
+	SELECT 1 AS StatusCode,
+		'TICKET VÁLIDO PARA EL INGRESO AL EVENTO' AS OutputMessage
+END
+ELSE
+BEGIN
+	SELECT 0 AS StatusCode,
+		'NO ES VÁLIDO EL TICKET, NO PUEDE INGRESAR AL EVENTO' AS OutputMessage
+END</value>
+    <comment>Valida si un ticket corresponde al Rut y DV generados son correctos al emitido</comment>
   </data>
 </root>

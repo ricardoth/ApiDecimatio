@@ -13,6 +13,7 @@
             CreateMap<Lugar, LugarDto>().ReverseMap();
             CreateMap<Domain.Entities.Region, RegionDto>().ReverseMap();
             CreateMap<Comuna, ComunaDto>().ReverseMap();
+            CreateMap<AccesoEvento, AccesoEventoDto>().ReverseMap();
         }
     }
 }

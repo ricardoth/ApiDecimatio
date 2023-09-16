@@ -1,4 +1,7 @@
 ﻿using Decimatio.Domain.Entities;
+using Newtonsoft.Json;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Decimatio.Infraestructure.Services
 {
@@ -206,7 +209,6 @@ namespace Decimatio.Infraestructure.Services
         }
         #endregion
 
-
         #region Creación QR y Generación del PDF
         public async Task<byte[]> EscribirPlantilla(string base64Image, TicketBodyQRDto ticket)
         {
@@ -306,7 +308,7 @@ namespace Decimatio.Infraestructure.Services
             return Convert.ToBase64String(ticketResultImage);
         }
 
-        
+
         #endregion
     }
 }

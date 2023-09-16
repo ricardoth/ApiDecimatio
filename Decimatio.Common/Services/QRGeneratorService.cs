@@ -5,9 +5,11 @@
         public Bitmap GenerateQRCodeTicket<T>(T obj)
         { 
             string jsonString = JsonSerializer.Serialize(obj);
+            //string jsonString = JsonConvert.SerializeObject(obj);
+            string sha256Hash = GenerateSha256Hash(jsonString);
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(jsonString, QRCodeGenerator.ECCLevel.Q);
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(sha256Hash, QRCodeGenerator.ECCLevel.Q);
             PngByteQRCode qrCode = new PngByteQRCode(qrCodeData);
             
             Bitmap qrCodeImage = new Bitmap(new MemoryStream(qrCode.GetGraphic(20)));
@@ -70,6 +72,21 @@
                 throw new Exception($"Error al generar el PDF: {ex.Message}", ex);
             }
             finally { outputStream.Close(); }
+        }
+
+        private string GenerateSha256Hash(string input)
+        {
+            using var sha256 = SHA256.Create();
+
+            byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+            byte[] hashBytes = sha256.ComputeHash(inputBytes);
+
+            StringBuilder stringBuilder = new();
+            for (int i = 0; i < hashBytes.Length; i++)
+            {
+                stringBuilder.Append(hashBytes[i].ToString("X2"));
+            }
+            return stringBuilder.ToString();
         }
     }
 }

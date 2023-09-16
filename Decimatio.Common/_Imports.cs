@@ -8,3 +8,6 @@ global using PuppeteerSharp;
 global using MailKit.Net.Smtp;
 global using MimeKit;
 global using Decimatio.Domain.DTOs;
+//global using Newtonsoft.Json;
+global using System.Security.Cryptography;
+global using System.Text;

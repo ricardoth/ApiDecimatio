@@ -29,6 +29,9 @@
 
             var emailConfig = configuration.GetSection(nameof(EmailConfig)).Get<EmailConfig>();
             services.AddSingleton(emailConfig);
+
+            var encryptedConfig = configuration.GetSection(nameof(EncryptedTicketConfig)).Get<EncryptedTicketConfig>();
+            services.AddSingleton(encryptedConfig);
             // Connection
             services.AddScoped<IDataBaseConnection, DataBaseConnection>();
         }

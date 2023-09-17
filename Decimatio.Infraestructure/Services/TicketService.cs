@@ -1,9 +1,4 @@
-﻿using Decimatio.Domain.Entities;
-using Newtonsoft.Json;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace Decimatio.Infraestructure.Services
+﻿namespace Decimatio.Infraestructure.Services
 {
     public class TicketService : ITicketService
     {

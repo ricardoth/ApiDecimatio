@@ -7,7 +7,6 @@ namespace Decimatio.Common.Services
         private readonly BlobContainerConfig _containerConfig;
         private readonly BlobServiceClient _blobServiceClient;
 
-
         public BlobFilesService(BlobContainerConfig containerConfig)
         {
             _containerConfig = containerConfig;

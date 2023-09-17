@@ -1,12 +1,22 @@
-﻿namespace Decimatio.Common.Services
+﻿using PuppeteerSharp.Input;
+using static Org.BouncyCastle.Math.EC.ECCurve;
+
+namespace Decimatio.Common.Services
 {
     public class QRGeneratorService : IQRGeneratorService
     {
+        private readonly EncryptedTicketConfig _config;
+
+        public QRGeneratorService(EncryptedTicketConfig config)
+        {
+            _config = config;        
+        }
+
         public Bitmap GenerateQRCodeTicket<T>(T obj)
         { 
             string jsonString = JsonSerializer.Serialize(obj);
             //string jsonString = JsonConvert.SerializeObject(obj);
-            string sha256Hash = GenerateSha256Hash(jsonString);
+            string sha256Hash = EncryptTicketQR(jsonString);
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(sha256Hash, QRCodeGenerator.ECCLevel.Q);
@@ -74,19 +84,35 @@
             finally { outputStream.Close(); }
         }
 
-        private string GenerateSha256Hash(string input)
+        private string EncryptTicketQR(string jsonString)
         {
-            using var sha256 = SHA256.Create();
-
-            byte[] inputBytes = Encoding.ASCII.GetBytes(input);
-            byte[] hashBytes = sha256.ComputeHash(inputBytes);
-
-            StringBuilder stringBuilder = new();
-            for (int i = 0; i < hashBytes.Length; i++)
+            byte[] encrypted;
+            using (Aes aesAlg = Aes.Create())
             {
-                stringBuilder.Append(hashBytes[i].ToString("X2"));
+                var sha256 = new SHA256Managed();
+                byte[] keyBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(_config.PrivateKey));
+                byte[] ivBytes = new byte[16]; 
+                Array.Copy(keyBytes, ivBytes, 16);
+
+                aesAlg.Key = keyBytes;
+                aesAlg.IV = ivBytes;
+
+
+                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msEncryt = new())
+                {
+                    using (CryptoStream csEncrypt = new(msEncryt, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter streamWriter = new(csEncrypt))
+                        {
+                            streamWriter.Write(jsonString);
+                        }
+                        encrypted = msEncryt.ToArray();
+                    }
+                }
             }
-            return stringBuilder.ToString();
+            return Convert.ToBase64String(encrypted);
         }
     }
 }

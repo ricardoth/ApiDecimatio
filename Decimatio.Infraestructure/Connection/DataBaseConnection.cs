@@ -35,8 +35,6 @@
             }
         }
 
-        
-
         public async Task<long?> ExecuteScalar(string queryName, string query, object entity)
         {
             DateTime startTime = DateTime.Now;

@@ -9,6 +9,11 @@
             _connection = connection;        
         }
 
+        public async Task<IEnumerable<AccesoEventoTicket>> GetAllAccesoEventoTickets()
+        {
+            return await _connection.GetListAsync<AccesoEventoTicket>("GET_ACCESOS_TICKET", Queries.GET_ACCESOS_TICKET);
+        }
+
         public async Task<int> RegistroAccesoEvento(AccesoEvento accesoEvento)
         {
             var result = await _connection.ExecuteAsync("INSERT_ACCESO_EVENTO_IN", Queries.INSERT_ACCESO_EVENTO_IN, accesoEvento);
@@ -22,6 +27,7 @@
                 { "@IdTicket", ticketAcceso.IdTicket },
                 { "@Rut", ticketAcceso.Rut },
                 { "@Dv", ticketAcceso.Dv },
+                { "@IdEvento", ticketAcceso.IdEvento },
             };
 
             var dynamicParam = new DynamicParameters(dictionary);

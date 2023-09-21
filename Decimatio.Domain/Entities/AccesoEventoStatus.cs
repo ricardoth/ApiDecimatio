@@ -2,7 +2,7 @@
 {
     public class AccesoEventoStatus
     {
-        public bool StatusCode { get; set; }
-        public string OutputMessage { get; set; }
+        public int StatusCode { get; set; }
+        public string? OutputMessage { get; set; }
     }
 }

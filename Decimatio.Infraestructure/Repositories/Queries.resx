@@ -132,6 +132,26 @@ SET Activo = @Activo
 WHERE IdTicket = @IdTicket</value>
     <comment>Desactiva el Ticket con su QR</comment>
   </data>
+  <data name="GET_ACCESOS_TICKET" xml:space="preserve">
+    <value>SELECT 
+	   AE.IdAccesoEvento
+      ,AE.IdTicket
+	  ,T.IdUsuario
+	  ,U.Rut
+	  ,U.Dv
+	  ,U.Nombres
+	  ,U.ApellidoP
+	  ,U.ApellidoM
+      ,AE.IdEstadoTicket
+	  ,ET.EstadoTicket
+      ,AE.FechaHoraEntrada
+      ,AE.FechaHoraSalida
+FROM dbo.AccesoEvento AE
+	INNER JOIN dbo.Ticket T ON T.IdTicket = AE.IdTicket AND T.Activo = 1
+	INNER JOIN dbo.Usuario U ON U.IdUsuario = T.IdUsuario
+	INNER JOIN dbo.EstadoTicket ET ON ET.IdEstadoTicket = AE.IdEstadoTicket</value>
+    <comment>Get Accesos Ticket para mostrar</comment>
+  </data>
   <data name="GET_EVENTOS" xml:space="preserve">
     <value>SELECT [IdEvento]
       ,[IdLugar]
@@ -314,12 +334,14 @@ WHERE T.IdTicket = @IdTicket</value>
     <value>INSERT INTO dbo.AccesoEvento
 (
 	IdTicket,
+	IdEstadoTicket,
 	FechaHoraEntrada,
 	FechaHoraSalida
 )
 
 VALUES (
 	@IdTicket,
+	@IdEstadoTicket,
 	@FechaHoraEntrada,
 	NULL
 )</value>
@@ -388,23 +410,7 @@ WHERE IdAccesoEvento = @IdAccesoEvento</value>
     <comment>Actualiza MedioPago</comment>
   </data>
   <data name="VALIDAR_ACCESO_TICKET" xml:space="preserve">
-    <value>IF EXISTS (SELECT 1 FROM dbo.Ticket T
-	INNER JOIN dbo.TicketQR TQ ON TQ.IdTicket = T.IdTicket
-	INNER JOIN dbo.Usuario U ON U.IdUsuario = T.IdUsuario
-WHERE T.IdTicket = @IdTicket
-	AND U.Rut = @Rut
-	AND U.Dv  = @Dv
-	AND T.Activo = 1
-	AND TQ.Activo = 1)
-BEGIN
-	SELECT 1 AS StatusCode,
-		'TICKET VÁLIDO PARA EL INGRESO AL EVENTO' AS OutputMessage
-END
-ELSE
-BEGIN
-	SELECT 0 AS StatusCode,
-		'NO ES VÁLIDO EL TICKET, NO PUEDE INGRESAR AL EVENTO' AS OutputMessage
-END</value>
-    <comment>Valida si un ticket corresponde al Rut y DV generados son correctos al emitido</comment>
+    <value>dbo.sp_ValidarTicket @IdTicket,  @Rut, @Dv, @IdEvento</value>
+    <comment>Valida si un ticket corresponde al Rut y DV generados son correctos al emitido (stored procedure)</comment>
   </data>
 </root>

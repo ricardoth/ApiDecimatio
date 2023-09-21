@@ -4,5 +4,6 @@
     {
         Task<AccesoEventoStatus> ValidarAccesoTicket(TicketAcceso ticketAcceso);
         Task<int> RegistroAccesoEvento(AccesoEvento evento);
+        Task<IEnumerable<AccesoEventoTicket>> GetAllAccesoEventoTickets(); 
     }
 }

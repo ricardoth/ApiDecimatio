@@ -9,22 +9,27 @@
             _accesoEventoRepository = accesoEventoRepository;
          }
 
+        public async Task<IEnumerable<AccesoEventoTicket>> GetAccesosEventosTickets()
+        {
+         
+            var result =  await _accesoEventoRepository.GetAllAccesoEventoTickets();
+            if (result == null)
+                throw new Exception("No se pudo obtener la lista de accesos al evento");
+            return result;
+        }
 
         public async Task<AccesoEventoStatus> ValidarAccesoTicket(TicketAcceso ticketAcceso)
         {
             try
             {
                 var result = await _accesoEventoRepository.ValidarAccesoTicket(ticketAcceso);
-                //validar, si es ok, registrar acceso evento, sino entregar ticket invalido para acceder
 
-                if (result.StatusCode)
-                {
-                    AccesoEvento accesoEvento = new();
-                    accesoEvento.IdTicket = ticketAcceso.IdTicket;
-                    accesoEvento.FechaHoraEntrada = DateTime.Now;
+                AccesoEvento accesoEvento = new();
+                accesoEvento.IdTicket = ticketAcceso.IdTicket;
+                accesoEvento.IdEstadoTicket = result.StatusCode;
+                accesoEvento.FechaHoraEntrada = DateTime.Now;
 
-                    int accesoEventoResult = await _accesoEventoRepository.RegistroAccesoEvento(accesoEvento);
-                }
+                int accesoEventoResult = await _accesoEventoRepository.RegistroAccesoEvento(accesoEvento);
 
                 return result;
             }

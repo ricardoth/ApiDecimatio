@@ -3,19 +3,42 @@
     public class AccesoEventoService : IAccesoEventoService
     {
         private readonly IAccesoEventoRepository _accesoEventoRepository;
+        private readonly PaginationOptions _paginationOptions;
 
-        public AccesoEventoService(IAccesoEventoRepository accesoEventoRepository)
+        public AccesoEventoService(IAccesoEventoRepository accesoEventoRepository, IOptions<PaginationOptions> paginationOptions)
         {
             _accesoEventoRepository = accesoEventoRepository;
+            _paginationOptions = paginationOptions.Value;
          }
 
-        public async Task<IEnumerable<AccesoEventoTicket>> GetAccesosEventosTickets()
+        public async Task<PagedList<AccesoEventoTicket>> GetAccesosEventosTickets(AccesoEventoTicketQueryFilter filtros)
         {
-         
+            filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
+            filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
+
+
             var result =  await _accesoEventoRepository.GetAllAccesoEventoTickets();
             if (result == null)
                 throw new Exception("No se pudo obtener la lista de accesos al evento");
-            return result;
+
+
+            if (filtros.IdTicket > 0)
+                result = result.Where(x => x.IdTicket == filtros.IdTicket);
+
+            if (filtros.IdUsuario > 0)
+                result = result.Where(x => x.IdUsuario == filtros.IdUsuario);
+
+            if (filtros.IdEstadoTicket > 0)
+                result = result.Where(x => x.IdEstadoTicket == filtros.IdEstadoTicket);
+
+            if (filtros.FechaHoraEntrada.HasValue)
+                result = result.Where(x => x.FechaHoraEntrada == filtros.FechaHoraEntrada);
+
+            if (filtros.FechaHoraSalida.HasValue)
+                result = result.Where(x => x.FechaHoraSalida == filtros.FechaHoraSalida);
+
+            var pagedList = PagedList<AccesoEventoTicket>.Create(result, filtros.PageNumber, filtros.PageSize);
+            return pagedList;
         }
 
         public async Task<AccesoEventoStatus> ValidarAccesoTicket(TicketAcceso ticketAcceso)

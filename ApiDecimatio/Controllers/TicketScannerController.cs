@@ -1,4 +1,6 @@
-﻿namespace ApiDecimatio.Controllers
+﻿using Decimatio.Domain.Entities;
+
+namespace ApiDecimatio.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -28,11 +30,31 @@
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Get()
-        {
-            var ticketsAcceso = await _accesoEventoService.GetAccesosEventosTickets();
-            var ticketsAccesoDto = _mapper.Map<IEnumerable<AccesoEventoTicketDto>>(ticketsAcceso);
-            var response = new ApiResponse<IEnumerable<AccesoEventoTicketDto>>(ticketsAccesoDto);
+        public async Task<IActionResult> Get([FromQuery] AccesoEventoTicketQueryFilter filtros)
+         {
+            var ticketsAccesos = await _accesoEventoService.GetAccesosEventosTickets(filtros);
+            if (ticketsAccesos == null)
+                return BadRequest();
+
+            var metaData = new MetaData
+            {
+                TotalCount = ticketsAccesos.TotalCount,
+                PageSize = ticketsAccesos.PageSize,
+                CurrentPage = ticketsAccesos.CurrentPage,
+                TotalPages = ticketsAccesos.TotalPages,
+                HasNextPage = ticketsAccesos.HasNextPage,
+                HasPreviousPage = ticketsAccesos.HasPreviousPage,
+                NextPageUrl = "",// _uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString(),
+                PreviousPageUrl = "",//_uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString()
+            };
+
+            var ticketsAccesoDto = _mapper.Map<IEnumerable<AccesoEventoTicketDto>>(ticketsAccesos);
+            var response = new ApiResponse<IEnumerable<AccesoEventoTicketDto>>(ticketsAccesoDto)
+            {
+                Meta = metaData
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
             return Ok(response);
         }
 

@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.Entities;
-
-namespace ApiDecimatio.Controllers
+﻿namespace ApiDecimatio.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -44,8 +42,8 @@ namespace ApiDecimatio.Controllers
                 TotalPages = ticketsAccesos.TotalPages,
                 HasNextPage = ticketsAccesos.HasNextPage,
                 HasPreviousPage = ticketsAccesos.HasPreviousPage,
-                NextPageUrl = "",// _uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString(),
-                PreviousPageUrl = "",//_uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString()
+                NextPageUrl = "",
+                PreviousPageUrl = "",
             };
 
             var ticketsAccesoDto = _mapper.Map<IEnumerable<AccesoEventoTicketDto>>(ticketsAccesos);

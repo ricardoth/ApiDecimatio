@@ -373,7 +373,7 @@ namespace Decimatio.Infraestructure.Repositories {
         
         /// <summary>
         ///   Busca una cadena traducida similar a UPDATE dbo.AccesoEvento
-        ///SET FechaHoraSalida = @FechaHoraSalida
+        ///SET FechaHoraSalida = GETDATE()
         ///WHERE IdAccesoEvento = @IdAccesoEvento.
         /// </summary>
         internal static string INSERT_ACCESO_EVENTO_OUT {

@@ -349,7 +349,7 @@ VALUES (
   </data>
   <data name="INSERT_ACCESO_EVENTO_OUT" xml:space="preserve">
     <value>UPDATE dbo.AccesoEvento
-SET FechaHoraSalida = @FechaHoraSalida
+SET FechaHoraSalida = GETDATE()
 WHERE IdAccesoEvento = @IdAccesoEvento</value>
     <comment>Registra una salida de una persona del evento</comment>
   </data>

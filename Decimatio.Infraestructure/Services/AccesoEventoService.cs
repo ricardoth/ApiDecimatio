@@ -41,6 +41,12 @@
             return pagedList;
         }
 
+        public async Task<int> SalidaAccesoEvento(long idAccesoEvento)
+        {
+            int accesoEventoResult = await _accesoEventoRepository.SalidaAccesoEvento(idAccesoEvento);
+            return accesoEventoResult;
+        }
+
         public async Task<AccesoEventoStatus> ValidarAccesoTicket(TicketAcceso ticketAcceso)
         {
             try

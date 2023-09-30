@@ -20,6 +20,12 @@
             return result.Value;
         }
 
+        public async Task<int> SalidaAccesoEvento(long idAccesoEvento)
+        {
+            var result = await _connection.ExecuteAsync("INSERT_ACCESO_EVENTO_OUT", Queries.INSERT_ACCESO_EVENTO_OUT, new { IdAccesoEvento = idAccesoEvento });
+            return result.Value;
+        }
+
         public async Task<AccesoEventoStatus> ValidarAccesoTicket(TicketAcceso ticketAcceso)
         {
             var dictionary = new Dictionary<string, object>()

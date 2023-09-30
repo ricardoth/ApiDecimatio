@@ -56,6 +56,19 @@
             return Ok(response);
         }
 
+        [HttpPut("SalidaAccesoEvento")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> SalidaAccesoEvento(long idAccesoEvento)
+        {
+            if (idAccesoEvento == 0)
+                return NotFound("No se encuentra el elemento en la bd");
+
+            var result = await _accesoEventoService.SalidaAccesoEvento(idAccesoEvento);
+            var response = new ApiResponse<int>(result);
+            return Ok(response);
+        }
+
         //[HttpGet]
         //public async Task<IActionResult> Get()
         //{

@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DELETE_EVENTO" xml:space="preserve">
+    <value>UPDATE dbo.Evento
+SET Activo = 0
+WHERE IdEvento = @IdEvento</value>
+    <comment>Elimina Evento (Soft delete)</comment>
+  </data>
   <data name="DELETE_MEDIO_PAGO" xml:space="preserve">
     <value>DELETE FROM dbo.MedioPago WHERE IdMedioPago = @IdMedioPago</value>
     <comment>Eliminar MedioPago</comment>
@@ -153,11 +159,12 @@ FROM dbo.AccesoEvento AE
     <comment>Get Accesos Ticket para mostrar</comment>
   </data>
   <data name="GET_EVENTOS" xml:space="preserve">
-    <value>SELECT [IdEvento]
+    <value>SELECT  [IdEvento]
       ,[IdLugar]
       ,[NombreEvento]
       ,[Direccion]
       ,[Fecha]
+      ,[Flyer]
       ,[Activo]
   FROM [Decimatio].[dbo].[Evento]</value>
     <comment>Get All Eventos</comment>
@@ -196,12 +203,23 @@ INNER JOIN Region r on r.IdRegion = c.IdRegion
 WHERE T.IdTicket = @IdTicket</value>
     <comment>GET TICKET CON INFO USUARIO Y QR</comment>
   </data>
+  <data name="GET_LUGARES" xml:space="preserve">
+    <value>SELECT [IdLugar]
+      ,[IdComuna]
+      ,[NombreLugar]
+      ,[Ubicacion]
+      ,[Numeracion]
+      ,[FechaCreacion]
+FROM [dbo].[Lugar]</value>
+    <comment>Get All Lugares</comment>
+  </data>
   <data name="GET_MEDIOS_PAGOS" xml:space="preserve">
     <value>SELECT  [IdMedioPago]
       ,[NombreMedioPago]
       ,[Descripcion]
       ,[Activo]
   FROM [Decimatio].[dbo].[MedioPago]</value>
+    <comment>Get All Medios Pagos</comment>
   </data>
   <data name="GET_MEDIO_PAGO" xml:space="preserve">
     <value>SELECT  [IdMedioPago]
@@ -353,6 +371,26 @@ SET FechaHoraSalida = GETDATE()
 WHERE IdAccesoEvento = @IdAccesoEvento</value>
     <comment>Registra una salida de una persona del evento</comment>
   </data>
+  <data name="INSERT_EVENTO" xml:space="preserve">
+    <value>INSERT INTO dbo.Evento(
+	IdLugar,
+	NombreEvento,
+	Direccion,
+	Fecha,
+	Flyer,
+	Activo
+)
+
+VALUES (
+	@IdLugar,
+	@NombreEvento,
+	@Direccion,
+	@Fecha,
+	@Flyer,
+	@Activo
+)</value>
+    <comment>Insert Evento</comment>
+  </data>
   <data name="INSERT_MEDIO_PAGO" xml:space="preserve">
     <value>INSERT INTO [dbo].[MedioPago]
            ([NombreMedioPago]
@@ -402,6 +440,17 @@ WHERE IdAccesoEvento = @IdAccesoEvento</value>
            ,1
            ,GETDATE())</value>
     <comment>Insert Ticket QR</comment>
+  </data>
+  <data name="UPDATE_EVENTO" xml:space="preserve">
+    <value>UPDATE dbo.Evento
+SET IdLugar = @IdLugar,
+	NombreEvento = @NombreEvento,
+	Direccion = @Direccion,
+	Fecha = @Fecha,
+	Flyer = @Flyer,
+	Activo = @Activo
+WHERE IdEvento = @IdEvento</value>
+    <comment>Actualiza Evento</comment>
   </data>
   <data name="UPDATE_MEDIO_PAGO" xml:space="preserve">
     <value>UPDATE dbo.MedioPago SET [NombreMedioPago] =@NombreMedioPago

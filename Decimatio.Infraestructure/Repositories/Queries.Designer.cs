@@ -61,6 +61,17 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE dbo.Evento
+        ///SET Activo = 0
+        ///WHERE IdEvento = @IdEvento.
+        /// </summary>
+        internal static string DELETE_EVENTO {
+            get {
+                return ResourceManager.GetString("DELETE_EVENTO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a DELETE FROM dbo.MedioPago WHERE IdMedioPago = @IdMedioPago.
         /// </summary>
         internal static string DELETE_MEDIO_PAGO {
@@ -133,11 +144,12 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT [IdEvento]
+        ///   Busca una cadena traducida similar a SELECT  [IdEvento]
         ///      ,[IdLugar]
         ///      ,[NombreEvento]
         ///      ,[Direccion]
         ///      ,[Fecha]
+        ///      ,[Flyer]
         ///      ,[Activo]
         ///  FROM [Decimatio].[dbo].[Evento].
         /// </summary>
@@ -163,6 +175,21 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string GET_INFO_TICKET {
             get {
                 return ResourceManager.GetString("GET_INFO_TICKET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT [IdLugar]
+        ///      ,[IdComuna]
+        ///      ,[NombreLugar]
+        ///      ,[Ubicacion]
+        ///      ,[Numeracion]
+        ///      ,[FechaCreacion]
+        ///FROM [dbo].[Lugar].
+        /// </summary>
+        internal static string GET_LUGARES {
+            get {
+                return ResourceManager.GetString("GET_LUGARES", resourceCulture);
             }
         }
         
@@ -383,6 +410,31 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO dbo.Evento(
+        ///	IdLugar,
+        ///	NombreEvento,
+        ///	Direccion,
+        ///	Fecha,
+        ///	Flyer,
+        ///	Activo
+        ///)
+        ///
+        ///VALUES (
+        ///	@IdLugar,
+        ///	@NombreEvento,
+        ///	@Direccion,
+        ///	@Fecha,
+        ///	@Flyer,
+        ///	@Activo
+        ///).
+        /// </summary>
+        internal static string INSERT_EVENTO {
+            get {
+                return ResourceManager.GetString("INSERT_EVENTO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a INSERT INTO [dbo].[MedioPago]
         ///           ([NombreMedioPago]
         ///           ,[Descripcion]
@@ -444,6 +496,22 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string INSERT_TICKETQR {
             get {
                 return ResourceManager.GetString("INSERT_TICKETQR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE dbo.Evento
+        ///SET IdLugar = @IdLugar,
+        ///	NombreEvento = @NombreEvento,
+        ///	Direccion = @Direccion,
+        ///	Fecha = @Fecha,
+        ///	Flyer = @Flyer,
+        ///	Activo = @Activo
+        ///WHERE IdEvento = @IdEvento.
+        /// </summary>
+        internal static string UPDATE_EVENTO {
+            get {
+                return ResourceManager.GetString("UPDATE_EVENTO", resourceCulture);
             }
         }
         

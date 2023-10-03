@@ -6,7 +6,9 @@
         private readonly IBlobFilesService _blobFilesService;
         private readonly BlobContainerConfig _containerConfig;
 
-        public EventoService(IEventoRepository eventoRepository, IBlobFilesService blobFilesService, BlobContainerConfig containerConfig)
+        public EventoService(IEventoRepository eventoRepository, 
+            IBlobFilesService blobFilesService, 
+            BlobContainerConfig containerConfig)
         {
             _eventoRepository = eventoRepository;
             _blobFilesService = blobFilesService;
@@ -44,6 +46,28 @@
 			{
 				throw new Exception($"Ha ocurrido un error en EventoService: {ex.Message}", ex);
 			}
+        }
+
+        public async Task AddEvento(Evento evento)
+        {
+            try
+            {
+                await _eventoRepository.AddEvento(evento);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ha ocurrido un error al agregar el evento: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<bool> UpdateEvento(Evento evento)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> DeleteEvento(int idEvento)
+        {
+            throw new NotImplementedException();
         }
     }
 }

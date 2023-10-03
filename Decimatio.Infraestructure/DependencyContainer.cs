@@ -14,6 +14,7 @@
             services.AddScoped<ISectorRepository, SectorRepository>();
             services.AddScoped<IEventoRepository, EventoRepository>();
             services.AddScoped<IAccesoEventoRepository, AccesoEventoRepository>();
+            services.AddScoped<ILugarRepository, LugarRepository>();
 
             services.AddScoped<IMedioPagoService, MedioPagoService>();
             services.AddScoped<ITicketService, TicketService>();
@@ -21,6 +22,9 @@
             services.AddScoped<ISectorService, SectorService>();
             services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<IAccesoEventoService, AccesoEventoService>();
+            services.AddScoped<ILugarService, LugarService>();
+
+            //Commons & Configurations
             services.AddScoped<IQRGeneratorService, QRGeneratorService>();
             services.AddScoped<IEmailService, EmailService>();  
             services.AddScoped<IBlobFilesService, BlobFilesService>();

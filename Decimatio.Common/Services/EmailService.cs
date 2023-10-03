@@ -17,7 +17,6 @@
             email.To.Add(new MailboxAddress("Destinatario", emailDto.GetAddress()));
 
             var bodyBuilder = new BodyBuilder { HtmlBody = emailDto.GetBody() };
-            //Attach pdf
             byte[] pdfBytes = Convert.FromBase64String(emailDto.GetPdfBase64());
             MemoryStream ms = new MemoryStream(pdfBytes);
 

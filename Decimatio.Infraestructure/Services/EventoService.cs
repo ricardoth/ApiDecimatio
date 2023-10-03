@@ -52,6 +52,13 @@
         {
             try
             {
+                if (evento.Flyer != null || evento.Flyer != "") 
+                {
+                    string imageNamePath = _containerConfig.FolderFlyerName + evento.NombreEvento + ".jpg";
+                    var flyer = Convert.FromBase64String(evento.Flyer);
+                    await _blobFilesService.AddFlyerBlobStorage(flyer, imageNamePath);
+                    evento.Flyer = evento.NombreEvento + ".jpg";
+                }
                 await _eventoRepository.AddEvento(evento);
             }
             catch (Exception ex)
@@ -67,7 +74,14 @@
 
         public async Task<bool> DeleteEvento(int idEvento)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _eventoRepository.DeleteEvento(idEvento);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ha ocurrido un error al eliminar el evento: {ex.Message}", ex);
+            }
         }
     }
 }

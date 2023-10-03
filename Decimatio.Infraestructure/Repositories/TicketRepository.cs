@@ -25,7 +25,6 @@
         {
             var result = await _connection.GetListTicketWithObjectAsync<Ticket>("GET_INFO_TICKET", Queries.GET_INFO_TICKET, idTicket);
             if (!result.Any()) throw new Exception("No se encuentra coindidencia para el Ticket");
-
             return result.FirstOrDefault();
         }
 

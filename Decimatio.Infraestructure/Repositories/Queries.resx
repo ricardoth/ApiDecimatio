@@ -210,7 +210,8 @@ WHERE T.IdTicket = @IdTicket</value>
       ,[Ubicacion]
       ,[Numeracion]
       ,[FechaCreacion]
-FROM [dbo].[Lugar]</value>
+      ,[Activo]
+  FROM [dbo].[Lugar]</value>
     <comment>Get All Lugares</comment>
   </data>
   <data name="GET_MEDIOS_PAGOS" xml:space="preserve">

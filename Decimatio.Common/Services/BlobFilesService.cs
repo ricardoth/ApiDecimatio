@@ -1,6 +1,4 @@
-﻿using Azure.Storage.Blobs.Models;
-
-namespace Decimatio.Common.Services
+﻿namespace Decimatio.Common.Services
 {
     public class BlobFilesService : IBlobFilesService
     {
@@ -15,15 +13,12 @@ namespace Decimatio.Common.Services
 
         public async Task AddTicketQRBlobStorage(byte[] imageBytes, string fileName)
         {
-            
             var memoryStream = new MemoryStream(imageBytes);
 
             try
             {
-                //string timeStamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
                 var blobServiceClient = new BlobServiceClient(_containerConfig.ConnectionString);
                 var blobContainerClient = blobServiceClient.GetBlobContainerClient(_containerConfig.ContainerName);
-                //string filePathName = $"{_containerConfig.FolderName}{timeStamp}_{fileName}";
                 var blobClient = blobContainerClient.GetBlobClient(fileName);
                 var result = await blobClient.UploadAsync(memoryStream, overwrite: true);
             }
@@ -55,6 +50,31 @@ namespace Decimatio.Common.Services
             memoryStream.Close();
             return base64String;
         }
-        
+
+        public async Task AddFlyerBlobStorage(byte[] imageBytes, string fileName)
+        {
+            var memoryStream = new MemoryStream(imageBytes);
+
+            try
+            {
+                var blobServiceClient = new BlobServiceClient(_containerConfig.ConnectionString);
+                var blobContainerClient = blobServiceClient.GetBlobContainerClient(_containerConfig.ContainerName);
+                var blobClient = blobContainerClient.GetBlobClient(fileName);
+                var blobUploadOptions = new BlobUploadOptions
+                {
+                    HttpHeaders = new BlobHttpHeaders
+                    {
+                        ContentType = "image/jpeg"
+                    }
+                };
+
+                var result = await blobClient.UploadAsync(memoryStream, blobUploadOptions);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo agregar el Flyer al Azure Blob Storage", ex);
+            }
+        }
+
     }
 }

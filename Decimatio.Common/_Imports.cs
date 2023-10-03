@@ -11,3 +11,4 @@ global using Decimatio.Domain.DTOs;
 //global using Newtonsoft.Json;
 global using System.Security.Cryptography;
 global using System.Text;
+global using Azure.Storage.Blobs.Models;

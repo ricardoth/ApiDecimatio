@@ -1,4 +1,7 @@
-﻿namespace Decimatio.Infraestructure.Repositories
+﻿using Decimatio.Domain.Entities;
+using System;
+
+namespace Decimatio.Infraestructure.Repositories
 {
     public class EventoRepository : IEventoRepository
     {
@@ -29,7 +32,7 @@
 
         public async Task<bool> DeleteEvento(int idEvento)
         {
-            var result = await _connection.ExecuteScalar<bool>("DELETE_EVENTO", Queries.DELETE_EVENTO, idEvento);
+            var result = await _connection.ExecuteScalar<bool>("DELETE_EVENTO", Queries.DELETE_EVENTO, new { IdEvento = idEvento });
             return result;
         }
 

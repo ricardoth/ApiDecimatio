@@ -83,7 +83,7 @@ namespace Decimatio.WebApi.Controllers
             return Ok(response); 
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]

@@ -185,7 +185,8 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[Ubicacion]
         ///      ,[Numeracion]
         ///      ,[FechaCreacion]
-        ///FROM [dbo].[Lugar].
+        ///      ,[Activo]
+        ///  FROM [dbo].[Lugar].
         /// </summary>
         internal static string GET_LUGARES {
             get {

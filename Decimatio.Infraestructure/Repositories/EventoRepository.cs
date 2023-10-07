@@ -1,7 +1,4 @@
-﻿using Decimatio.Domain.Entities;
-using System;
-
-namespace Decimatio.Infraestructure.Repositories
+﻿namespace Decimatio.Infraestructure.Repositories
 {
     public class EventoRepository : IEventoRepository
     {
@@ -46,6 +43,7 @@ namespace Decimatio.Infraestructure.Repositories
                 { "@Direccion", evento.Direccion },
                 { "@Fecha", evento.Fecha },
                 { "@Flyer", evento.Flyer },
+                { "@ContenidoFlyer", evento.ContenidoFlyer },
                 { "@Activo", evento.Activo },
             };
 

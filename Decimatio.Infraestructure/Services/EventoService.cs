@@ -54,10 +54,10 @@
             {
                 if (evento.Flyer != null || evento.Flyer != "") 
                 {
-                    string imageNamePath = _containerConfig.FolderFlyerName + evento.NombreEvento + ".jpg";
-                    var flyer = Convert.FromBase64String(evento.Flyer);
-                    await _blobFilesService.AddFlyerBlobStorage(flyer, imageNamePath);
-                    evento.Flyer = evento.NombreEvento + ".jpg";
+                    string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer + ".jpg";
+                    evento.Flyer = evento.Flyer + ".jpg";
+                    var flyerContent = Convert.FromBase64String(evento.ContenidoFlyer);
+                    await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
                 }
                 await _eventoRepository.AddEvento(evento);
             }
@@ -69,7 +69,21 @@
 
         public async Task<bool> UpdateEvento(Evento evento)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (evento.Flyer != null || evento.Flyer != "")
+                {
+                    string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer + ".jpg";
+                    evento.Flyer = evento.Flyer + ".jpg";
+                    var flyerContent = Convert.FromBase64String(evento.ContenidoFlyer);
+                    await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
+                }
+                return await _eventoRepository.UpdateEvento(evento);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ha ocurrido un error al editar el evento: {ex.Message}", ex);
+            }
         }
 
         public async Task<bool> DeleteEvento(int idEvento)

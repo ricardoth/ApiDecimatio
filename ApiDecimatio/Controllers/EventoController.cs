@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.DTOs;
-
-namespace Decimatio.WebApi.Controllers
+﻿namespace Decimatio.WebApi.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -24,7 +22,7 @@ namespace Decimatio.WebApi.Controllers
         public async Task<IActionResult> Get()
         {
             var result = await _eventoService.GetAllEventos();
-            if (!result.Any()) return BadRequest();
+            if (result == null) return BadRequest();
             var response = new ApiResponse<IEnumerable<Evento>>(result);
             return Ok(response);
         }

@@ -159,12 +159,13 @@ FROM dbo.AccesoEvento AE
     <comment>Get Accesos Ticket para mostrar</comment>
   </data>
   <data name="GET_EVENTOS" xml:space="preserve">
-    <value>SELECT  [IdEvento]
+    <value>SELECT [IdEvento]
       ,[IdLugar]
       ,[NombreEvento]
       ,[Direccion]
       ,[Fecha]
       ,[Flyer]
+      ,[ContenidoFlyer]
       ,[Activo]
   FROM [Decimatio].[dbo].[Evento]</value>
     <comment>Get All Eventos</comment>
@@ -177,6 +178,7 @@ FROM dbo.AccesoEvento AE
       ,E.Direccion
       ,E.Fecha
 	  ,E.Flyer
+	  ,E.ContenidoFlyer
       ,E.Activo
 	  ,L.NombreLugar
 	  ,L.Ubicacion
@@ -379,6 +381,7 @@ WHERE IdAccesoEvento = @IdAccesoEvento</value>
 	Direccion,
 	Fecha,
 	Flyer,
+	ContenidoFlyer,
 	Activo
 )
 
@@ -388,6 +391,7 @@ VALUES (
 	@Direccion,
 	@Fecha,
 	@Flyer,
+	@ContenidoFlyer,
 	@Activo
 )</value>
     <comment>Insert Evento</comment>
@@ -449,6 +453,7 @@ SET IdLugar = @IdLugar,
 	Direccion = @Direccion,
 	Fecha = @Fecha,
 	Flyer = @Flyer,
+	ContenidoFlyer = @ContenidoFlyer,
 	Activo = @Activo
 WHERE IdEvento = @IdEvento</value>
     <comment>Actualiza Evento</comment>

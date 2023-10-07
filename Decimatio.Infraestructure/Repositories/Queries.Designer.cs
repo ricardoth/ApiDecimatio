@@ -129,6 +129,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,E.Direccion
         ///      ,E.Fecha
         ///	  ,E.Flyer
+        ///	  ,E.ContenidoFlyer
         ///      ,E.Activo
         ///	  ,L.NombreLugar
         ///	  ,L.Ubicacion
@@ -144,12 +145,13 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT  [IdEvento]
+        ///   Busca una cadena traducida similar a SELECT [IdEvento]
         ///      ,[IdLugar]
         ///      ,[NombreEvento]
         ///      ,[Direccion]
         ///      ,[Fecha]
         ///      ,[Flyer]
+        ///      ,[ContenidoFlyer]
         ///      ,[Activo]
         ///  FROM [Decimatio].[dbo].[Evento].
         /// </summary>
@@ -417,6 +419,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	Direccion,
         ///	Fecha,
         ///	Flyer,
+        ///	ContenidoFlyer,
         ///	Activo
         ///)
         ///
@@ -426,6 +429,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	@Direccion,
         ///	@Fecha,
         ///	@Flyer,
+        ///	@ContenidoFlyer,
         ///	@Activo
         ///).
         /// </summary>
@@ -507,6 +511,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	Direccion = @Direccion,
         ///	Fecha = @Fecha,
         ///	Flyer = @Flyer,
+        ///	ContenidoFlyer = @ContenidoFlyer,
         ///	Activo = @Activo
         ///WHERE IdEvento = @IdEvento.
         /// </summary>

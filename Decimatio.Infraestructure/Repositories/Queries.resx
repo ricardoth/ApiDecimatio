@@ -351,6 +351,28 @@ WHERE T.IdTicket = @IdTicket</value>
   WHERE IdUsuario = @IdUsuario</value>
     <comment>Get Usuario por Id</comment>
   </data>
+  <data name="INSERT SECTOR" xml:space="preserve">
+    <value>INSERT INTO dbo.Sector(
+	IdEvento,
+	NombreSector,
+	CapacidadDisponible,
+	CapacidadActual,
+	CapacidadTotal,
+	Precio,
+	Activo
+)
+VALUES(
+	@IdEvento,
+	@NombreSector,
+	@CapacidadDisponible,
+	@CapacidadActual,
+	@CapacidadTotal,
+	@Precio,
+	@Activo
+	
+)</value>
+    <comment>Insert Sector</comment>
+  </data>
   <data name="INSERT_ACCESO_EVENTO_IN" xml:space="preserve">
     <value>INSERT INTO dbo.AccesoEvento
 (

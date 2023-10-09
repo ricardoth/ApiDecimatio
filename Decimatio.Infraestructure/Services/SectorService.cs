@@ -50,5 +50,17 @@
                 throw;
             }
         }
+
+        public async Task AddSector(Sector sector)
+        {
+            try
+            {
+                await _sectorRepository.AddSector(sector);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ha ocurrido un error al agregar el sector: {ex.Message}", ex);
+            }
+        }
     }
 }

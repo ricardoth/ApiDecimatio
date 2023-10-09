@@ -37,5 +37,11 @@
             var result = await _connection.FirstOrDefaultAsync<Sector>("GET_SECTOR_ID", Queries.GET_SECTOR_ID, dynamicParam);
             return result;
         }
+
+        public async Task<int> AddSector(Sector sector)
+        {
+            var result = await _connection.ExecuteAsync("INSERT_SECTOR", Queries.INSERT_SECTOR, sector);
+            return result.Value;
+        }
     }
 }

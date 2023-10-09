@@ -456,6 +456,33 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO dbo.Sector(
+        ///	IdEvento,
+        ///	NombreSector,
+        ///	CapacidadDisponible,
+        ///	CapacidadActual,
+        ///	CapacidadTotal,
+        ///	Precio,
+        ///	Activo
+        ///)
+        ///VALUES(
+        ///	@IdEvento,
+        ///	@NombreSector,
+        ///	@CapacidadDisponible,
+        ///	@CapacidadActual,
+        ///	@CapacidadTotal,
+        ///	@Precio,
+        ///	@Activo
+        ///	
+        ///).
+        /// </summary>
+        internal static string INSERT_SECTOR {
+            get {
+                return ResourceManager.GetString("INSERT SECTOR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a INSERT INTO [dbo].[Ticket]
         ///           ([IdUsuario]
         ///           ,[IdEvento]

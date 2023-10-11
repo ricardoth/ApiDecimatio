@@ -69,5 +69,40 @@
             var response = new ApiResponse<SectorDto>(sectorDto);
             return Ok(response);
         }
+
+        [HttpPut]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Put(int id, SectorDto sectorDto) 
+        {
+            if (id <= 0)
+                return NotFound();
+
+            var sector = _mapper.Map<Sector>(sectorDto);
+            sector.IdSector = id;
+
+            var validation = _validator.Validate(sector);
+            if (!validation.IsValid)
+                return BadRequest(validation.Errors);
+
+            var result = await _sectorService.UpdateSector(sector);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id <= 0)
+                return NotFound();
+
+            var result = await _sectorService.DeleteSector(id);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
+        }
     }
 }

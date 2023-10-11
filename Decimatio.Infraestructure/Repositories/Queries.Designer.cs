@@ -81,6 +81,17 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE dbo.Sector
+        ///SET 	Activo = 0
+        ///WHERE 	IdSector = @IdSector.
+        /// </summary>
+        internal static string DELETE_SECTOR {
+            get {
+                return ResourceManager.GetString("DELETE_SECTOR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a UPDATE dbo.Ticket
         ///SET Activo = @Activo,
         ///FechaModified = GETDATE()
@@ -556,6 +567,23 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string UPDATE_MEDIO_PAGO {
             get {
                 return ResourceManager.GetString("UPDATE_MEDIO_PAGO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE dbo.Sector
+        ///SET 	IdEvento = @IdEvento,
+        ///	NombreSector = @NombreSector,
+        ///	CapacidadDisponible = @CapacidadDisponible,
+        ///	CapacidadActual = @CapacidadActual,
+        ///	CapacidadTotal = @CapacidadTotal,
+        ///	Precio = @Precio,
+        ///	Activo = @Activo
+        ///WHERE 	IdSector = @IdSector.
+        /// </summary>
+        internal static string UPDATE_SECTOR {
+            get {
+                return ResourceManager.GetString("UPDATE_SECTOR", resourceCulture);
             }
         }
         

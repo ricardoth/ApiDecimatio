@@ -46,8 +46,7 @@
             }
             catch (Exception ex)
             {
-
-                throw;
+                throw new Exception($"No se pudo obtener los sectores: {ex.Message}");
             }
         }
 
@@ -60,6 +59,31 @@
             catch (Exception ex)
             {
                 throw new Exception($"Ha ocurrido un error al agregar el sector: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<bool> UpdateSector(Sector sector)
+        {
+            try
+            {
+                var result = await _sectorRepository.UpdateSector(sector);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ha ocurrido un error al actualizar el sector: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<bool> DeleteSector(int idSector)
+        {
+            try
+            {
+                return await _sectorRepository.DeleteSector(idSector);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ha ocurrido un error al eliminar el sector: {ex.Message}", ex);
             }
         }
     }

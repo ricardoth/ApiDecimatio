@@ -127,6 +127,12 @@ WHERE IdEvento = @IdEvento</value>
     <value>DELETE FROM dbo.MedioPago WHERE IdMedioPago = @IdMedioPago</value>
     <comment>Eliminar MedioPago</comment>
   </data>
+  <data name="DELETE_SECTOR" xml:space="preserve">
+    <value>UPDATE dbo.Sector
+SET 	Activo = 0
+WHERE 	IdSector = @IdSector</value>
+    <comment>Elimina un Sector (Soft Delete)</comment>
+  </data>
   <data name="DELETE_TICKET" xml:space="preserve">
     <value>UPDATE dbo.Ticket
 SET Activo = @Activo,
@@ -485,6 +491,18 @@ WHERE IdEvento = @IdEvento</value>
            ,[Descripcion] = @Descripcion
            ,[Activo] = @Activo WHERE IdMedioPago = @IdMedioPago</value>
     <comment>Actualiza MedioPago</comment>
+  </data>
+  <data name="UPDATE_SECTOR" xml:space="preserve">
+    <value>UPDATE dbo.Sector
+SET 	IdEvento = @IdEvento,
+	NombreSector = @NombreSector,
+	CapacidadDisponible = @CapacidadDisponible,
+	CapacidadActual = @CapacidadActual,
+	CapacidadTotal = @CapacidadTotal,
+	Precio = @Precio,
+	Activo = @Activo
+WHERE 	IdSector = @IdSector</value>
+    <comment>Actualiza un Sector</comment>
   </data>
   <data name="VALIDAR_ACCESO_TICKET" xml:space="preserve">
     <value>dbo.sp_ValidarTicket @IdTicket,  @Rut, @Dv, @IdEvento</value>

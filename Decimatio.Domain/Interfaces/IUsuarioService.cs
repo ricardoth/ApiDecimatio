@@ -2,7 +2,7 @@
 {
     public interface IUsuarioService
     {
-        Task<IEnumerable<Usuario>> GetAllUsers();
+        Task<PagedList<Usuario>> GetAllUsers(UsuarioQueryFilter filtros);
         Task<IEnumerable<Usuario>> GetAllUsersFilter(string filtro);
         Task<Usuario> GetById(int idUsuario);
     }

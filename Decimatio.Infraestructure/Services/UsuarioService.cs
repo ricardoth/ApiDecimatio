@@ -3,23 +3,32 @@
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly PaginationOptions _paginationOptions;
 
-        public UsuarioService(IUsuarioRepository usuarioRepository) 
+        public UsuarioService(IUsuarioRepository usuarioRepository, IOptions<PaginationOptions> paginationOptions) 
         {
             _usuarioRepository = usuarioRepository;
+            _paginationOptions = paginationOptions.Value;
         }
 
-        public async Task<IEnumerable<Usuario>> GetAllUsers()
+        public async Task<PagedList<Usuario>> GetAllUsers(UsuarioQueryFilter filtros)
         {
+            filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
+            filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
+
             try
             {
-                var result = await _usuarioRepository.GetAllUsers();
-                return result;
+                var usuarios = await _usuarioRepository.GetAllUsers();
+
+                if (filtros.IdUsuario > 0)
+                    usuarios = usuarios.Where(x => x.IdUsuario == filtros.IdUsuario);
+
+                var pagedUsuarios = PagedList<Usuario>.Create(usuarios, filtros.PageNumber, filtros.PageSize);
+                return pagedUsuarios;
             }
             catch (Exception ex)
             {
-
-                throw;
+                throw new Exception($"Ha ocurrido un error en UsuarioService {ex.Message}", ex);
             }
         }
 
@@ -32,7 +41,6 @@
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
@@ -50,5 +58,7 @@
                 throw;
             }
         }
+
+        
     }
 }

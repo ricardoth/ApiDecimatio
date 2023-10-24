@@ -17,12 +17,30 @@
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] UsuarioQueryFilter filtros)
         {
-            var result = await _usuarioService.GetAllUsers();
-            if (!result.Any()) return BadRequest();
+            var usuarios = await _usuarioService.GetAllUsers(filtros);
+            if (usuarios == null)
+                return BadRequest("No se encontraron registros");
 
-            var response = new ApiResponse<IEnumerable<Usuario>>(result);
+            var metaData = new MetaData
+            {
+                TotalCount = usuarios.TotalCount,
+                PageSize = usuarios.PageSize,
+                CurrentPage = usuarios.CurrentPage,
+                TotalPages = usuarios.TotalPages,
+                HasNextPage = usuarios.HasNextPage,
+                HasPreviousPage = usuarios.HasPreviousPage,
+                NextPageUrl = "",// _uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString(),
+                PreviousPageUrl = "",//_uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString()
+            };
+
+            var response = new ApiResponse<IEnumerable<Usuario>>(usuarios)
+            {
+                Meta = metaData
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
             return Ok(response);
         }
 
@@ -46,7 +64,7 @@
         public async Task<IActionResult> Get([FromQuery]string? filtro)
         {
             var result = await _usuarioService.GetAllUsersFilter(filtro);
-            //if (!result.Any()) return BadRequest();
+            if (result == null) return BadRequest("No se encontró ningún usuario");
 
             var response = new ApiResponse<IEnumerable<Usuario>>(result);
             return Ok(response);

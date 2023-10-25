@@ -2,17 +2,17 @@
 {
     public class SectorRepository : ISectorRepository
     {
-        private readonly IDataBaseConnection _connection;
+        private readonly DataBaseConfig _connection;
 
-        public SectorRepository(IDataBaseConnection connection)
+        public SectorRepository(DataBaseConfig connection)
         {
-            _connection = connection;
+            _connection = connection;       
         }
 
         public async Task<IEnumerable<Sector>> GetAllSectores()
         {
-            var result = await _connection.GetListAsync<Sector>("GET_ALL_SECTORES", Queries.GET_SECTORES);
-            return result;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryAsync<Sector>(Queries.GET_SECTORES);
         }
 
         public async Task<IEnumerable<Sector>> GetSectoresByEvento(int idEvento)
@@ -22,8 +22,8 @@
                 { "@IdEvento", idEvento}            
             };
             var dynamicParam = new DynamicParameters(dictionary);
-            var result = await _connection.GetListAsync<Sector>("GET_SECTORES_BY_EVENTO", Queries.GET_SECTORES_BY_EVENTO, dynamicParam);
-            return result;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryAsync<Sector>(Queries.GET_SECTORES_BY_EVENTO, dynamicParam);
         }
 
         public async Task<Sector> GetById(int idSector)
@@ -34,14 +34,14 @@
             };
 
             var dynamicParam = new DynamicParameters( dictionary);
-            var result = await _connection.FirstOrDefaultAsync<Sector>("GET_SECTOR_ID", Queries.GET_SECTOR_ID, dynamicParam);
-            return result;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryFirstOrDefaultAsync<Sector>(Queries.GET_SECTOR_ID, dynamicParam);
         }
 
         public async Task<int> AddSector(Sector sector)
         {
-            var result = await _connection.ExecuteAsync("INSERT_SECTOR", Queries.INSERT_SECTOR, sector);
-            return result.Value;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteAsync(Queries.INSERT_SECTOR, sector);
         }
 
         public async Task<bool> UpdateSector(Sector sector)
@@ -59,14 +59,14 @@
             };
 
             var dynamicParam = new DynamicParameters(dictionary);
-            var result = await _connection.ExecuteScalar<bool>("UPDATE_SECTOR", Queries.UPDATE_SECTOR, dynamicParam);
-            return result;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteScalarAsync<bool>(Queries.UPDATE_SECTOR, dynamicParam);
         }
 
         public async Task<bool> DeleteSector(int idSector)
         {
-            var result = await _connection.ExecuteScalar<bool>("DELETE_SECTOR", Queries.DELETE_SECTOR, new { IdSector = idSector });
-            return result;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteScalarAsync<bool>(Queries.DELETE_SECTOR, new { IdSector = idSector });
         }
     }
 }

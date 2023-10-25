@@ -1,6 +1,5 @@
 ﻿global using Decimatio.Domain.Entities;
 global using Decimatio.Infraestructure.Connection;
-global using Decimatio.Infraestructure.Contracts;
 global using Decimatio.Infraestructure.Repositories;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;

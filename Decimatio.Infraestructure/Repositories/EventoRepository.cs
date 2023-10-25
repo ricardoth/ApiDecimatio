@@ -2,35 +2,45 @@
 {
     public class EventoRepository : IEventoRepository
     {
-        private readonly IDataBaseConnection _connection;
+        private readonly DataBaseConfig _connection;
 
-        public EventoRepository(IDataBaseConnection connection)
+        public EventoRepository(DataBaseConfig connection)
         {
-            _connection = connection;
+            _connection = connection;        
         }
 
         public async Task<IEnumerable<Evento>> GetAllEventos()
         {
-            var result = await _connection.GetListAsync<Evento>("GET_EVENTOS", Queries.GET_EVENTOS);
-            return result;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryAsync<Evento>(Queries.GET_EVENTOS);
         }
 
         public async Task<Evento> GetById(int idEvento)
         {
-            var result = await _connection.FirstOrDefaultEventoWithObjectAsync<Evento>("GET_EVENTO_ID", Queries.GET_EVENTO_ID, idEvento);
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            var result = (await conn.QueryAsync<Evento, Lugar, Evento>(
+                Queries.GET_EVENTO_ID,
+                 (evento, lugar) =>
+                 {
+                     evento.Lugar = lugar;
+                     return evento;
+                 },
+                new { IdEvento = idEvento },
+                splitOn: "NombreLugar"
+                )).FirstOrDefault();
             return result;
         }
 
         public async Task<int> AddEvento(Evento evento)
         {
-            var result = await _connection.ExecuteAsync("INSERT_EVENTO", Queries.INSERT_EVENTO, evento);
-            return result.Value;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteAsync(Queries.INSERT_EVENTO, evento);
         }
 
         public async Task<bool> DeleteEvento(int idEvento)
         {
-            var result = await _connection.ExecuteScalar<bool>("DELETE_EVENTO", Queries.DELETE_EVENTO, new { IdEvento = idEvento });
-            return result;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteScalarAsync<bool>(Queries.DELETE_EVENTO, new { IdEvento = idEvento });
         }
 
         public async Task<bool> UpdateEvento(Evento evento)
@@ -48,8 +58,8 @@
             };
 
             var dynamicParam = new DynamicParameters(dictionary);
-            var result = await _connection.ExecuteScalar<bool>("UPDATE_EVENTO", Queries.UPDATE_EVENTO, dynamicParam);
-            return result;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteScalarAsync<bool>(Queries.UPDATE_EVENTO, dynamicParam);
         }
     }
 }

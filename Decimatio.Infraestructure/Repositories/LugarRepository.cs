@@ -2,16 +2,17 @@
 {
     public class LugarRepository : ILugarRepository
     {
-        private readonly IDataBaseConnection _connection;
+        private readonly DataBaseConfig _connection;
 
-        public LugarRepository(IDataBaseConnection connection)
+        public LugarRepository(DataBaseConfig connection)
         {
-            _connection = connection;                
+            _connection = connection;
         }
 
         public async Task<IEnumerable<Lugar>> GetAllLugares()
         {
-            return await _connection.GetListAsync<Lugar>("GET_LUGARES", Queries.GET_LUGARES);
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryAsync<Lugar>(Queries.GET_LUGARES);
         }
     }
 }

@@ -2,29 +2,29 @@
 {
     public class MedioPagoRepository : IMedioPagoRepository
     {
-        private IDataBaseConnection _connection;
+        private readonly DataBaseConfig _connection;
 
-        public MedioPagoRepository(IDataBaseConnection connection)
+        public MedioPagoRepository(DataBaseConfig connection)
         {
             _connection = connection;
         }
-        
 
         public async Task<IEnumerable<MedioPago>> GetMedioPagos()
         {
-            var result = await _connection.GetListAsync<MedioPago>("GET_MEDIOS_PAGOS", Queries.GET_MEDIOS_PAGOS);
-            return result;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryAsync<MedioPago>(Queries.GET_MEDIOS_PAGOS);
         }
 
         public async Task AddMedioPago(MedioPago medioPago)
         {
-            await _connection.ExecuteScalar("INSERT_MEDIO_PAGO", Queries.INSERT_MEDIO_PAGO, medioPago);
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            await conn.ExecuteScalarAsync<long?>(Queries.INSERT_MEDIO_PAGO, medioPago);
         }
 
         public async Task<MedioPago> GetMedioPago(int id)
         {
-            var result = await _connection.FirstOrDefaultAsync<MedioPago>("GET_MEDIO_PAGO", Queries.GET_MEDIO_PAGO,  new { IdMedioPago = id });
-            return result;
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryFirstOrDefaultAsync<MedioPago>(Queries.GET_MEDIO_PAGO, new { IdMedioPago = id });
         }
 
         public async Task<int> DeleteMedioPago(int id)

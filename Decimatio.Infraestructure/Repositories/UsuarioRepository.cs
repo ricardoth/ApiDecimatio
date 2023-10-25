@@ -11,9 +11,7 @@
 
         public async Task<IEnumerable<Usuario>> GetAllUsers()
         {
-           
             using var conn = new SqlConnection(_connection.ConnectionString);
-            conn.Open();
 
             var result = (await conn.QueryAsync<Usuario, TipoUsuario, Usuario>(
                 Queries.GET_USUARIOS,
@@ -36,7 +34,6 @@
             };
             var dynamicParam = new DynamicParameters(dictionary);
             using var conn = new SqlConnection(_connection.ConnectionString);
-            conn.Open();
             return await conn.QueryFirstOrDefaultAsync<Usuario>(Queries.GET_USUARIO_ID, dynamicParam);
         }
 
@@ -50,7 +47,6 @@
             var dynamicParam = new DynamicParameters(dictionary);
 
             using var conn = new SqlConnection(_connection.ConnectionString);
-            conn.Open();
 
             var result = (await conn.QueryAsync<Usuario>(
                 Queries.GET_USUARIOS_FILTRO,

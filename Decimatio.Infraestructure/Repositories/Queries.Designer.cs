@@ -341,19 +341,20 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT [IdUsuario]
+        ///   Busca una cadena traducida similar a SELECT U.[IdUsuario]
         ///      ,U.[IdTipoUsuario]
-        ///	  ,NombreTipoUsuario
-        ///      ,[Rut]
-        ///      ,[DV]
-        ///      ,[Nombres]
-        ///      ,[ApellidoP]
-        ///      ,[ApellidoM]
-        ///      ,[Direccion]
-        ///      ,[Telefono]
-        ///      ,[Correo]
+        ///      ,U.[Rut]
+        ///      ,U.[DV]
+        ///      ,U.[Nombres]
+        ///      ,U.[ApellidoP]
+        ///      ,U.[ApellidoM]
+        ///      ,U.[Direccion]
+        ///      ,U.[Telefono]
+        ///      ,U.[Correo]
         ///      ,U.[Activo]
         ///      ,U.[FechaCreacion]
+        ///	  ,TU.IdTipoUsuario
+        ///	  ,TU.NombreTipoUsuario
         ///  FROM [Decimatio].[dbo].[Usuario] U
         ///	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario.
         /// </summary>

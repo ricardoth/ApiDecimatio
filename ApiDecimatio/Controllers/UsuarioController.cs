@@ -31,8 +31,8 @@
                 TotalPages = usuarios.TotalPages,
                 HasNextPage = usuarios.HasNextPage,
                 HasPreviousPage = usuarios.HasPreviousPage,
-                NextPageUrl = "",// _uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString(),
-                PreviousPageUrl = "",//_uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString()
+                NextPageUrl = "",
+                PreviousPageUrl = "",
             };
 
             var response = new ApiResponse<IEnumerable<Usuario>>(usuarios)

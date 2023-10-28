@@ -12,7 +12,13 @@
         public async Task<IEnumerable<Evento>> GetAllEventos()
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.QueryAsync<Evento>(Queries.GET_EVENTOS);
+            return (await conn.QueryAsync<Evento, Lugar, Evento>(Queries.GET_EVENTOS,
+                (evento, lugar) => { 
+                    evento.Lugar = lugar;
+                    return evento;
+                },
+                splitOn: "IdLugar"
+                )).ToList();
         }
 
         public async Task<Evento> GetById(int idEvento)

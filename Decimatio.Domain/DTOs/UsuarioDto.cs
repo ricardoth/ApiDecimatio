@@ -3,6 +3,7 @@
     public class UsuarioDto
     {
         public long IdUsuario { get; set; }
+        public int IdTipoUsuario { get; set; }
         public int Rut { get; set; }
         public string? DV { get; set; }
         public string? Nombres { get; set; }
@@ -11,6 +12,6 @@
         public string? Direccion { get; set; }
         public string? Telefono { get; set; }
         public string? Correo { get; set; }
-        public TipoUsuarioDto TipoUsuario { get; set; }
+        public TipoUsuarioDto? TipoUsuario { get; set; }
     }
 }

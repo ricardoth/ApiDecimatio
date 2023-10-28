@@ -12,18 +12,26 @@
         public async Task<IEnumerable<Sector>> GetAllSectores()
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.QueryAsync<Sector>(Queries.GET_SECTORES);
+            return (await conn.QueryAsync<Sector, Evento, Sector>(
+                Queries.GET_SECTORES,
+                (sector, evento) => {
+                    sector.Evento = evento;
+                    return sector;
+                },
+                splitOn: "IdEvento"
+                )).ToList();
         }
 
         public async Task<IEnumerable<Sector>> GetSectoresByEvento(int idEvento)
         {
-            var dictionary = new Dictionary<string, object>
-            {
-                { "@IdEvento", idEvento}            
-            };
-            var dynamicParam = new DynamicParameters(dictionary);
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.QueryAsync<Sector>(Queries.GET_SECTORES_BY_EVENTO, dynamicParam);
+            return (await conn.QueryAsync<Sector, Evento, Sector>(Queries.GET_SECTORES_BY_EVENTO, 
+                (sector, evento) => {
+                    sector.Evento = evento;
+                    return sector;
+                },
+                new { IdEvento = idEvento },
+                splitOn: "IdEvento")).ToList();
         }
 
         public async Task<Sector> GetById(int idSector)

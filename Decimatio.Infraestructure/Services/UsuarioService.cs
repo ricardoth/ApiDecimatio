@@ -54,11 +54,46 @@
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
 
-        
+        public async Task<bool> UpdateUsuario(Usuario usuario)
+        {
+            try
+            {
+                var result = await _usuarioRepository.UpdateUsuario(usuario);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task AddUsuario(Usuario usuario)
+        {
+            try
+            {
+                await _usuarioRepository.AddUsuario(usuario);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteUsuario(int idUsuario)
+        {
+            try
+            {
+                var result = await _usuarioRepository.DeleteUsuario(idUsuario);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

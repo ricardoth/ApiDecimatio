@@ -1,7 +1,4 @@
-﻿using PuppeteerSharp.Input;
-using static Org.BouncyCastle.Math.EC.ECCurve;
-
-namespace Decimatio.Common.Services
+﻿namespace Decimatio.Common.Services
 {
     public class QRGeneratorService : IQRGeneratorService
     {
@@ -15,7 +12,6 @@ namespace Decimatio.Common.Services
         public Bitmap GenerateQRCodeTicket<T>(T obj)
         { 
             string jsonString = JsonSerializer.Serialize(obj);
-            //string jsonString = JsonConvert.SerializeObject(obj);
             string sha256Hash = EncryptTicketQR(jsonString);
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
@@ -96,7 +92,6 @@ namespace Decimatio.Common.Services
 
                 aesAlg.Key = keyBytes;
                 aesAlg.IV = ivBytes;
-
 
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 

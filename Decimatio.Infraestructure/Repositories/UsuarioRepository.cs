@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Repositories
+﻿using Decimatio.Domain.Entities;
+
+namespace Decimatio.Infraestructure.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
@@ -54,6 +56,60 @@
                 )).Distinct().ToList();
 
             return result;
+        }
+
+        public async Task AddUsuario(Usuario usuario)
+        {
+            var dictionary = new Dictionary<string, object>()
+            {
+                { "@IdTipoUsuario", usuario.IdTipoUsuario },
+                { "@Rut", usuario.Rut },
+                { "@Dv", usuario.DV },
+                { "@Nombres", usuario.Nombres },
+                { "@ApellidoP", usuario.ApellidoP },
+                { "@ApellidoM", usuario.ApellidoM },
+                { "@Direccion", usuario.Direccion },
+                { "@Telefono", usuario.Telefono },
+                { "@Correo", usuario.Correo },
+                { "@Activo", usuario.Activo },
+            };
+
+            var dynamicParam = new DynamicParameters(dictionary);
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            await conn.QueryAsync(Queries.INSERT_USUARIO, dynamicParam);
+        }
+
+        public async Task<bool> UpdateUsuario(Usuario usuario)
+        {
+            var dictionary = new Dictionary<string, object>()
+            {
+                { "@IdUsuario", usuario.IdUsuario},
+                { "@IdTipoUsuario", usuario.IdTipoUsuario },
+                { "@Rut", usuario.Rut },
+                { "@Dv", usuario.DV },
+                { "@Nombres", usuario.Nombres },
+                { "@ApellidoP", usuario.ApellidoP },
+                { "@ApellidoM", usuario.ApellidoM },
+                { "@Direccion", usuario.Direccion },
+                { "@Telefono", usuario.Telefono },
+                { "@Correo", usuario.Correo },
+                { "@Activo", usuario.Activo },
+            };
+
+            var dynamicParam = new DynamicParameters(dictionary);
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteScalarAsync<bool>(Queries.UPDATE_USUARIO, dynamicParam);
+        }
+
+        public async Task<bool> DeleteUsuario(int idUsuario)
+        {
+            var dictionary = new Dictionary<string, object>()
+            {
+                { "@IdUsuario", idUsuario},
+            };
+            var dynamicParam = new DynamicParameters(dictionary);
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteScalarAsync<bool>(Queries.DELETE_USUARIO, dynamicParam);
         }
     }
 }

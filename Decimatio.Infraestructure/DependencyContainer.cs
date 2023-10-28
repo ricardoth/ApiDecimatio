@@ -15,6 +15,7 @@
             services.AddScoped<IEventoRepository, EventoRepository>();
             services.AddScoped<IAccesoEventoRepository, AccesoEventoRepository>();
             services.AddScoped<ILugarRepository, LugarRepository>();
+            services.AddScoped<ITipoUsuarioRepository, TipoUsuarioRepository>();
 
             services.AddScoped<IMedioPagoService, MedioPagoService>();
             services.AddScoped<ITicketService, TicketService>();
@@ -23,6 +24,7 @@
             services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<IAccesoEventoService, AccesoEventoService>();
             services.AddScoped<ILugarService, LugarService>();
+            services.AddScoped<ITipoUsuarioService, TipoUsuarioService>();
 
             //Commons & Configurations
             services.AddScoped<IQRGeneratorService, QRGeneratorService>();

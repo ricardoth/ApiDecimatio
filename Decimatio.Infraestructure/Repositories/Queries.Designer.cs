@@ -108,6 +108,18 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE [dbo].[Usuario]
+        ///   SET
+        ///       [Activo] = 0
+        /// WHERE IdUsuario = @IdUsuario.
+        /// </summary>
+        internal static string DELETE_USUARIO {
+            get {
+                return ResourceManager.GetString("DELETE_USUARIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT 
         ///	   AE.IdAccesoEvento
         ///      ,AE.IdTicket
@@ -156,15 +168,19 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT [IdEvento]
-        ///      ,[IdLugar]
-        ///      ,[NombreEvento]
-        ///      ,[Direccion]
-        ///      ,[Fecha]
-        ///      ,[Flyer]
-        ///      ,[ContenidoFlyer]
-        ///      ,[Activo]
-        ///  FROM [Decimatio].[dbo].[Evento].
+        ///   Busca una cadena traducida similar a SELECT IdEvento
+        ///      ,E.IdLugar
+        ///      ,NombreEvento
+        ///      ,Direccion
+        ///      ,Fecha
+        ///      ,Flyer
+        ///      ,ContenidoFlyer
+        ///      ,E.Activo
+        ///	  ,L.IdLugar
+        ///	  ,L.NombreLugar
+        ///	  ,L.Numeracion
+        ///  FROM dbo.Evento E
+        ///	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar.
         /// </summary>
         internal static string GET_EVENTOS {
             get {
@@ -260,7 +276,10 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,S.[CapacidadTotal]
         ///	  ,S.Precio
         ///      ,S.[Activo]
-        ///  FROM [Decimatio].[dbo].[Sector] S.
+        ///	  ,E.IdEvento
+        ///	  ,E.NombreEvento
+        ///  FROM [Decimatio].[dbo].[Sector] S
+        ///	INNER JOIN dbo.Evento E ON E.IdEvento = S.IdEvento.
         /// </summary>
         internal static string GET_SECTORES {
             get {
@@ -277,8 +296,10 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,S.[CapacidadTotal]
         ///      ,S.Precio
         ///      ,S.[Activo]
+        ///	  ,E.IdEvento
+        ///	  ,E.NombreEvento
         ///  FROM [Decimatio].[dbo].[Sector] S
-        ///	JOIN Evento E ON E.IdEvento = S.IdEvento
+        ///	INNER JOIN Evento E ON E.IdEvento = S.IdEvento
         ///  WHERE E.IdEvento = @IdEvento.
         /// </summary>
         internal static string GET_SECTORES_BY_EVENTO {
@@ -315,6 +336,18 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string GET_TICKETS {
             get {
                 return ResourceManager.GetString("GET_TICKETS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT [IdTipoUsuario]
+        ///      ,[NombreTipoUsuario]
+        ///      ,[Activo]
+        ///  FROM [dbo].[TipoUsuario].
+        /// </summary>
+        internal static string GET_TIPO_USUARIO {
+            get {
+                return ResourceManager.GetString("GET_TIPO_USUARIO", resourceCulture);
             }
         }
         
@@ -544,6 +577,37 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO [dbo].[Usuario]
+        ///           ([IdTipoUsuario]
+        ///           ,[Rut]
+        ///           ,[DV]
+        ///           ,[Nombres]
+        ///           ,[ApellidoP]
+        ///           ,[ApellidoM]
+        ///           ,[Direccion]
+        ///           ,[Telefono]
+        ///           ,[Correo]
+        ///           ,[Activo]
+        ///           ,[FechaCreacion])
+        ///     VALUES
+        ///           (@IdTipoUsuario
+        ///           ,@Rut
+        ///           ,@Dv
+        ///           ,@Nombres
+        ///           ,@ApellidoP
+        ///           ,@ApellidoM
+        ///           ,@Direccion
+        ///           ,@Telefono
+        ///           ,@Correo
+        ///        [resto de la cadena truncado]&quot;;.
+        /// </summary>
+        internal static string INSERT_USUARIO {
+            get {
+                return ResourceManager.GetString("INSERT_USUARIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a UPDATE dbo.Evento
         ///SET IdLugar = @IdLugar,
         ///	NombreEvento = @NombreEvento,
@@ -585,6 +649,27 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string UPDATE_SECTOR {
             get {
                 return ResourceManager.GetString("UPDATE_SECTOR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE [dbo].[Usuario]
+        ///   SET [IdTipoUsuario] = @IdTipoUsuario
+        ///      ,[Rut] = @Rut
+        ///      ,[DV] = @Dv
+        ///      ,[Nombres] = @Nombres
+        ///      ,[ApellidoP] = @ApellidoP
+        ///      ,[ApellidoM] = @ApellidoM
+        ///      ,[Direccion] = @Direccion
+        ///      ,[Telefono] = @Telefono
+        ///      ,[Correo] = @Correo
+        ///      ,[Activo] = @Activo
+        ///      ,[FechaCreacion] = GETDATE()
+        /// WHERE IdUsuario = @IdUsuario.
+        /// </summary>
+        internal static string UPDATE_USUARIO {
+            get {
+                return ResourceManager.GetString("UPDATE_USUARIO", resourceCulture);
             }
         }
         

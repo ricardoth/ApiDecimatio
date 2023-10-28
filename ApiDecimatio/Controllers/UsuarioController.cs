@@ -7,11 +7,13 @@
     {
         private readonly IUsuarioService _usuarioService;
         private readonly IMapper _mapper;
+        private readonly IValidator<Usuario> _validator;
 
-        public UsuarioController(IUsuarioService usuarioService, IMapper mapper)
+        public UsuarioController(IUsuarioService usuarioService, IMapper mapper, IValidator<Usuario> validator)
         {
             _usuarioService = usuarioService;
             _mapper = mapper;
+            _validator = validator;
         }
 
         [HttpGet]
@@ -68,7 +70,53 @@
 
             var response = new ApiResponse<IEnumerable<Usuario>>(result);
             return Ok(response);
+        }
 
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Post([FromBody] UsuarioDto usuarioDto)
+        { 
+            var usuario = _mapper.Map<Usuario>(usuarioDto);
+            var validationResult = _validator.Validate(usuario);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            await _usuarioService.AddUsuario(usuario);
+            var response = new ApiResponse<UsuarioDto>(usuarioDto);
+            return Ok(response);
+        }
+
+        [HttpPut]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Put(int id, UsuarioDto usuarioDto)
+        {
+            if (usuarioDto.IdUsuario <= 0)
+                return NotFound("No se encuentra el elemento");
+
+            var usuario = _mapper.Map<Usuario>(usuarioDto);
+            var validationResult = _validator.Validate(usuario);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            var result = await _usuarioService.UpdateUsuario(usuario);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id <= 0)
+                return NotFound("No se encuentra el elemento");
+            var result = await _usuarioService.DeleteUsuario(id); 
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
         }
     }
 }

@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "apis1": {
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/DecimatioWebApiapi/apis/DecimatioWebApi",
+      "apiEndpoint": "https://rdtotechdev.azure-api.net/",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/RDTOTechDev/apis/apidecimatio",
       "type": "apis.azure"
     }
   }

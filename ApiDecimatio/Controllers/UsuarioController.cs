@@ -93,10 +93,12 @@
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Put(int id, UsuarioDto usuarioDto)
         {
-            if (usuarioDto.IdUsuario <= 0)
+            if (id <= 0)
                 return NotFound("No se encuentra el elemento");
 
             var usuario = _mapper.Map<Usuario>(usuarioDto);
+            usuario.IdUsuario = id;
+
             var validationResult = _validator.Validate(usuario);
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors);
@@ -106,7 +108,7 @@
             return Ok(response);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]

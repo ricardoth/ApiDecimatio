@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.Entities;
-
-namespace Decimatio.Infraestructure.Repositories
+﻿namespace Decimatio.Infraestructure.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
@@ -28,7 +26,7 @@ namespace Decimatio.Infraestructure.Repositories
             return result;
         }
 
-        public async Task<Usuario> GetById(int idUsuario)
+        public async Task<Usuario> GetById(long idUsuario)
         {
             var dictionary = new Dictionary<string, object>
             {
@@ -101,7 +99,7 @@ namespace Decimatio.Infraestructure.Repositories
             return await conn.ExecuteScalarAsync<bool>(Queries.UPDATE_USUARIO, dynamicParam);
         }
 
-        public async Task<bool> DeleteUsuario(int idUsuario)
+        public async Task<bool> DeleteUsuario(long idUsuario)
         {
             var dictionary = new Dictionary<string, object>()
             {

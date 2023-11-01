@@ -45,7 +45,7 @@
             }
         }
 
-        public async Task<Usuario> GetById(int idUsuario)
+        public async Task<Usuario> GetById(long idUsuario)
         {
             try
             {
@@ -83,7 +83,7 @@
             }
         }
 
-        public async Task<bool> DeleteUsuario(int idUsuario)
+        public async Task<bool> DeleteUsuario(long idUsuario)
         {
             try
             {

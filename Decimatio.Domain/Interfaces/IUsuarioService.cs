@@ -4,9 +4,9 @@
     {
         Task<PagedList<Usuario>> GetAllUsers(UsuarioQueryFilter filtros);
         Task<IEnumerable<Usuario>> GetAllUsersFilter(string filtro);
-        Task<Usuario> GetById(int idUsuario);
+        Task<Usuario> GetById(long idUsuario);
         Task AddUsuario(Usuario usuario);
         Task<bool> UpdateUsuario(Usuario usuario);
-        Task<bool> DeleteUsuario(int idUsuario);
+        Task<bool> DeleteUsuario(long idUsuario);
     }
 }

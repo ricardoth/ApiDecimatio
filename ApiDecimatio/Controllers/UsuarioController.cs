@@ -1,4 +1,6 @@
-﻿namespace Decimatio.WebApi.Controllers
+﻿using Decimatio.Domain.Entities;
+
+namespace Decimatio.WebApi.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -53,7 +55,7 @@
         {
             var result = await _usuarioService.GetById(id);
             if (result == null)
-                return BadRequest();
+                return BadRequest("No se encuentra el elemento en la BD");
 
             var response = new ApiResponse<Usuario>(result);
             return Ok(response);
@@ -103,6 +105,10 @@
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors);
 
+            var userBd = await _usuarioService.GetById(usuario.IdUsuario);
+            if (userBd == null)
+                return BadRequest("El Usuario no existe en la BD");
+
             var result = await _usuarioService.UpdateUsuario(usuario);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
@@ -116,6 +122,11 @@
         {
             if (id <= 0)
                 return NotFound("No se encuentra el elemento");
+
+            var userBd = await _usuarioService.GetById(id);
+            if (userBd == null)
+                return BadRequest("El Usuario no existe en la BD");
+
             var result = await _usuarioService.DeleteUsuario(id); 
             var response = new ApiResponse<bool>(result);
             return Ok(response);

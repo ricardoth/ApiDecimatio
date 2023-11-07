@@ -5,5 +5,6 @@
         public long IdMedioPago { get; set; }
         public string NombreMedioPago { get; set; }
         public string Descripcion { get; set; }
+        public bool? Activo { get; set; }
     }
 }

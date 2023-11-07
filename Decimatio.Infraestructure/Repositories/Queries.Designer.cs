@@ -72,6 +72,18 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE [dbo].[Lugar]
+        ///   SET 
+        ///      [Activo] = 0
+        /// WHERE IdLugar = @IdLugar.
+        /// </summary>
+        internal static string DELETE_LUGAR {
+            get {
+                return ResourceManager.GetString("DELETE_LUGAR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a DELETE FROM dbo.MedioPago WHERE IdMedioPago = @IdMedioPago.
         /// </summary>
         internal static string DELETE_MEDIO_PAGO {
@@ -208,14 +220,47 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT [IdLugar]
-        ///      ,[IdComuna]
-        ///      ,[NombreLugar]
-        ///      ,[Ubicacion]
-        ///      ,[Numeracion]
-        ///      ,[FechaCreacion]
-        ///      ,[Activo]
-        ///  FROM [dbo].[Lugar].
+        ///   Busca una cadena traducida similar a SELECT L.IdLugar
+        ///      ,L.IdComuna
+        ///      ,L.NombreLugar
+        ///      ,L.Ubicacion
+        ///      ,L.Numeracion
+        ///      ,L.FechaCreacion
+        ///      ,L.Activo
+        ///	  ,C.IdComuna
+        ///	  ,C.IdRegion
+        ///	  ,C.NombreComuna
+        ///	  ,R.IdRegion
+        ///	  ,R.NombreRegion
+        ///	  ,R.Abreviatura
+        ///  FROM dbo.Lugar L
+        ///	  INNER JOIN dbo.Comuna C ON C.IdComuna = L.IdComuna
+        ///	  INNER JOIN dbo.Region R ON R.IdRegion = C.IdRegion
+        ///  WHERE L.IdLugar = @IdLugar.
+        /// </summary>
+        internal static string GET_LUGAR_ID {
+            get {
+                return ResourceManager.GetString("GET_LUGAR_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT L.IdLugar
+        ///      ,L.IdComuna
+        ///      ,L.NombreLugar
+        ///      ,L.Ubicacion
+        ///      ,L.Numeracion
+        ///      ,L.FechaCreacion
+        ///      ,L.Activo
+        ///	  ,C.IdComuna
+        ///	  ,C.IdRegion
+        ///	  ,C.NombreComuna
+        ///	  ,R.IdRegion
+        ///	  ,R.NombreRegion
+        ///	  ,R.Abreviatura
+        ///  FROM dbo.Lugar L
+        ///  INNER JOIN dbo.Comuna C ON C.IdComuna = L.IdComuna
+        ///  INNER JOIN dbo.Region R ON R.IdRegion = C.IdRegion.
         /// </summary>
         internal static string GET_LUGARES {
             get {
@@ -485,6 +530,28 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO [dbo].[Lugar]
+        ///           ([IdComuna]
+        ///           ,[NombreLugar]
+        ///           ,[Ubicacion]
+        ///           ,[Numeracion]
+        ///           ,[FechaCreacion]
+        ///           ,[Activo])
+        ///     VALUES
+        ///           (@IdComuna
+        ///           ,@NombreLugar
+        ///           ,@Ubicacion
+        ///           ,@Numeracion
+        ///           ,GETDATE()
+        ///           ,@Activo).
+        /// </summary>
+        internal static string INSERT_LUGAR {
+            get {
+                return ResourceManager.GetString("INSERT_LUGAR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a INSERT INTO [dbo].[MedioPago]
         ///           ([NombreMedioPago]
         ///           ,[Descripcion]
@@ -621,6 +688,22 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string UPDATE_EVENTO {
             get {
                 return ResourceManager.GetString("UPDATE_EVENTO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE [dbo].[Lugar]
+        ///   SET [IdComuna] = @IdComuna
+        ///      ,[NombreLugar] = @NombreLugar
+        ///      ,[Ubicacion] = @Ubicacion
+        ///      ,[Numeracion] = @Numeracion
+        ///      ,[FechaCreacion] = GETDATE()
+        ///      ,[Activo] = @Activo
+        /// WHERE IdLugar = @IdLugar.
+        /// </summary>
+        internal static string UPDATE_LUGAR {
+            get {
+                return ResourceManager.GetString("UPDATE_LUGAR", resourceCulture);
             }
         }
         

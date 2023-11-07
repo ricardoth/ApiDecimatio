@@ -123,6 +123,13 @@ SET Activo = 0
 WHERE IdEvento = @IdEvento</value>
     <comment>Elimina Evento (Soft delete)</comment>
   </data>
+  <data name="DELETE_LUGAR" xml:space="preserve">
+    <value>UPDATE [dbo].[Lugar]
+   SET 
+      [Activo] = 0
+ WHERE IdLugar = @IdLugar</value>
+    <comment>Elimina un Lugar (Soft Delete)</comment>
+  </data>
   <data name="DELETE_MEDIO_PAGO" xml:space="preserve">
     <value>DELETE FROM dbo.MedioPago WHERE IdMedioPago = @IdMedioPago</value>
     <comment>Eliminar MedioPago</comment>
@@ -223,15 +230,43 @@ WHERE T.IdTicket = @IdTicket</value>
     <comment>GET TICKET CON INFO USUARIO Y QR</comment>
   </data>
   <data name="GET_LUGARES" xml:space="preserve">
-    <value>SELECT [IdLugar]
-      ,[IdComuna]
-      ,[NombreLugar]
-      ,[Ubicacion]
-      ,[Numeracion]
-      ,[FechaCreacion]
-      ,[Activo]
-  FROM [dbo].[Lugar]</value>
+    <value>SELECT L.IdLugar
+      ,L.IdComuna
+      ,L.NombreLugar
+      ,L.Ubicacion
+      ,L.Numeracion
+      ,L.FechaCreacion
+      ,L.Activo
+	  ,C.IdComuna
+	  ,C.IdRegion
+	  ,C.NombreComuna
+	  ,R.IdRegion
+	  ,R.NombreRegion
+	  ,R.Abreviatura
+  FROM dbo.Lugar L
+  INNER JOIN dbo.Comuna C ON C.IdComuna = L.IdComuna
+  INNER JOIN dbo.Region R ON R.IdRegion = C.IdRegion</value>
     <comment>Get All Lugares</comment>
+  </data>
+  <data name="GET_LUGAR_ID" xml:space="preserve">
+    <value>SELECT L.IdLugar
+      ,L.IdComuna
+      ,L.NombreLugar
+      ,L.Ubicacion
+      ,L.Numeracion
+      ,L.FechaCreacion
+      ,L.Activo
+	  ,C.IdComuna
+	  ,C.IdRegion
+	  ,C.NombreComuna
+	  ,R.IdRegion
+	  ,R.NombreRegion
+	  ,R.Abreviatura
+  FROM dbo.Lugar L
+	  INNER JOIN dbo.Comuna C ON C.IdComuna = L.IdComuna
+	  INNER JOIN dbo.Region R ON R.IdRegion = C.IdRegion
+  WHERE L.IdLugar = @IdLugar</value>
+    <comment>Get Solo un Lugar</comment>
   </data>
   <data name="GET_MEDIOS_PAGOS" xml:space="preserve">
     <value>SELECT  [IdMedioPago]
@@ -448,6 +483,23 @@ VALUES (
 )</value>
     <comment>Insert Evento</comment>
   </data>
+  <data name="INSERT_LUGAR" xml:space="preserve">
+    <value>INSERT INTO [dbo].[Lugar]
+           ([IdComuna]
+           ,[NombreLugar]
+           ,[Ubicacion]
+           ,[Numeracion]
+           ,[FechaCreacion]
+           ,[Activo])
+     VALUES
+           (@IdComuna
+           ,@NombreLugar
+           ,@Ubicacion
+           ,@Numeracion
+           ,GETDATE()
+           ,@Activo)</value>
+    <comment>Insert Lugar</comment>
+  </data>
   <data name="INSERT_MEDIO_PAGO" xml:space="preserve">
     <value>INSERT INTO [dbo].[MedioPago]
            ([NombreMedioPago]
@@ -536,6 +588,17 @@ SET IdLugar = @IdLugar,
 	Activo = @Activo
 WHERE IdEvento = @IdEvento</value>
     <comment>Actualiza Evento</comment>
+  </data>
+  <data name="UPDATE_LUGAR" xml:space="preserve">
+    <value>UPDATE [dbo].[Lugar]
+   SET [IdComuna] = @IdComuna
+      ,[NombreLugar] = @NombreLugar
+      ,[Ubicacion] = @Ubicacion
+      ,[Numeracion] = @Numeracion
+      ,[FechaCreacion] = GETDATE()
+      ,[Activo] = @Activo
+ WHERE IdLugar = @IdLugar</value>
+    <comment>Actualiza un Lugar</comment>
   </data>
   <data name="UPDATE_MEDIO_PAGO" xml:space="preserve">
     <value>UPDATE dbo.MedioPago SET [NombreMedioPago] =@NombreMedioPago

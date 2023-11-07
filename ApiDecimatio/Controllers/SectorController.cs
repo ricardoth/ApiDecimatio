@@ -25,7 +25,9 @@
             var result = await _sectorService.GetAllSectores();
             if (!result.Any()) 
                 return BadRequest();
-            var response = new ApiResponse<IEnumerable<Sector>>(result);
+
+            var sectoresDtos = _mapper.Map<IEnumerable<SectorDto>>(result);
+            var response = new ApiResponse<IEnumerable<SectorDto>>(sectoresDtos);
             return Ok(response);
         }
 
@@ -37,9 +39,10 @@
             var result = await _sectorService.GetSectoresByEvento(idEvento);
             if (result == null) 
                 return BadRequest();
-            var response = new ApiResponse<IEnumerable<Sector>>(result);
-            return Ok(response);
 
+            var sectoresDto = _mapper.Map<IEnumerable<SectorDto>>(result);
+            var response = new ApiResponse<IEnumerable<SectorDto>>(sectoresDto);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
@@ -50,7 +53,9 @@
             var result = await _sectorService.GetById(id);  
             if (result == null)
                 return BadRequest();
-            var response = new ApiResponse<Sector>(result); 
+
+            var sectorDto = _mapper.Map<SectorDto>(result);
+            var response = new ApiResponse<SectorDto>(sectorDto); 
             return Ok(response);        
         }
 

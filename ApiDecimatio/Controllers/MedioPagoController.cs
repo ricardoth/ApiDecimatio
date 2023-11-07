@@ -20,7 +20,9 @@
             var result = await _medioPagoService.GetMediosPagosAsync();
             if (result == null) 
                 return BadRequest();
-            var response = new ApiResponse<IEnumerable<MedioPago>>(result);
+
+            var medioPagoDtos = _mapper.Map<IEnumerable<MedioPagoDto>>(result);
+            var response = new ApiResponse<IEnumerable<MedioPagoDto>>(medioPagoDtos);
             return Ok(response);
         }
 
@@ -30,9 +32,11 @@
             var result = await _medioPagoService.GetMedioPagoAsync(id);
             if (result == null)
                 return BadRequest();
-            return Ok(result);  
-        }
 
+            var medioPagoDto = _mapper.Map<MedioPagoDto>(result);
+            var response = new ApiResponse<MedioPagoDto>(medioPagoDto);
+            return Ok(response);  
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] MedioPago medioPago)
@@ -41,6 +45,5 @@
             return Ok(medioPago);
         }
 
-        
     }
 }

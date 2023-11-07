@@ -37,7 +37,9 @@
                 PreviousPageUrl = "",//_uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString()
             };
 
-            var response = new ApiResponse<IEnumerable<Ticket>>(tickets)
+            var ticketsDtos = _mapper.Map<IEnumerable<TicketDto>>(tickets);
+
+            var response = new ApiResponse<IEnumerable<TicketDto>>(ticketsDtos)
             {
                 Meta = metaData
             };
@@ -55,7 +57,8 @@
             if (ticket == null)
                 return BadRequest();
 
-            var response = new ApiResponse<TicketQR>(ticket);
+            var ticketQRDto = _mapper.Map<TicketQRDto>(ticket);
+            var response = new ApiResponse<TicketQRDto>(ticketQRDto);
             return Ok(response);
         }
 
@@ -72,7 +75,8 @@
             if (ticket == null)
                 return BadRequest();
 
-            var response = new ApiResponse<TicketQR>(ticket);
+            var ticketQRDto = _mapper.Map<TicketQRDto>(ticket);
+            var response = new ApiResponse<TicketQRDto>(ticketQRDto);
             return Ok(response);
 
         }

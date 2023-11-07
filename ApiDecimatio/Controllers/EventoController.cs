@@ -23,7 +23,9 @@
         {
             var result = await _eventoService.GetAllEventos();
             if (result == null) return BadRequest();
-            var response = new ApiResponse<IEnumerable<Evento>>(result);
+
+            var eventosDtos = _mapper.Map<IEnumerable<EventoDto>>(result);
+            var response = new ApiResponse<IEnumerable<EventoDto>>(eventosDtos);
             return Ok(response);
         }
 
@@ -40,7 +42,8 @@
             if (result == null)
                 return BadRequest();
 
-            var response = new ApiResponse<Evento>(result);
+            var eventoDto = _mapper.Map<EventoDto>(result);
+            var response = new ApiResponse<EventoDto>(eventoDto);
             return Ok(response);
         }
 

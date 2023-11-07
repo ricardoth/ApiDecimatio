@@ -11,5 +11,9 @@
         public decimal MontoTotal { get; set; }
         public DateTime FechaTicket { get; set; }
         public bool Activo { get; set; }
+        public UsuarioDto? Usuario { get; set; }
+        public EventoDto? Evento { get; set; }
+        public SectorDto? Sector { get; set; }
+        public MedioPagoDto? MedioPago { get; set; }
     }
 }

@@ -6,6 +6,7 @@
         {
             CreateMap<Ticket, TicketDto>().ReverseMap();
             CreateMap<Ticket, TicketBodyQRDto>().ReverseMap();
+            CreateMap<TicketQR, TicketQRDto>().ReverseMap();    
             CreateMap<Usuario, UsuarioDto>().ReverseMap();
             CreateMap<Evento, EventoDto>().ReverseMap();
             CreateMap<Evento, EventoPostDto>().ReverseMap();

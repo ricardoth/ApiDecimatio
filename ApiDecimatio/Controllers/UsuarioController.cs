@@ -39,7 +39,8 @@ namespace Decimatio.WebApi.Controllers
                 PreviousPageUrl = "",
             };
 
-            var response = new ApiResponse<IEnumerable<Usuario>>(usuarios)
+            var usuariosDtos = _mapper.Map<IEnumerable<UsuarioDto>>(usuarios);
+            var response = new ApiResponse<IEnumerable<UsuarioDto>>(usuariosDtos)
             {
                 Meta = metaData
             };
@@ -57,7 +58,8 @@ namespace Decimatio.WebApi.Controllers
             if (result == null)
                 return BadRequest("No se encuentra el elemento en la BD");
 
-            var response = new ApiResponse<Usuario>(result);
+            var usuarioDto = _mapper.Map<UsuarioDto>(result);
+            var response = new ApiResponse<UsuarioDto>(usuarioDto);
             return Ok(response);
         }
 
@@ -70,7 +72,8 @@ namespace Decimatio.WebApi.Controllers
             var result = await _usuarioService.GetAllUsersFilter(filtro);
             if (result == null) return BadRequest("No se encontró ningún usuario");
 
-            var response = new ApiResponse<IEnumerable<Usuario>>(result);
+            var usuariosDtos = _mapper.Map<IEnumerable<UsuarioDto>>(result);
+            var response = new ApiResponse<IEnumerable<UsuarioDto>>(usuariosDtos);
             return Ok(response);
         }
 

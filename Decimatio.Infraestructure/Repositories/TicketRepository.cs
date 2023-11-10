@@ -15,13 +15,13 @@ namespace Decimatio.Infraestructure.Repositories
         public async Task<long> AddTicket(Ticket ticket)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.ExecuteScalarAsync<long>(Queries.INSERT_TICKET, ticket);
+            return await conn.ExecuteScalarAsync<long>(Querys.INSERT_TICKET, ticket);
         }
 
         public async Task<int> AddTicketQR(TicketQR ticketQR)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.ExecuteAsync(Queries.INSERT_TICKETQR, ticketQR);
+            return await conn.ExecuteAsync(Querys.INSERT_TICKETQR, ticketQR);
         }
 
         public async Task<Ticket> GetInfoTicket(long idTicket)
@@ -29,7 +29,7 @@ namespace Decimatio.Infraestructure.Repositories
             var ticketDictionary = new Dictionary<long, Ticket>();
             using var conn = new SqlConnection(_connection.ConnectionString);
             var result = (await conn.QueryAsync<Ticket, Usuario, Evento, Sector, MedioPago, Lugar, Comuna, Ticket>(
-                Queries.GET_INFO_TICKET,
+                Querys.GET_INFO_TICKET,
                 (ticket, usuario, evento, sector, medioPago, lugar, comuna) =>
                 {
                     if (!ticketDictionary.TryGetValue(ticket.IdTicket, out var ticketEntry))
@@ -59,7 +59,7 @@ namespace Decimatio.Infraestructure.Repositories
             var ticketDictionary = new Dictionary<long, Ticket>();
             using var conn = new SqlConnection(_connection.ConnectionString);
             var result = (await conn.QueryAsync<Ticket, Usuario, Evento, Sector, MedioPago, Lugar, Comuna, Ticket>(
-                Queries.GET_TICKETS,
+                Querys.GET_TICKETS,
                 (ticket, usuario, evento, sector, medioPago, lugar, comuna) =>
                 {
                     if (!ticketDictionary.TryGetValue(ticket.IdTicket, out var ticketEntry))
@@ -88,7 +88,7 @@ namespace Decimatio.Infraestructure.Repositories
             var ticketDictionary = new Dictionary<long, TicketQR>();
             using var conn = new SqlConnection(_connection.ConnectionString);
             var ticket = (await conn.QueryAsync<TicketQR, Ticket, TicketQR>(
-                  Queries.GET_TICKET_ID,
+                  Querys.GET_TICKET_ID,
                   (ticketQR, ticket) =>
                   {
                       if (!ticketDictionary.TryGetValue(ticketQR.IdTicketQR, out var ticketEntry))
@@ -110,7 +110,7 @@ namespace Decimatio.Infraestructure.Repositories
         public async Task<bool> DeleteDownTicket(long idTicket, bool activo)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            var result = await conn.ExecuteAsync(Queries.DELETE_TICKET, new { IdTicket = idTicket, Activo = activo });
+            var result = await conn.ExecuteAsync(Querys.DELETE_TICKET, new { IdTicket = idTicket, Activo = activo });
             return result > 0;
         }
     }

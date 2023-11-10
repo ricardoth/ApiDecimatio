@@ -12,7 +12,7 @@
         public async Task<IEnumerable<Evento>> GetAllEventos()
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return (await conn.QueryAsync<Evento, Lugar, Evento>(Queries.GET_EVENTOS,
+            return (await conn.QueryAsync<Evento, Lugar, Evento>(Querys.GET_EVENTOS,
                 (evento, lugar) => { 
                     evento.Lugar = lugar;
                     return evento;
@@ -25,7 +25,7 @@
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
             var result = (await conn.QueryAsync<Evento, Lugar, Evento>(
-                Queries.GET_EVENTO_ID,
+                Querys.GET_EVENTO_ID,
                  (evento, lugar) =>
                  {
                      evento.Lugar = lugar;
@@ -40,13 +40,13 @@
         public async Task<int> AddEvento(Evento evento)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.ExecuteAsync(Queries.INSERT_EVENTO, evento);
+            return await conn.ExecuteAsync(Querys.INSERT_EVENTO, evento);
         }
 
         public async Task<bool> DeleteEvento(int idEvento)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.ExecuteScalarAsync<bool>(Queries.DELETE_EVENTO, new { IdEvento = idEvento });
+            return await conn.ExecuteScalarAsync<bool>(Querys.DELETE_EVENTO, new { IdEvento = idEvento });
         }
 
         public async Task<bool> UpdateEvento(Evento evento)
@@ -65,7 +65,7 @@
 
             var dynamicParam = new DynamicParameters(dictionary);
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.ExecuteScalarAsync<bool>(Queries.UPDATE_EVENTO, dynamicParam);
+            return await conn.ExecuteScalarAsync<bool>(Querys.UPDATE_EVENTO, dynamicParam);
         }
     }
 }

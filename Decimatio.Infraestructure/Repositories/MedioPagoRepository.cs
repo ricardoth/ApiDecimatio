@@ -12,19 +12,19 @@
         public async Task<IEnumerable<MedioPago>> GetMedioPagos()
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.QueryAsync<MedioPago>(Queries.GET_MEDIOS_PAGOS);
+            return await conn.QueryAsync<MedioPago>(Querys.GET_MEDIOS_PAGOS);
         }
 
         public async Task AddMedioPago(MedioPago medioPago)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            await conn.ExecuteScalarAsync<long?>(Queries.INSERT_MEDIO_PAGO, medioPago);
+            await conn.ExecuteScalarAsync<long?>(Querys.INSERT_MEDIO_PAGO, medioPago);
         }
 
         public async Task<MedioPago> GetMedioPago(int id)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.QueryFirstOrDefaultAsync<MedioPago>(Queries.GET_MEDIO_PAGO, new { IdMedioPago = id });
+            return await conn.QueryFirstOrDefaultAsync<MedioPago>(Querys.GET_MEDIO_PAGO, new { IdMedioPago = id });
         }
 
         public async Task<int> DeleteMedioPago(int id)

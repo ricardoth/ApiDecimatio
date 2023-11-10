@@ -22,14 +22,14 @@ namespace Decimatio.Infraestructure.Repositories {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Queries {
+    internal class Querys {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Queries() {
+        internal Querys() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Decimatio.Infraestructure.Repositories.Queries", typeof(Queries).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Decimatio.Infraestructure.Repositories.Querys", typeof(Querys).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -153,6 +153,21 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string GET_ACCESOS_TICKET {
             get {
                 return ResourceManager.GetString("GET_ACCESOS_TICKET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT 
+        ///	   IdComuna
+        ///      ,IdRegion
+        ///      ,NombreComuna
+        ///      ,Activo
+        ///  FROM dbo.Comuna
+        ///  WHERE IdRegion = @IdRegion.
+        /// </summary>
+        internal static string GET_COMUNAS_BY_REGION {
+            get {
+                return ResourceManager.GetString("GET_COMUNAS_BY_REGION", resourceCulture);
             }
         }
         
@@ -291,6 +306,20 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string GET_MEDIOS_PAGOS {
             get {
                 return ResourceManager.GetString("GET_MEDIOS_PAGOS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT IdRegion
+        ///      ,NumeroRegion
+        ///      ,Abreviatura
+        ///      ,NombreRegion
+        ///      ,Activo
+        ///  FROM Decimatio.dbo.Region.
+        /// </summary>
+        internal static string GET_REGIONES {
+            get {
+                return ResourceManager.GetString("GET_REGIONES", resourceCulture);
             }
         }
         

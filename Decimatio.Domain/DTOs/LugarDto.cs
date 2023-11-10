@@ -3,6 +3,7 @@
     public class LugarDto
     {
         public int IdLugar { get; set; }
+        public int IdComuna { get; set; }
         public string? NombreLugar { get; set; }
         public string? Ubicacion { get; set; }
         public string? Numeracion { get; set; }

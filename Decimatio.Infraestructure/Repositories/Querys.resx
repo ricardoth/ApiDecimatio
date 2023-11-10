@@ -178,6 +178,16 @@ FROM dbo.AccesoEvento AE
 	INNER JOIN dbo.EstadoTicket ET ON ET.IdEstadoTicket = AE.IdEstadoTicket</value>
     <comment>Get Accesos Ticket para mostrar</comment>
   </data>
+  <data name="GET_COMUNAS_BY_REGION" xml:space="preserve">
+    <value>SELECT 
+	   IdComuna
+      ,IdRegion
+      ,NombreComuna
+      ,Activo
+  FROM dbo.Comuna
+  WHERE IdRegion = @IdRegion</value>
+    <comment>Get All Comunas By Región</comment>
+  </data>
   <data name="GET_EVENTOS" xml:space="preserve">
     <value>SELECT IdEvento
       ,E.IdLugar
@@ -283,6 +293,15 @@ WHERE T.IdTicket = @IdTicket</value>
       ,[Activo]
   FROM [Decimatio].[dbo].[MedioPago] WHERE IdMedioPago = @IdMedioPago</value>
     <comment>Get Solo un Medio Pago</comment>
+  </data>
+  <data name="GET_REGIONES" xml:space="preserve">
+    <value>SELECT IdRegion
+      ,NumeroRegion
+      ,Abreviatura
+      ,NombreRegion
+      ,Activo
+  FROM Decimatio.dbo.Region</value>
+    <comment>Get All Regiones</comment>
   </data>
   <data name="GET_SECTORES" xml:space="preserve">
     <value>SELECT S.[IdSector]

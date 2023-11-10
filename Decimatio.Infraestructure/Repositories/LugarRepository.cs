@@ -13,7 +13,7 @@
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
             var lugares = (await conn.QueryAsync<Lugar, Comuna, Domain.Entities.Region, Lugar>(
-                Queries.GET_LUGARES, 
+                Querys.GET_LUGARES, 
                 (lugar, comuna, region) => { 
                     lugar.Comuna = comuna;
                     lugar.Comuna.Region = region;
@@ -29,7 +29,7 @@
         { 
             using var conn = new SqlConnection(_connection.ConnectionString);
             var lugar = (await conn.QueryAsync<Lugar, Comuna, Domain.Entities.Region, Lugar>(
-                Queries.GET_LUGAR_ID,
+                Querys.GET_LUGAR_ID,
                 (lugar, comuna, region) =>
                 {
                     lugar.Comuna = comuna;
@@ -46,7 +46,7 @@
         public async Task<int> AddLugar(Lugar lugar)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.ExecuteAsync(Queries.INSERT_LUGAR, lugar);
+            return await conn.ExecuteAsync(Querys.INSERT_LUGAR, lugar);
         }
 
         public async Task<bool> UpdateLugar(Lugar lugar)
@@ -63,13 +63,13 @@
 
             var dynamicParam = new DynamicParameters(dictionary);
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.ExecuteScalarAsync<bool>(Queries.UPDATE_LUGAR, dynamicParam);
+            return await conn.ExecuteScalarAsync<bool>(Querys.UPDATE_LUGAR, dynamicParam);
         }
 
         public async Task<bool> DeleteLugar(int idLugar)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.ExecuteScalarAsync<bool>(Queries.DELETE_LUGAR, new { IdLugar = idLugar });
+            return await conn.ExecuteScalarAsync<bool>(Querys.DELETE_LUGAR, new { IdLugar = idLugar });
         }
     }
 }

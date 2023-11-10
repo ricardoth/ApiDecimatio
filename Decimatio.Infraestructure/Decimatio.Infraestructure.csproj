@@ -26,4 +26,19 @@
     <Folder Include="Contracts\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Repositories\Querys.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Querys.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Repositories\Querys.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Querys.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

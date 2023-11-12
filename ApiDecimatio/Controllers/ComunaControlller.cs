@@ -21,7 +21,7 @@
         public async Task<IActionResult> Get(int idRegion)
         {
             var result = await _comunaService.GetComunasByRegion(idRegion);
-            if (result == null)
+            if (!result.Any())
                 return NotFound("No se encuentran comunas con la región indicada");
 
             var comunasDtos = _mapper.Map<IEnumerable<ComunaDto>>(result);

@@ -1,5 +1,6 @@
 ﻿namespace Decimatio.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LugarController : ControllerBase

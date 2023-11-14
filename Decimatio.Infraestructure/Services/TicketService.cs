@@ -208,43 +208,6 @@
         #region Creación QR y Generación del PDF
         public async Task<byte[]> EscribirPlantilla(string base64Image, TicketBodyQRDto ticket)
         {
-            string currentDirectory = Directory.GetCurrentDirectory() + "\\Template";
-            string htmlTemplatePath = Path.Combine(currentDirectory, "IaETicket.html");
-            string htmlTemplate = File.ReadAllText(htmlTemplatePath);
-            string logoImage = Path.Combine(currentDirectory, "decimatio2.jpg");
-
-            byte[] logoBytes = File.ReadAllBytes(logoImage);
-            string logoBase64Image = Convert.ToBase64String(logoBytes);
-
-            string formatDay = ticket.Evento.Fecha.ToString("dddd", new CultureInfo("es-ES"));
-            string anio = ticket.Evento.Fecha.ToString("yyyy", new CultureInfo("es-ES"));
-            string formatDate = ticket.Evento.Fecha.ToString("d' de 'MMMM", new CultureInfo("es-ES"));
-            string formatHora = ticket.Evento.Fecha.ToString("HH:mm");
-            long montoTotalFormat = (long)ticket.MontoTotal;
-            string pais = "Chile";
-            string comuna = ticket.Evento.Lugar.Comuna.NombreComuna;
-
-
-            string htmlWithImage = htmlTemplate.Replace("{Base64Image}", base64Image)
-                                    .Replace("{LogoImage}", logoBase64Image)
-                                    .Replace("{DiaEvento}", formatDay.ToUpper())
-                                    .Replace("{FechaEvento}", formatDate)
-                                    .Replace("{AnioEvento}", anio)
-                                    .Replace("{NombreEvento}", ticket.Evento.NombreEvento)
-                                    .Replace("{NombreSector}", ticket.Sector.NombreSector)
-                                    .Replace("{MontoTotal}", montoTotalFormat.ToString())
-                                    .Replace("{Pais}", pais)
-                                    .Replace("{Comuna}", comuna)
-                                    .Replace("{Direccion}", ticket.Evento.Lugar.Ubicacion)
-                                    .Replace("{Numeracion}", ticket.Evento.Lugar.Numeracion)
-                                    .Replace("{HoraEvento}", formatHora)
-                                    .Replace("{NombreLugar}", ticket.Evento.Lugar.NombreLugar)
-                                    .Replace("{NombreEventoUser}", ticket.Evento.NombreEvento)
-                                    .Replace("{Titulo}", ticket.Evento.NombreEvento)
-                                    .Replace("{NombreSectorUser}", ticket.Sector.NombreSector)
-                                    .Replace("{HoraEventoUser}", formatHora)
-                                    .Replace("{IdTicket}", ticket.IdTicket.ToString())
-                                    .Replace("{IdTicketUser}", ticket.IdTicket.ToString());
             var htmlPdfQuest = _pdfGeneratorService.GeneratePDFVoucher(base64Image, ticket);
             return htmlPdfQuest;
         }
@@ -284,7 +247,6 @@
             {
                 memoryStream.Close();
             }
-           
         }
 
         private string GetTicketFileName(TicketBodyQRDto ticketDto)
@@ -300,8 +262,6 @@
             await _blobFilesService.AddTicketQRBlobStorage(ticketResultImage, fileName);
             return Convert.ToBase64String(ticketResultImage);
         }
-
-
         #endregion
     }
 }

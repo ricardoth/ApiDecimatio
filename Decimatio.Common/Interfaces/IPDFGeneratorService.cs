@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Common.Interfaces
+﻿using QuestPDF.Infrastructure;
+
+namespace Decimatio.Common.Interfaces
 {
     public interface IPDFGeneratorService 
     {

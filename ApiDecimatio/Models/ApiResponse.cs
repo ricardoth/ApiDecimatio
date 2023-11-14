@@ -1,7 +1,4 @@
-﻿using Decimatio.Domain.CustomEntities;
-using Grpc.Core;
-
-namespace Decimatio.WebApi.Models
+﻿namespace Decimatio.WebApi.Models
 {
     public class ApiResponse<T>
     {

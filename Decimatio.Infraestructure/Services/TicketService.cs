@@ -4,6 +4,7 @@
     {
         private readonly ITicketRepository _ticketRepository;
         private readonly IQRGeneratorService _qrGeneratorService;
+        private readonly IPDFGeneratorService _pdfGeneratorService;
         private readonly IBlobFilesService _blobFilesService;
         private readonly IEmailService _emailService;   
         private readonly IMapper _mapper;
@@ -11,11 +12,13 @@
         private readonly BlobContainerConfig _containerConfig;
 
         public TicketService(ITicketRepository ticketRepository, IQRGeneratorService qRGeneratorService, 
+            IPDFGeneratorService pdfGeneratorService,
             IBlobFilesService blobFilesService, IMapper mapper, IEmailService emailService,
             IOptions<PaginationOptions> paginationOptions, BlobContainerConfig containerConfig)
         {
             _ticketRepository = ticketRepository;
             _qrGeneratorService = qRGeneratorService;
+            _pdfGeneratorService = pdfGeneratorService;
             _mapper = mapper;
             _blobFilesService = blobFilesService;
             _emailService = emailService;
@@ -109,7 +112,7 @@
                     IdTicket = result,
                     FechaTicket = ticketDto.FechaTicket,
                     MontoTotal = ticketDto.MontoTotal,
-                    RutUsuario = $"{ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}",
+                    RutUsuario = $"{ticketDto?.Usuario?.Rut}-{ticketDto?.Usuario?.DV}",
                     Nombres = ticketDto.Usuario.Nombres,
                     ApellidoP = ticketDto.Usuario.ApellidoP,
                     ApellidoM = ticketDto.Usuario.ApellidoM,
@@ -144,7 +147,6 @@
                 throw new InvalidOperationException($"Error al Crear el Ticket", ex);
             }
         }
-
 
         public async Task<TicketQR> AddTicketQR(TicketQR ticketQR)
         {
@@ -183,7 +185,7 @@
             try
             {
                 if (!tickets.Any())
-                    return null;
+                    throw new Exception("No se encontraron tickets para generar");
 
 
                 foreach (var ticket in tickets)
@@ -192,8 +194,7 @@
                     strList.Add(objTicket.ToString());
                 }
 
-                string ticketsPdf64 = await _qrGeneratorService.MergePdfFiles(strList);
-               
+                string ticketsPdf64 = _pdfGeneratorService.CombinePdfFiles(strList);
                 return ticketsPdf64;
             }
             catch (Exception ex)
@@ -244,10 +245,8 @@
                                     .Replace("{HoraEventoUser}", formatHora)
                                     .Replace("{IdTicket}", ticket.IdTicket.ToString())
                                     .Replace("{IdTicketUser}", ticket.IdTicket.ToString());
-            var htmlPdf = await _qrGeneratorService.RenderHtmlToPdfAsync(htmlWithImage);
-
-            return htmlPdf;
-
+            var htmlPdfQuest = _pdfGeneratorService.GeneratePDFVoucher(base64Image, ticket);
+            return htmlPdfQuest;
         }
 
         public async Task<string> EscribirPlantillaEmail(TicketBodyQRDto ticketBodyQR)
@@ -290,7 +289,6 @@
 
         private string GetTicketFileName(TicketBodyQRDto ticketDto)
         {
-            //string timeStamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
             string fileName = $"Ticket N° {ticketDto.IdTicket} | Rut: {ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}.pdf";
             string filePathName = $"{_containerConfig.FolderName}{fileName}";
             return filePathName;

@@ -1,7 +1,4 @@
-﻿using BitMiracle.LibTiff.Classic;
-using Decimatio.Domain.Entities;
-
-namespace Decimatio.Infraestructure.Repositories
+﻿namespace Decimatio.Infraestructure.Repositories
 {
     public class TicketRepository : ITicketRepository
     {
@@ -50,7 +47,10 @@ namespace Decimatio.Infraestructure.Repositories
                     new { IdTicket = idTicket },
                     splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar,IdComuna"
                 )).FirstOrDefault();
-            if (result == null) throw new Exception("No se encuentra coindidencia para el Ticket");
+
+            if (result is null) 
+                throw new Exception("No se encuentra coindidencia para el Ticket");
+
             return result;
         }
 

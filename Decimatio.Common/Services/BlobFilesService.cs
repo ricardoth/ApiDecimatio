@@ -75,6 +75,5 @@
                 throw new Exception("No se pudo agregar el Flyer al Azure Blob Storage", ex);
             }
         }
-
     }
 }

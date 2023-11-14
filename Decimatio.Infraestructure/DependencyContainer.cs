@@ -34,6 +34,7 @@
             services.AddScoped<IQRGeneratorService, QRGeneratorService>();
             services.AddScoped<IEmailService, EmailService>();  
             services.AddScoped<IBlobFilesService, BlobFilesService>();
+            services.AddScoped<IPDFGeneratorService, PDFGeneratorService>();
             var blobConfig = configuration.GetSection(nameof(BlobContainerConfig)).Get<BlobContainerConfig>();
             services.AddSingleton(blobConfig);
 

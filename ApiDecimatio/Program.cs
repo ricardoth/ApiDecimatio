@@ -16,6 +16,8 @@ builder.Services.AddAzureClients(clientBuilder =>
     clientBuilder.AddQueueServiceClient(builder.Configuration["BlobContainerConfig:ConnectionString:queue"], preferMsi: true);
 });
 
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

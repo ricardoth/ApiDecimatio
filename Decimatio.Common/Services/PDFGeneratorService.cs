@@ -83,7 +83,7 @@
 
         private void ComposeHeader(IContainer container, TicketBodyQRDto ticket)
         {
-            string logoImage = Path.Combine(currentDirectory, "decimatio2.jpg");
+            string logoImage = Path.Combine(currentDirectory, "resonancePassBGWhite.png");
 
             container.Background(Colors.Black).Row(row =>
             {
@@ -92,7 +92,7 @@
                     .PaddingTop(10)
                     .Column(col =>
                 {
-                    col.Item().Text("Ticketera Presenta").FontSize(13).FontColor(Colors.White).SemiBold();
+                    col.Item().Text("Resonance Pass Presenta").FontSize(13).FontColor(Colors.White).SemiBold();
                 });
 
                 row.RelativeItem()
@@ -168,7 +168,7 @@
                         .Text(text =>
                         {
                             text.Span("Este es un ticket electrónico. Por favor, muestra este ticket para ingresar al evento. Para más información visita nuestra página web: ").FontColor(Colors.White);
-                            text.Hyperlink("facebook.com/kerygma.prods", "https://www.facebook.com/kerygma.prods").FontColor(Colors.White);
+                            text.Hyperlink("resonancepass.com", "https://www.resonancepass.com").FontColor(Colors.White);
                         });
                 });
 

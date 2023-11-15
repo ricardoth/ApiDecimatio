@@ -184,7 +184,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	  ,L.NombreLugar
         ///	  ,L.Ubicacion
         ///	  ,L.Numeracion
-        ///  FROM [Decimatio].[dbo].[Evento] E
+        ///  FROM [dbo].[Evento] E
         ///	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
         ///  WHERE IdEvento = @IdEvento.
         /// </summary>
@@ -288,7 +288,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[NombreMedioPago]
         ///      ,[Descripcion]
         ///      ,[Activo]
-        ///  FROM [Decimatio].[dbo].[MedioPago] WHERE IdMedioPago = @IdMedioPago.
+        ///  FROM [dbo].[MedioPago] WHERE IdMedioPago = @IdMedioPago.
         /// </summary>
         internal static string GET_MEDIO_PAGO {
             get {
@@ -301,7 +301,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[NombreMedioPago]
         ///      ,[Descripcion]
         ///      ,[Activo]
-        ///  FROM [Decimatio].[dbo].[MedioPago].
+        ///  FROM [dbo].[MedioPago].
         /// </summary>
         internal static string GET_MEDIOS_PAGOS {
             get {
@@ -315,7 +315,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,Abreviatura
         ///      ,NombreRegion
         ///      ,Activo
-        ///  FROM Decimatio.dbo.Region.
+        ///  FROM dbo.Region.
         /// </summary>
         internal static string GET_REGIONES {
             get {
@@ -332,7 +332,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,S.[CapacidadTotal]
         ///	  ,S.Precio
         ///      ,S.[Activo]
-        ///  FROM [Decimatio].[dbo].[Sector] S
+        ///  FROM [dbo].[Sector] S
         ///  WHERE S.IdSector = @IdSector.
         /// </summary>
         internal static string GET_SECTOR_ID {
@@ -352,7 +352,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,S.[Activo]
         ///	  ,E.IdEvento
         ///	  ,E.NombreEvento
-        ///  FROM [Decimatio].[dbo].[Sector] S
+        ///  FROM [dbo].[Sector] S
         ///	INNER JOIN dbo.Evento E ON E.IdEvento = S.IdEvento.
         /// </summary>
         internal static string GET_SECTORES {
@@ -372,7 +372,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,S.[Activo]
         ///	  ,E.IdEvento
         ///	  ,E.NombreEvento
-        ///  FROM [Decimatio].[dbo].[Sector] S
+        ///  FROM [dbo].[Sector] S
         ///	INNER JOIN Evento E ON E.IdEvento = S.IdEvento
         ///  WHERE E.IdEvento = @IdEvento.
         /// </summary>
@@ -438,7 +438,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[Correo]
         ///      ,[Activo]
         ///      ,[FechaCreacion]
-        ///  FROM [Decimatio].[dbo].[Usuario]
+        ///  FROM [dbo].[Usuario]
         ///  WHERE IdUsuario = @IdUsuario.
         /// </summary>
         internal static string GET_USUARIO_ID {
@@ -462,7 +462,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,U.[FechaCreacion]
         ///	  ,TU.IdTipoUsuario
         ///	  ,TU.NombreTipoUsuario
-        ///  FROM [Decimatio].[dbo].[Usuario] U
+        ///  FROM [dbo].[Usuario] U
         ///	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario.
         /// </summary>
         internal static string GET_USUARIOS {
@@ -485,12 +485,12 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[Correo]
         ///      ,U.[Activo]
         ///      ,U.[FechaCreacion]
-        ///  FROM [Decimatio].[dbo].[Usuario] U
+        ///  FROM [dbo].[Usuario] U
         ///	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario
         ///  WHERE Nombres LIKE &apos;%&apos;+@Filtro+&apos;%&apos;
         ///	OR ApellidoP LIKE &apos;%&apos;+ @Filtro+&apos;%&apos;
         ///	OR ApellidoM LIKE &apos;%&apos;+ @Filtro+&apos;%&apos;
-        ///	OR CAST(Rut AS VARCHAR) LIKE &apos;%&apos;+ @F [resto de la cadena truncado]&quot;;.
+        ///	OR CAST(Rut AS VARCHAR) LIKE &apos;%&apos;+ @Filtro+&apos;%&apos;.
         /// </summary>
         internal static string GET_USUARIOS_FILTRO {
             get {

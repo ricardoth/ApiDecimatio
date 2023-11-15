@@ -217,7 +217,7 @@ FROM dbo.AccesoEvento AE
 	  ,L.NombreLugar
 	  ,L.Ubicacion
 	  ,L.Numeracion
-  FROM [Decimatio].[dbo].[Evento] E
+  FROM [dbo].[Evento] E
 	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
   WHERE IdEvento = @IdEvento</value>
     <comment>Get Evento By Id</comment>
@@ -283,7 +283,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,[NombreMedioPago]
       ,[Descripcion]
       ,[Activo]
-  FROM [Decimatio].[dbo].[MedioPago]</value>
+  FROM [dbo].[MedioPago]</value>
     <comment>Get All Medios Pagos</comment>
   </data>
   <data name="GET_MEDIO_PAGO" xml:space="preserve">
@@ -291,7 +291,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,[NombreMedioPago]
       ,[Descripcion]
       ,[Activo]
-  FROM [Decimatio].[dbo].[MedioPago] WHERE IdMedioPago = @IdMedioPago</value>
+  FROM [dbo].[MedioPago] WHERE IdMedioPago = @IdMedioPago</value>
     <comment>Get Solo un Medio Pago</comment>
   </data>
   <data name="GET_REGIONES" xml:space="preserve">
@@ -300,7 +300,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,Abreviatura
       ,NombreRegion
       ,Activo
-  FROM Decimatio.dbo.Region</value>
+  FROM dbo.Region</value>
     <comment>Get All Regiones</comment>
   </data>
   <data name="GET_SECTORES" xml:space="preserve">
@@ -314,7 +314,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,S.[Activo]
 	  ,E.IdEvento
 	  ,E.NombreEvento
-  FROM [Decimatio].[dbo].[Sector] S
+  FROM [dbo].[Sector] S
 	INNER JOIN dbo.Evento E ON E.IdEvento = S.IdEvento</value>
     <comment>Get All Sectores</comment>
   </data>
@@ -329,7 +329,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,S.[Activo]
 	  ,E.IdEvento
 	  ,E.NombreEvento
-  FROM [Decimatio].[dbo].[Sector] S
+  FROM [dbo].[Sector] S
 	INNER JOIN Evento E ON E.IdEvento = S.IdEvento
   WHERE E.IdEvento = @IdEvento</value>
     <comment>Get all Sectores por Id Evento</comment>
@@ -343,7 +343,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,S.[CapacidadTotal]
 	  ,S.Precio
       ,S.[Activo]
-  FROM [Decimatio].[dbo].[Sector] S
+  FROM [dbo].[Sector] S
   WHERE S.IdSector = @IdSector</value>
     <comment>Get Sector por Id</comment>
   </data>
@@ -392,7 +392,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,U.[FechaCreacion]
 	  ,TU.IdTipoUsuario
 	  ,TU.NombreTipoUsuario
-  FROM [Decimatio].[dbo].[Usuario] U
+  FROM [dbo].[Usuario] U
 	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario</value>
     <comment>Get All Users</comment>
   </data>
@@ -410,7 +410,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,[Correo]
       ,U.[Activo]
       ,U.[FechaCreacion]
-  FROM [Decimatio].[dbo].[Usuario] U
+  FROM [dbo].[Usuario] U
 	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario
   WHERE Nombres LIKE '%'+@Filtro+'%'
 	OR ApellidoP LIKE '%'+ @Filtro+'%'
@@ -431,7 +431,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,[Correo]
       ,[Activo]
       ,[FechaCreacion]
-  FROM [Decimatio].[dbo].[Usuario]
+  FROM [dbo].[Usuario]
   WHERE IdUsuario = @IdUsuario</value>
     <comment>Get Usuario por Id</comment>
   </data>

@@ -9,7 +9,8 @@ Proyecto de Generación y Gestión de Tickets para Eventos o Recitales, Genera Q
 * Dapper
 * Azure Storage Queues
 * Azure Storage Blobs
-* IronPDF (Free Version)
 * MailKit 
 * PuppeteerSharp
 * QRCoder
+* QuestPDF
+* PDFSharp (Generación de más de un ticket)

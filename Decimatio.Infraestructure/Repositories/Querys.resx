@@ -531,7 +531,13 @@ VALUES (
     <comment>Insert MedioPago</comment>
   </data>
   <data name="INSERT_TICKET" xml:space="preserve">
-    <value>INSERT INTO [dbo].[Ticket]
+    <value>UPDATE dbo.Sector 
+SET CapacidadDisponible = CapacidadDisponible - 1,
+	CapacidadActual = CapacidadActual + 1
+WHERE IdSector = @IdSector
+	AND IdEvento =  @IdEvento
+
+INSERT INTO [dbo].[Ticket]
            ([IdUsuario]
            ,[IdEvento]
            ,[IdSector]

@@ -624,7 +624,13 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a INSERT INTO [dbo].[Ticket]
+        ///   Busca una cadena traducida similar a UPDATE dbo.Sector 
+        ///SET CapacidadDisponible = CapacidadDisponible - 1,
+        ///	CapacidadActual = CapacidadActual + 1
+        ///WHERE IdSector = @IdSector
+        ///	AND IdEvento =  @IdEvento
+        ///
+        ///INSERT INTO [dbo].[Ticket]
         ///           ([IdUsuario]
         ///           ,[IdEvento]
         ///           ,[IdSector]
@@ -638,13 +644,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///           (@IdUsuario
         ///           ,@IdEvento
         ///           ,@IdSector
-        ///           ,@IdMedioPago
-        ///           ,@MontoPago
-        ///           ,@MontoTotal
-        ///           ,@FechaTicket
-        ///           ,1
-        ///           ,GETDATE()) 
-        ///	SELECT CAST(SCOPE_IDENTITY()  [resto de la cadena truncado]&quot;;.
+        ///  [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string INSERT_TICKET {
             get {

@@ -32,12 +32,12 @@ app.UseSwaggerUI();
 
 app.UseStaticFiles();
 
+app.UseCors(options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseCors(options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
 
 app.MapControllers();
 

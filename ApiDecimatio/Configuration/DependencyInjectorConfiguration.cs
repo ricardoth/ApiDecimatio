@@ -1,4 +1,4 @@
-﻿using Decimatio.Domain.CustomEntities;
+﻿using PdfSharp.Charting;
 
 namespace Decimatio.WebApi.Configuration
 {
@@ -33,12 +33,12 @@ namespace Decimatio.WebApi.Configuration
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
-                    builder =>
+                options.AddDefaultPolicy(
+                    policy =>
                     {
-                        builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
+                        policy.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
                     });
             });
         }

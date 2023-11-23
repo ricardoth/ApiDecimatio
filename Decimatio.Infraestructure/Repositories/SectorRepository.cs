@@ -63,6 +63,9 @@
                 { "@CapacidadActual", sector.CapacidadActual },
                 { "@CapacidadDisponible", sector.CapacidadDisponible },
                 { "@Precio", sector.Precio },
+                { "@Cargo", sector.Cargo },
+                { "@Total", sector.Total },
+                { "@ColorHexa", sector.ColorHexa },
                 { "@Activo", sector.Activo },
             };
 

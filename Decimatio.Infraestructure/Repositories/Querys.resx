@@ -189,17 +189,21 @@ FROM dbo.AccesoEvento AE
     <comment>Get All Comunas By Región</comment>
   </data>
   <data name="GET_EVENTOS" xml:space="preserve">
-    <value>SELECT IdEvento
+    <value>SELECT E.IdEvento
       ,E.IdLugar
-      ,NombreEvento
-      ,Direccion
-      ,Fecha
-      ,Flyer
-      ,ContenidoFlyer
+      ,E.NombreEvento
+	  ,E.Descripcion
+      ,E.Direccion
+      ,E.Fecha
+      ,E.Flyer
+      ,E.ContenidoFlyer
+	  ,E.Observacion
+	  ,E.ProductoraResponsable
       ,E.Activo
 	  ,L.IdLugar
 	  ,L.NombreLugar
 	  ,L.Numeracion
+	  ,L.MapaReferencial
   FROM dbo.Evento E
 	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar</value>
     <comment>Get All Eventos</comment>
@@ -209,14 +213,18 @@ FROM dbo.AccesoEvento AE
 	   E.IdEvento
       ,E.IdLugar
       ,E.NombreEvento
+	  ,E.Descripcion
       ,E.Direccion
       ,E.Fecha
 	  ,E.Flyer
 	  ,E.ContenidoFlyer
+	  ,E.Observacion
+	  ,E.ProductoraResponsable
       ,E.Activo
 	  ,L.NombreLugar
 	  ,L.Ubicacion
 	  ,L.Numeracion
+	  ,L.MapaReferencial
   FROM [dbo].[Evento] E
 	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
   WHERE IdEvento = @IdEvento</value>
@@ -246,6 +254,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,L.Ubicacion
       ,L.Numeracion
       ,L.FechaCreacion
+	  ,L.MapaReferencial
       ,L.Activo
 	  ,C.IdComuna
 	  ,C.IdRegion
@@ -265,6 +274,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,L.Ubicacion
       ,L.Numeracion
       ,L.FechaCreacion
+	  ,L.MapaReferencial
       ,L.Activo
 	  ,C.IdComuna
 	  ,C.IdRegion
@@ -311,6 +321,9 @@ WHERE T.IdTicket = @IdTicket</value>
 	  ,S.[CapacidadActual]
       ,S.[CapacidadTotal]
 	  ,S.Precio
+	  ,S.Cargo
+	  ,S.Total
+	  ,S.ColorHexa
       ,S.[Activo]
 	  ,E.IdEvento
 	  ,E.NombreEvento
@@ -326,6 +339,9 @@ WHERE T.IdTicket = @IdTicket</value>
 	  ,S.[CapacidadActual]
       ,S.[CapacidadTotal]
       ,S.Precio
+	  ,S.Cargo
+	  ,S.Total
+	  ,S.ColorHexa
       ,S.[Activo]
 	  ,E.IdEvento
 	  ,E.NombreEvento
@@ -342,6 +358,9 @@ WHERE T.IdTicket = @IdTicket</value>
 	  ,S.[CapacidadActual]
       ,S.[CapacidadTotal]
 	  ,S.Precio
+	  ,S.Cargo
+	  ,S.Total
+	  ,S.ColorHexa
       ,S.[Activo]
   FROM [dbo].[Sector] S
   WHERE S.IdSector = @IdSector</value>
@@ -619,10 +638,13 @@ INSERT INTO [dbo].[Ticket]
     <value>UPDATE dbo.Evento
 SET IdLugar = @IdLugar,
 	NombreEvento = @NombreEvento,
+	Descripcion = @Descripcion,
 	Direccion = @Direccion,
 	Fecha = @Fecha,
 	Flyer = @Flyer,
 	ContenidoFlyer = @ContenidoFlyer,
+	Observacion = @Observacion,
+	ProductoraResponsable = @ProductoraResponsable,
 	Activo = @Activo
 WHERE IdEvento = @IdEvento</value>
     <comment>Actualiza Evento</comment>
@@ -634,6 +656,7 @@ WHERE IdEvento = @IdEvento</value>
       ,[Ubicacion] = @Ubicacion
       ,[Numeracion] = @Numeracion
       ,[FechaCreacion] = GETDATE()
+	  ,MapaReferencial = @MapaReferencial,
       ,[Activo] = @Activo
  WHERE IdLugar = @IdLugar</value>
     <comment>Actualiza un Lugar</comment>
@@ -652,6 +675,9 @@ SET 	IdEvento = @IdEvento,
 	CapacidadActual = @CapacidadActual,
 	CapacidadTotal = @CapacidadTotal,
 	Precio = @Precio,
+	Cargo = @Cargo,
+	Total = @Total,
+	ColorHexa = @ColorHexa,
 	Activo = @Activo
 WHERE 	IdSector = @IdSector</value>
     <comment>Actualiza un Sector</comment>

@@ -176,14 +176,18 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	   E.IdEvento
         ///      ,E.IdLugar
         ///      ,E.NombreEvento
+        ///	  ,E.Descripcion
         ///      ,E.Direccion
         ///      ,E.Fecha
         ///	  ,E.Flyer
         ///	  ,E.ContenidoFlyer
+        ///	  ,E.Observacion
+        ///	  ,E.ProductoraResponsable
         ///      ,E.Activo
         ///	  ,L.NombreLugar
         ///	  ,L.Ubicacion
         ///	  ,L.Numeracion
+        ///	  ,L.MapaReferencial
         ///  FROM [dbo].[Evento] E
         ///	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
         ///  WHERE IdEvento = @IdEvento.
@@ -195,17 +199,21 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT IdEvento
+        ///   Busca una cadena traducida similar a SELECT E.IdEvento
         ///      ,E.IdLugar
-        ///      ,NombreEvento
-        ///      ,Direccion
-        ///      ,Fecha
-        ///      ,Flyer
-        ///      ,ContenidoFlyer
+        ///      ,E.NombreEvento
+        ///	  ,E.Descripcion
+        ///      ,E.Direccion
+        ///      ,E.Fecha
+        ///      ,E.Flyer
+        ///      ,E.ContenidoFlyer
+        ///	  ,E.Observacion
+        ///	  ,E.ProductoraResponsable
         ///      ,E.Activo
         ///	  ,L.IdLugar
         ///	  ,L.NombreLugar
         ///	  ,L.Numeracion
+        ///	  ,L.MapaReferencial
         ///  FROM dbo.Evento E
         ///	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar.
         /// </summary>
@@ -241,6 +249,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,L.Ubicacion
         ///      ,L.Numeracion
         ///      ,L.FechaCreacion
+        ///	  ,L.MapaReferencial
         ///      ,L.Activo
         ///	  ,C.IdComuna
         ///	  ,C.IdRegion
@@ -266,6 +275,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,L.Ubicacion
         ///      ,L.Numeracion
         ///      ,L.FechaCreacion
+        ///	  ,L.MapaReferencial
         ///      ,L.Activo
         ///	  ,C.IdComuna
         ///	  ,C.IdRegion
@@ -331,6 +341,9 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	  ,S.[CapacidadActual]
         ///      ,S.[CapacidadTotal]
         ///	  ,S.Precio
+        ///	  ,S.Cargo
+        ///	  ,S.Total
+        ///	  ,S.ColorHexa
         ///      ,S.[Activo]
         ///  FROM [dbo].[Sector] S
         ///  WHERE S.IdSector = @IdSector.
@@ -349,6 +362,9 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	  ,S.[CapacidadActual]
         ///      ,S.[CapacidadTotal]
         ///	  ,S.Precio
+        ///	  ,S.Cargo
+        ///	  ,S.Total
+        ///	  ,S.ColorHexa
         ///      ,S.[Activo]
         ///	  ,E.IdEvento
         ///	  ,E.NombreEvento
@@ -369,6 +385,9 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	  ,S.[CapacidadActual]
         ///      ,S.[CapacidadTotal]
         ///      ,S.Precio
+        ///	  ,S.Cargo
+        ///	  ,S.Total
+        ///	  ,S.ColorHexa
         ///      ,S.[Activo]
         ///	  ,E.IdEvento
         ///	  ,E.NombreEvento
@@ -720,10 +739,13 @@ namespace Decimatio.Infraestructure.Repositories {
         ///   Busca una cadena traducida similar a UPDATE dbo.Evento
         ///SET IdLugar = @IdLugar,
         ///	NombreEvento = @NombreEvento,
+        ///	Descripcion = @Descripcion,
         ///	Direccion = @Direccion,
         ///	Fecha = @Fecha,
         ///	Flyer = @Flyer,
         ///	ContenidoFlyer = @ContenidoFlyer,
+        ///	Observacion = @Observacion,
+        ///	ProductoraResponsable = @ProductoraResponsable,
         ///	Activo = @Activo
         ///WHERE IdEvento = @IdEvento.
         /// </summary>
@@ -740,6 +762,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[Ubicacion] = @Ubicacion
         ///      ,[Numeracion] = @Numeracion
         ///      ,[FechaCreacion] = GETDATE()
+        ///	  ,MapaReferencial = @MapaReferencial,
         ///      ,[Activo] = @Activo
         /// WHERE IdLugar = @IdLugar.
         /// </summary>
@@ -768,6 +791,9 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	CapacidadActual = @CapacidadActual,
         ///	CapacidadTotal = @CapacidadTotal,
         ///	Precio = @Precio,
+        ///	Cargo = @Cargo,
+        ///	Total = @Total,
+        ///	ColorHexa = @ColorHexa,
         ///	Activo = @Activo
         ///WHERE 	IdSector = @IdSector.
         /// </summary>

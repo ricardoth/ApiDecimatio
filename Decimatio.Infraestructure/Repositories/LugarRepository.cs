@@ -58,6 +58,7 @@
                 { "@NombreLugar", lugar.NombreLugar },
                 { "@Ubicacion", lugar.Ubicacion },
                 { "@Numeracion", lugar.Numeracion },
+                { "@MapaReferencial", lugar.MapaReferencial },
                 { "@Activo", lugar.Activo },
             };
 

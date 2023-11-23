@@ -54,7 +54,7 @@
             {
                 if (evento.Flyer != null || evento.Flyer != "") 
                 {
-                    evento.Flyer = evento.Flyer + ".jpg";
+                    evento.Flyer = evento.Flyer;
                     string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
                     var flyerContent = Convert.FromBase64String(evento.ContenidoFlyer);
                     await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
@@ -73,7 +73,7 @@
             {
                 if (evento.Flyer != null || evento.Flyer != "")
                 {
-                    evento.Flyer = evento.Flyer + ".jpg";
+                    evento.Flyer = evento.Flyer;
                     string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
                     var flyerContent = Convert.FromBase64String(evento.ContenidoFlyer);
                     await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);

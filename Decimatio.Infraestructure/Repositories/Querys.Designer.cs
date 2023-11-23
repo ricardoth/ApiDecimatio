@@ -762,7 +762,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[Ubicacion] = @Ubicacion
         ///      ,[Numeracion] = @Numeracion
         ///      ,[FechaCreacion] = GETDATE()
-        ///	  ,MapaReferencial = @MapaReferencial,
+        ///	  ,MapaReferencial = @MapaReferencial
         ///      ,[Activo] = @Activo
         /// WHERE IdLugar = @IdLugar.
         /// </summary>

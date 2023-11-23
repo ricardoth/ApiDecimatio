@@ -656,7 +656,7 @@ WHERE IdEvento = @IdEvento</value>
       ,[Ubicacion] = @Ubicacion
       ,[Numeracion] = @Numeracion
       ,[FechaCreacion] = GETDATE()
-	  ,MapaReferencial = @MapaReferencial,
+	  ,MapaReferencial = @MapaReferencial
       ,[Activo] = @Activo
  WHERE IdLugar = @IdLugar</value>
     <comment>Actualiza un Lugar</comment>

@@ -443,6 +443,9 @@ WHERE T.IdTicket = @IdTicket</value>
 	CapacidadActual,
 	CapacidadTotal,
 	Precio,
+	Cargo,
+	Total,
+	ColorHexa,
 	Activo
 )
 VALUES(
@@ -452,8 +455,10 @@ VALUES(
 	@CapacidadActual,
 	@CapacidadTotal,
 	@Precio,
+	@Cargo,
+	@Total,
+	@ColorHexa,
 	@Activo
-	
 )</value>
     <comment>Insert Sector</comment>
   </data>
@@ -484,20 +489,26 @@ WHERE IdAccesoEvento = @IdAccesoEvento</value>
     <value>INSERT INTO dbo.Evento(
 	IdLugar,
 	NombreEvento,
+	Descripcion,
 	Direccion,
 	Fecha,
 	Flyer,
 	ContenidoFlyer,
+	Observacion,
+	ProductoraResponsable,
 	Activo
 )
 
 VALUES (
 	@IdLugar,
 	@NombreEvento,
+	@Descripcion,
 	@Direccion,
 	@Fecha,
 	@Flyer,
 	@ContenidoFlyer,
+	@Observacion,
+	@ProductoraResponsable,
 	@Activo
 )</value>
     <comment>Insert Evento</comment>
@@ -509,6 +520,7 @@ VALUES (
            ,[Ubicacion]
            ,[Numeracion]
            ,[FechaCreacion]
+           ,[MapaReferencial]
            ,[Activo])
      VALUES
            (@IdComuna
@@ -516,6 +528,7 @@ VALUES (
            ,@Ubicacion
            ,@Numeracion
            ,GETDATE()
+          ,@MapaReferencial
            ,@Activo)</value>
     <comment>Insert Lugar</comment>
   </data>

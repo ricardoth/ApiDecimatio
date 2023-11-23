@@ -535,20 +535,26 @@ namespace Decimatio.Infraestructure.Repositories {
         ///   Busca una cadena traducida similar a INSERT INTO dbo.Evento(
         ///	IdLugar,
         ///	NombreEvento,
+        ///	Descripcion,
         ///	Direccion,
         ///	Fecha,
         ///	Flyer,
         ///	ContenidoFlyer,
+        ///	Observacion,
+        ///	ProductoraResponsable,
         ///	Activo
         ///)
         ///
         ///VALUES (
         ///	@IdLugar,
         ///	@NombreEvento,
+        ///	@Descripcion,
         ///	@Direccion,
         ///	@Fecha,
         ///	@Flyer,
         ///	@ContenidoFlyer,
+        ///	@Observacion,
+        ///	@ProductoraResponsable,
         ///	@Activo
         ///).
         /// </summary>
@@ -565,6 +571,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///           ,[Ubicacion]
         ///           ,[Numeracion]
         ///           ,[FechaCreacion]
+        ///           ,[MapaReferencial]
         ///           ,[Activo])
         ///     VALUES
         ///           (@IdComuna
@@ -572,6 +579,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///           ,@Ubicacion
         ///           ,@Numeracion
         ///           ,GETDATE()
+        ///          ,@MapaReferencial
         ///           ,@Activo).
         /// </summary>
         internal static string INSERT_LUGAR {
@@ -604,6 +612,9 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	CapacidadActual,
         ///	CapacidadTotal,
         ///	Precio,
+        ///	Cargo,
+        ///	Total,
+        ///	ColorHexa,
         ///	Activo
         ///)
         ///VALUES(
@@ -613,8 +624,10 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	@CapacidadActual,
         ///	@CapacidadTotal,
         ///	@Precio,
+        ///	@Cargo,
+        ///	@Total,
+        ///	@ColorHexa,
         ///	@Activo
-        ///	
         ///).
         /// </summary>
         internal static string INSERT_SECTOR {

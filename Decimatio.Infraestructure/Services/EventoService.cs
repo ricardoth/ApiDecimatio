@@ -20,7 +20,16 @@
 			try
 			{
 				var result = await _eventoRepository.GetAllEventos();
-                return result;
+                var eventList = new List<Evento>();
+                foreach (var evento in result)
+                {
+                    string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
+                    var flyer = await _blobFilesService.GetImageFromBlobStorage(imageNamePath);
+                    evento.ContenidoFlyer = flyer;
+                    eventList.Add(evento);
+                }
+
+                return eventList;
 			}
 			catch (Exception ex)
 			{
@@ -54,11 +63,11 @@
             {
                 if (evento.Flyer != null || evento.Flyer != "") 
                 {
-                    evento.Flyer = evento.Flyer;
                     string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
                     var flyerContent = Convert.FromBase64String(evento.ContenidoFlyer);
                     await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
                 }
+                evento.ContenidoFlyer = "";
                 await _eventoRepository.AddEvento(evento);
             }
             catch (Exception ex)
@@ -73,11 +82,11 @@
             {
                 if (evento.Flyer != null || evento.Flyer != "")
                 {
-                    evento.Flyer = evento.Flyer;
                     string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
                     var flyerContent = Convert.FromBase64String(evento.ContenidoFlyer);
                     await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
                 }
+                evento.ContenidoFlyer = "";
                 return await _eventoRepository.UpdateEvento(evento);
             }
             catch (Exception ex)

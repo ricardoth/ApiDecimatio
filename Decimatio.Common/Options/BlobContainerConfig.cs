@@ -6,5 +6,6 @@
         public string? ContainerName { get; set; }
         public string? FolderName { get; set; }
         public string? FolderFlyerName { get; set; }
+        public string? ReferencialMapName { get; set; }
     }
 }

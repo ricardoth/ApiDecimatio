@@ -5,5 +5,6 @@
         Task AddTicketQRBlobStorage(byte[] imageBytes, string fileName);
         Task AddFlyerBlobStorage(byte[] imageBytes, string fileName);
         Task<string> GetImageFromBlobStorage(string imageNamePath);
+        Task<string> GetURLImageFromBlobStorage(string imageNamePath);
     }
 }

@@ -75,5 +75,16 @@
                 throw new Exception("No se pudo agregar el Flyer al Azure Blob Storage", ex);
             }
         }
+
+        public async Task<string> GetURLImageFromBlobStorage(string imageNamePath)
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient(_containerConfig.ContainerName);
+            var blobClient = containerClient.GetBlobClient(imageNamePath);
+
+            if (!blobClient.Exists())
+                throw new Exception($"La imagen no existe en el contenedor {imageNamePath}");
+
+            return blobClient.Uri.ToString();
+        }
     }
 }

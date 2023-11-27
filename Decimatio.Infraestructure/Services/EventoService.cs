@@ -20,16 +20,15 @@
 			try
 			{
 				var result = await _eventoRepository.GetAllEventos();
-                var eventList = new List<Evento>();
-                foreach (var evento in result)
+                var tasks = result.Select(async evento =>
                 {
                     string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
-                    var flyer = await _blobFilesService.GetImageFromBlobStorage(imageNamePath);
-                    evento.ContenidoFlyer = flyer;
-                    eventList.Add(evento);
-                }
+                    //evento.ContenidoFlyer = await _blobFilesService.GetImageFromBlobStorage(imageNamePath);
+                    evento.ContenidoFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                    return evento;
+                });
 
-                return eventList;
+                return await Task.WhenAll(tasks);
 			}
 			catch (Exception ex)
 			{

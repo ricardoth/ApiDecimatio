@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Services
 {
-    public class LugarService : ILugarService
+    internal sealed class LugarService : ILugarService
     {
         private readonly ILugarRepository _lugarRepository;
         private readonly IBlobFilesService _blobFilesService;

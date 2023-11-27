@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Repositories
 {
-    public class TicketRepository : ITicketRepository
+    internal sealed class TicketRepository : ITicketRepository
     {
         private readonly DataBaseConfig _connection;
 

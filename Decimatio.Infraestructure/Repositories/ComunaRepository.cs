@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Repositories
 {
-    public class ComunaRepository : IComunaRepository
+    internal sealed class ComunaRepository : IComunaRepository
     {
         private readonly DataBaseConfig _connection;
 

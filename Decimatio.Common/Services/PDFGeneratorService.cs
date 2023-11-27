@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Common.Services
 {
-    public sealed class PDFGeneratorService : IPDFGeneratorService
+    internal sealed class PDFGeneratorService : IPDFGeneratorService
     {
         private readonly EmailConfig _emailConfig;
         private readonly string currentDirectory = Directory.GetCurrentDirectory() + "\\Template";

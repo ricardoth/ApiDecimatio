@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Services
 {
-    public class SectorService : ISectorService
+    internal sealed class SectorService : ISectorService
     {
 		private readonly ISectorRepository _sectorRepository;
 

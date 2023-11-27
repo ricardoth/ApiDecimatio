@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Repositories
 {
-    public class MedioPagoRepository : IMedioPagoRepository
+    internal sealed class MedioPagoRepository : IMedioPagoRepository
     {
         private readonly DataBaseConfig _connection;
 

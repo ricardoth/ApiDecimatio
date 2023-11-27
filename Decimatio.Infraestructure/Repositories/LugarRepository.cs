@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Repositories
 {
-    public class LugarRepository : ILugarRepository
+    internal sealed class LugarRepository : ILugarRepository
     {
         private readonly DataBaseConfig _connection;
 

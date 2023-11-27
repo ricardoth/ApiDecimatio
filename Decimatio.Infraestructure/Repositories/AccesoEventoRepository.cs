@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Repositories
 {
-    public class AccesoEventoRepository : IAccesoEventoRepository
+    internal sealed class AccesoEventoRepository : IAccesoEventoRepository
     {
         private readonly DataBaseConfig _connection;
 

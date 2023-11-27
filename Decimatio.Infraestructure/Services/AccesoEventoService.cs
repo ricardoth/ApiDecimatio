@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Services
 {
-    public class AccesoEventoService : IAccesoEventoService
+    internal sealed class AccesoEventoService : IAccesoEventoService
     {
         private readonly IAccesoEventoRepository _accesoEventoRepository;
         private readonly PaginationOptions _paginationOptions;

@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Common.Services
 {
-    public class EmailService : IEmailService
+    internal sealed class EmailService : IEmailService
     {
         private readonly EmailConfig _emailConfig;
 

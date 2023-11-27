@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Common.Services
 {
-    public class QRGeneratorService : IQRGeneratorService
+    internal sealed class QRGeneratorService : IQRGeneratorService
     {
         private readonly EncryptedTicketConfig _config;
 

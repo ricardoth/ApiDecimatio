@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Services
 {
-    public class EventoService : IEventoService
+    internal sealed class EventoService : IEventoService
     {
 		private readonly IEventoRepository _eventoRepository;
         private readonly IBlobFilesService _blobFilesService;

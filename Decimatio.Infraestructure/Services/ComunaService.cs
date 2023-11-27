@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Services
 {
-    public class ComunaService : IComunaService     
+    internal sealed class ComunaService : IComunaService     
     {
         private readonly IComunaRepository _comunaRepository;
 

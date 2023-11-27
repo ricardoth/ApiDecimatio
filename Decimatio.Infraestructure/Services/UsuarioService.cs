@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Services
 {
-    public class UsuarioService : IUsuarioService
+    internal sealed class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly PaginationOptions _paginationOptions;

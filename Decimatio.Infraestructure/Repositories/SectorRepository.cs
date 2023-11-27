@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Repositories
 {
-    public class SectorRepository : ISectorRepository
+    internal sealed class SectorRepository : ISectorRepository
     {
         private readonly DataBaseConfig _connection;
 

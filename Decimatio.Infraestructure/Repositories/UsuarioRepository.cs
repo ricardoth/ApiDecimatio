@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Repositories
 {
-    public class UsuarioRepository : IUsuarioRepository
+    internal sealed class UsuarioRepository : IUsuarioRepository
     {
         private readonly DataBaseConfig _connection;
 

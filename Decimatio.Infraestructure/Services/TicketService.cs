@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Services
 {
-    public class TicketService : ITicketService
+    internal sealed class TicketService : ITicketService
     {
         private readonly ITicketRepository _ticketRepository;
         private readonly IQRGeneratorService _qrGeneratorService;

@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Repositories
 {
-    public class RegionRepository : IRegionRepository
+    internal sealed class RegionRepository : IRegionRepository
     {
         private readonly DataBaseConfig _connection;
 

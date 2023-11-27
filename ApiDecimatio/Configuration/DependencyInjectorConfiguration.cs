@@ -1,4 +1,5 @@
-﻿using PdfSharp.Charting;
+﻿using Decimatio.Common;
+using PdfSharp.Charting;
 
 namespace Decimatio.WebApi.Configuration
 {
@@ -26,6 +27,7 @@ namespace Decimatio.WebApi.Configuration
             service.Configure<BasicAuthCredentials>(configuration.GetSection("BasicAuthCredentials"));
 
             service.AddRepositories(configuration);
+            service.AddCommonDependencies(configuration);
             #endregion
         }
 

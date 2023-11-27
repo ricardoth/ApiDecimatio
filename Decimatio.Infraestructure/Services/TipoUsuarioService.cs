@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Services
 {
-    public class TipoUsuarioService : ITipoUsuarioService
+    internal sealed class TipoUsuarioService : ITipoUsuarioService
     {
         private readonly ITipoUsuarioRepository _tipoUsuarioRepository;
 

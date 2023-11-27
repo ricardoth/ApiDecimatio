@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Services
 {
-    public class RegionService : IRegionService
+    internal sealed class RegionService : IRegionService
     {
         private readonly IRegionRepository _regionRepository;
 

@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Infraestructure.Services
 {
-    public class MedioPagoService : IMedioPagoService
+    internal sealed class MedioPagoService : IMedioPagoService
     {
         private readonly IMedioPagoRepository _medioPagoRepository;
 

@@ -18,16 +18,15 @@
             try
             {
                 var result = await _lugarRepository.GetAllLugares();
-                var lugarList = new List<Lugar>();
-                foreach (var lugar in result)
+                var tasks = result.Select(async lugar =>
                 {
                     lugar.NombreMapaReferencial = lugar.MapaReferencial;
                     string imageNamePath = _containerConfig.ReferencialMapName + lugar.MapaReferencial;
-                    var referencialMap = await _blobFilesService.GetImageFromBlobStorage(imageNamePath);
-                    lugar.MapaReferencial = referencialMap;
-                    lugarList.Add(lugar);
-                }
-                return lugarList;
+                    lugar.MapaReferencial = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                    return lugar;
+                });
+
+                return await Task.WhenAll(tasks);
             }
             catch (Exception ex)
             {
@@ -42,9 +41,7 @@
                 var result = await _lugarRepository.GetById(idLugar);
 
                 string imageNamePath = _containerConfig.ReferencialMapName + result.MapaReferencial;
-                var referencialMap = await _blobFilesService.GetImageFromBlobStorage(imageNamePath);
-                result.MapaReferencial = referencialMap;
-
+                result.MapaReferencial = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
                 return result;
             }
             catch (Exception ex)

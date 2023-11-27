@@ -23,7 +23,6 @@
                 var tasks = result.Select(async evento =>
                 {
                     string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
-                    //evento.ContenidoFlyer = await _blobFilesService.GetImageFromBlobStorage(imageNamePath);
                     evento.ContenidoFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
                     return evento;
                 });
@@ -45,10 +44,8 @@
 					throw new Exception("Ha ocurrido un error al obtener el evento desde el Repositorio");
 
 				string imageNamePath = _containerConfig.FolderFlyerName + result.Flyer;
-
-                var flyer = await _blobFilesService.GetImageFromBlobStorage(imageNamePath);
-				result.Flyer = flyer;	
-				return result;
+                result.ContenidoFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                return result;
 			}
 			catch (Exception ex)
 			{

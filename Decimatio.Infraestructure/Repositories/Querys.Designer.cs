@@ -202,18 +202,19 @@ namespace Decimatio.Infraestructure.Repositories {
         ///   Busca una cadena traducida similar a SELECT E.IdEvento
         ///      ,E.IdLugar
         ///      ,E.NombreEvento
-        ///	  ,E.Descripcion
+        ///      ,E.Descripcion
         ///      ,E.Direccion
         ///      ,E.Fecha
         ///      ,E.Flyer
         ///      ,E.ContenidoFlyer
-        ///	  ,E.Observacion
-        ///	  ,E.ProductoraResponsable
+        ///      ,E.Observacion
+        ///      ,E.ProductoraResponsable
         ///      ,E.Activo
-        ///	  ,L.IdLugar
-        ///	  ,L.NombreLugar
-        ///	  ,L.Numeracion
-        ///	  ,L.MapaReferencial
+        ///      ,L.IdLugar
+        ///      ,L.NombreLugar
+        ///      ,L.Ubicacion
+        ///      ,L.Numeracion
+        ///      ,L.MapaReferencial
         ///  FROM dbo.Evento E
         ///	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar.
         /// </summary>

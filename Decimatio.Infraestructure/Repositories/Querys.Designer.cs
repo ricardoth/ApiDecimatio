@@ -183,6 +183,8 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	  ,E.ContenidoFlyer
         ///	  ,E.Observacion
         ///	  ,E.ProductoraResponsable
+        ///	    ,E.Banner
+        ///	  ,E.ContenidoBanner
         ///      ,E.Activo
         ///	  ,L.NombreLugar
         ///	  ,L.Ubicacion
@@ -209,6 +211,8 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,E.ContenidoFlyer
         ///      ,E.Observacion
         ///      ,E.ProductoraResponsable
+        ///	  ,E.Banner
+        ///	  ,E.ContenidoBanner
         ///      ,E.Activo
         ///      ,L.IdLugar
         ///      ,L.NombreLugar
@@ -562,6 +566,8 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	ContenidoFlyer,
         ///	Observacion,
         ///	ProductoraResponsable,
+        ///	Banner,
+        ///	ContenidoBanner,
         ///	Activo
         ///)
         ///
@@ -575,6 +581,8 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	@ContenidoFlyer,
         ///	@Observacion,
         ///	@ProductoraResponsable,
+        ///	@Banner,
+        ///	@ContenidoBanner,
         ///	@Activo
         ///).
         /// </summary>
@@ -747,6 +755,8 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	ContenidoFlyer = @ContenidoFlyer,
         ///	Observacion = @Observacion,
         ///	ProductoraResponsable = @ProductoraResponsable,
+        ///	Banner = @Banner,
+        ///	ContenidoBanner = @ContenidoBanner,
         ///	Activo = @Activo
         ///WHERE IdEvento = @IdEvento.
         /// </summary>

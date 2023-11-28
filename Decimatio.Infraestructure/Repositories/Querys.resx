@@ -199,6 +199,8 @@ FROM dbo.AccesoEvento AE
       ,E.ContenidoFlyer
       ,E.Observacion
       ,E.ProductoraResponsable
+	  ,E.Banner
+	  ,E.ContenidoBanner
       ,E.Activo
       ,L.IdLugar
       ,L.NombreLugar
@@ -221,6 +223,8 @@ FROM dbo.AccesoEvento AE
 	  ,E.ContenidoFlyer
 	  ,E.Observacion
 	  ,E.ProductoraResponsable
+	    ,E.Banner
+	  ,E.ContenidoBanner
       ,E.Activo
 	  ,L.NombreLugar
 	  ,L.Ubicacion
@@ -516,6 +520,8 @@ WHERE IdAccesoEvento = @IdAccesoEvento</value>
 	ContenidoFlyer,
 	Observacion,
 	ProductoraResponsable,
+	Banner,
+	ContenidoBanner,
 	Activo
 )
 
@@ -529,6 +535,8 @@ VALUES (
 	@ContenidoFlyer,
 	@Observacion,
 	@ProductoraResponsable,
+	@Banner,
+	@ContenidoBanner,
 	@Activo
 )</value>
     <comment>Insert Evento</comment>
@@ -646,6 +654,8 @@ SET IdLugar = @IdLugar,
 	ContenidoFlyer = @ContenidoFlyer,
 	Observacion = @Observacion,
 	ProductoraResponsable = @ProductoraResponsable,
+	Banner = @Banner,
+	ContenidoBanner = @ContenidoBanner,
 	Activo = @Activo
 WHERE IdEvento = @IdEvento</value>
     <comment>Actualiza Evento</comment>

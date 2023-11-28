@@ -63,6 +63,8 @@
                 { "@ContenidoFlyer", evento.ContenidoFlyer },
                 { "@Observacion", evento.Observacion },
                 { "@ProductoraResponsable", evento.ProductoraResponsable },
+                { "@Banner", evento.Banner },
+                { "@ContenidoBanner", evento.ContenidoBanner },
                 { "@Activo", evento.Activo },
             };
 

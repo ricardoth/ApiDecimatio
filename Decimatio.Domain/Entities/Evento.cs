@@ -12,6 +12,8 @@
         public string? ContenidoFlyer { get; set; }
         public string? Observacion { get; set; }
         public string? ProductoraResponsable { get; set; }
+        public bool? Banner { get; set; }
+        public string? ContenidoBanner { get; set; }
         public bool? Activo { get; set; }
         public Lugar? Lugar { get; set; }
     }

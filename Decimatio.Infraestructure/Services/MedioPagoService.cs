@@ -3,39 +3,39 @@
     internal sealed class MedioPagoService : IMedioPagoService
     {
         private readonly IMedioPagoRepository _medioPagoRepository;
+        private readonly IBlobFilesService _blobFilesService;
+        private readonly BlobContainerConfig _containerConfig;
 
-        public MedioPagoService(IMedioPagoRepository medioPagoRepository)
+        public MedioPagoService(IMedioPagoRepository medioPagoRepository,
+            IBlobFilesService blobFilesService,
+            BlobContainerConfig containerConfig)
         {
             _medioPagoRepository = medioPagoRepository;
+            _blobFilesService = blobFilesService;   
+            _containerConfig = containerConfig;
         }
 
         public async Task<List<MedioPago>> GetMediosPagosAsync()
         {
-            List<MedioPago> medioPagos = new List<MedioPago>();
 
             try
             {
+                List<MedioPago> medioPagos = new List<MedioPago>();
                 medioPagos = (List<MedioPago>)await _medioPagoRepository.GetMedioPagos();
+
+                var tasks = medioPagos.Select(async mPago =>
+                {
+                    string imageNamePath = _containerConfig.FolderMedioPago + mPago.UrlImageBlob;
+                    mPago.UrlImageBlob = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                    return mPago;
+                });
+                return medioPagos;
             }
             catch (Exception ex)
             {
                 throw new Exception($"Se ha producido un error, mensaje: {ex.Message}", ex);
             }
-            return medioPagos;
 
-        }
-
-        public async Task AddMedioPago(MedioPago medioPago)
-        {
-            try
-            {
-                await _medioPagoRepository.AddMedioPago(medioPago);
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception($"Se ha producido un error, mensaje: {ex.Message}", ex);
-            }
         }
 
         public async Task<MedioPago> GetMedioPagoAsync(int id)
@@ -43,6 +43,11 @@
             try
             {
                 var result = await _medioPagoRepository.GetMedioPago(id);
+                if (result == null)
+                    throw new Exception("Ha ocurrido un error al obtener el evento desde el Repositorio");
+
+                string imageNamePath = _containerConfig.FolderMedioPago + result.UrlImageBlob;
+                result.UrlImageBlob = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
                 return result;
             }
             catch (Exception ex)
@@ -53,7 +58,15 @@
 
         public async Task AddMedioPagoAsync(MedioPago medioPago)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _medioPagoRepository.AddMedioPago(medioPago);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"Se ha producido un error, mensaje: {ex.Message}", ex);
+            }
         }
 
         public async Task<int> DeleteMedioPagoAsync(int id)

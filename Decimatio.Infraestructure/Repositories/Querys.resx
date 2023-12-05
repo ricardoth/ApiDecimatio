@@ -297,6 +297,7 @@ WHERE T.IdTicket = @IdTicket</value>
     <value>SELECT  [IdMedioPago]
       ,[NombreMedioPago]
       ,[Descripcion]
+      ,[UrlImageBlob]
       ,[Activo]
   FROM [dbo].[MedioPago]</value>
     <comment>Get All Medios Pagos</comment>
@@ -305,6 +306,7 @@ WHERE T.IdTicket = @IdTicket</value>
     <value>SELECT  [IdMedioPago]
       ,[NombreMedioPago]
       ,[Descripcion]
+	  ,[UrlImageBlob]
       ,[Activo]
   FROM [dbo].[MedioPago] WHERE IdMedioPago = @IdMedioPago</value>
     <comment>Get Solo un Medio Pago</comment>

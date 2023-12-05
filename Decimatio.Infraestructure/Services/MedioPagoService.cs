@@ -15,21 +15,20 @@
             _containerConfig = containerConfig;
         }
 
-        public async Task<List<MedioPago>> GetMediosPagosAsync()
+        public async Task<IEnumerable<MedioPago>> GetMediosPagosAsync()
         {
 
             try
             {
-                List<MedioPago> medioPagos = new List<MedioPago>();
-                medioPagos = (List<MedioPago>)await _medioPagoRepository.GetMedioPagos();
+                var result = await _medioPagoRepository.GetMedioPagos();
 
-                var tasks = medioPagos.Select(async mPago =>
+                var tasks = result.Select(async mPago =>
                 {
                     string imageNamePath = _containerConfig.FolderMedioPago + mPago.UrlImageBlob;
                     mPago.UrlImageBlob = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
                     return mPago;
                 });
-                return medioPagos;
+                return await Task.WhenAll(tasks);
             }
             catch (Exception ex)
             {

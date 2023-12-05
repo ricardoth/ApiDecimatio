@@ -302,6 +302,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///   Busca una cadena traducida similar a SELECT  [IdMedioPago]
         ///      ,[NombreMedioPago]
         ///      ,[Descripcion]
+        ///	  ,[UrlImageBlob]
         ///      ,[Activo]
         ///  FROM [dbo].[MedioPago] WHERE IdMedioPago = @IdMedioPago.
         /// </summary>
@@ -315,6 +316,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///   Busca una cadena traducida similar a SELECT  [IdMedioPago]
         ///      ,[NombreMedioPago]
         ///      ,[Descripcion]
+        ///      ,[UrlImageBlob]
         ///      ,[Activo]
         ///  FROM [dbo].[MedioPago].
         /// </summary>

@@ -9,5 +9,6 @@
         Task AddUsuario(Usuario usuario);
         Task<bool> UpdateUsuario(Usuario usuario);
         Task<bool> DeleteUsuario(long idUsuario);
+        Task<Usuario> Login(Usuario usuario);
     }
 }

@@ -662,6 +662,25 @@ INSERT INTO [dbo].[Ticket]
            ,GETDATE())</value>
     <comment>Inserta un nuevo Usuario</comment>
   </data>
+  <data name="LOGIN_USUARIO" xml:space="preserve">
+    <value>SELECT [IdUsuario]
+      ,[IdTipoUsuario]
+      ,[Rut]
+      ,[DV]
+      ,[Nombres]
+      ,[ApellidoP]
+      ,[ApellidoM]
+      ,[Direccion]
+      ,[Telefono]
+      ,[Correo]
+      ,[Contrasena]
+      ,[Activo]
+      ,[FechaCreacion]
+  FROM [dbo].[Usuario]
+  WHERE Correo = @Correo
+	AND Contrasena = @Contrasena</value>
+    <comment>Valida un usuario por correo y contraseña</comment>
+  </data>
   <data name="UPDATE_EVENTO" xml:space="preserve">
     <value>UPDATE dbo.Evento
 SET IdLugar = @IdLugar,

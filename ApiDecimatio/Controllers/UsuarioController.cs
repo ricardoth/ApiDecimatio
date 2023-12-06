@@ -134,5 +134,17 @@ namespace Decimatio.WebApi.Controllers
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }
+
+        [HttpPost("/Login")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Login([FromBody] UsuarioLoginDto login)
+        { 
+            var usuario = _mapper.Map<Usuario>(login);
+            var result = await _usuarioService.Login(usuario);
+            var usuarioDto = _mapper.Map<UsuarioDto>(result);
+            var response = new ApiResponse<UsuarioDto>(usuarioDto);
+            return Ok(response);
+        }
     }
 }

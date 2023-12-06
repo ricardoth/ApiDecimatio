@@ -99,5 +99,15 @@ namespace Decimatio.Infraestructure.Services
                 throw;
             }
         }
+
+        public async Task<Usuario> Login(Usuario usuario)
+        {
+            var result = await _usuarioRepository.Login(usuario);
+            if (result is null)
+            {
+                throw new BadRequestException("El Usuario no existe en nuestros registros, por favor registrese");
+            }
+            return result;
+        }
     }
 }

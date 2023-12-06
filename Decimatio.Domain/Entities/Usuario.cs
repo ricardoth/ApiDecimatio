@@ -12,6 +12,7 @@
         public string? Direccion { get; set; }
         public string? Telefono { get; set; }
         public string? Correo { get; set; }
+        public string? Contrasena { get; set; }
         public bool Activo { get; set; }
         public DateTime? FechaCreacion { get; set; }
         public TipoUsuario TipoUsuario { get; set; }

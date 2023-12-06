@@ -769,6 +769,30 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a SELECT [IdUsuario]
+        ///      ,[IdTipoUsuario]
+        ///      ,[Rut]
+        ///      ,[DV]
+        ///      ,[Nombres]
+        ///      ,[ApellidoP]
+        ///      ,[ApellidoM]
+        ///      ,[Direccion]
+        ///      ,[Telefono]
+        ///      ,[Correo]
+        ///      ,[Contrasena]
+        ///      ,[Activo]
+        ///      ,[FechaCreacion]
+        ///  FROM [dbo].[Usuario]
+        ///  WHERE Correo = @Correo
+        ///	AND Contrasena = @Contrasena.
+        /// </summary>
+        internal static string LOGIN_USUARIO {
+            get {
+                return ResourceManager.GetString("LOGIN_USUARIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a UPDATE dbo.Evento
         ///SET IdLugar = @IdLugar,
         ///	NombreEvento = @NombreEvento,

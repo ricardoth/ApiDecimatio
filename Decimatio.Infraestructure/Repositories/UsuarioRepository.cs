@@ -1,6 +1,4 @@
-﻿using PdfSharp.Pdf.Filters;
-
-namespace Decimatio.Infraestructure.Repositories
+﻿namespace Decimatio.Infraestructure.Repositories
 {
     internal sealed class UsuarioRepository : IUsuarioRepository
     {
@@ -122,6 +120,19 @@ namespace Decimatio.Infraestructure.Repositories
             var dynamicParam = new DynamicParameters(dictionary);
             using var conn = new SqlConnection(_connection.ConnectionString);
             return await conn.QueryFirstOrDefaultAsync<Usuario>(Querys.GET_USUARIO_RUT, dynamicParam);
+        }
+
+        public async Task<Usuario> Login(Usuario usuario)
+        {
+            var dictionary = new Dictionary<string, object>
+            {
+                { "@Correo", usuario.Correo },
+                { "@Contrasena", usuario.Contrasena}
+            };
+
+            var dynamicParam = new DynamicParameters(dictionary);
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryFirstOrDefaultAsync<Usuario>(Querys.LOGIN_USUARIO, dynamicParam);
         }
     }
 }

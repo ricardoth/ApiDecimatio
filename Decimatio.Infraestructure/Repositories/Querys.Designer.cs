@@ -474,6 +474,28 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a SELECT [IdUsuario]
+        ///      ,[IdTipoUsuario]
+        ///      ,[Rut]
+        ///      ,[DV]
+        ///      ,[Nombres]
+        ///      ,[ApellidoP]
+        ///      ,[ApellidoM]
+        ///      ,[Direccion]
+        ///      ,[Telefono]
+        ///      ,[Correo]
+        ///      ,[Activo]
+        ///      ,[FechaCreacion]
+        ///  FROM [dbo].[Usuario]
+        ///  WHERE CONCAT(Rut, DV) = @RutDv.
+        /// </summary>
+        internal static string GET_USUARIO_RUT {
+            get {
+                return ResourceManager.GetString("GET_USUARIO_RUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT U.[IdUsuario]
         ///      ,U.[IdTipoUsuario]
         ///      ,U.[Rut]

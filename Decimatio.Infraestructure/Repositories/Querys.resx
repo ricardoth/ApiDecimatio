@@ -461,6 +461,23 @@ WHERE T.IdTicket = @IdTicket</value>
   WHERE IdUsuario = @IdUsuario</value>
     <comment>Get Usuario por Id</comment>
   </data>
+  <data name="GET_USUARIO_RUT" xml:space="preserve">
+    <value>SELECT [IdUsuario]
+      ,[IdTipoUsuario]
+      ,[Rut]
+      ,[DV]
+      ,[Nombres]
+      ,[ApellidoP]
+      ,[ApellidoM]
+      ,[Direccion]
+      ,[Telefono]
+      ,[Correo]
+      ,[Activo]
+      ,[FechaCreacion]
+  FROM [dbo].[Usuario]
+  WHERE CONCAT(Rut, DV) = @RutDv</value>
+    <comment>Obtiene el usuario por rut y dv</comment>
+  </data>
   <data name="INSERT SECTOR" xml:space="preserve">
     <value>INSERT INTO dbo.Sector(
 	IdEvento,

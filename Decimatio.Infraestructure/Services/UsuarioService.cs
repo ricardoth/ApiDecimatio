@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using Decimatio.Domain.Exceptions;
+
+namespace Decimatio.Infraestructure.Services
 {
     internal sealed class UsuarioService : IUsuarioService
     {
@@ -73,13 +75,15 @@
 
         public async Task AddUsuario(Usuario usuario)
         {
-            try
+           
+            var rutDv = usuario.Rut + usuario.DV;
+            var user = await _usuarioRepository.GetByRutDv(rutDv);
+            if (user == null)
             {
                 await _usuarioRepository.AddUsuario(usuario);
             }
-            catch (Exception ex)
-            {
-                throw;
+            else {
+                throw new BadRequestException("El Usuario ya existe en nuestros registros");
             }
         }
 

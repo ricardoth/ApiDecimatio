@@ -1,3 +1,4 @@
+using Decimatio.WebApi.Middleware;
 using Microsoft.Extensions.Azure;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.UseDependencyInjectorConfiguration(builder.Configuration);
 builder.Services.ConfigureCors();
+builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
+
 builder.Services.AddAzureClients(clientBuilder =>
 {
     clientBuilder.AddBlobServiceClient(builder.Configuration["BlobContainerConfig:ConnectionString:blob"], preferMsi: true);
@@ -38,6 +41,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.MapControllers();
 

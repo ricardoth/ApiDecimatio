@@ -135,7 +135,7 @@ namespace Decimatio.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("/Login")]
+        [HttpPost("Login")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Login([FromBody] UsuarioLoginDto login)

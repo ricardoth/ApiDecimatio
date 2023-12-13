@@ -110,10 +110,17 @@ namespace Decimatio.Infraestructure.Services
             try
             {
                 var result = await _eventoRepository.GetEventosFilter(filtro);
+                var tasks = result.Select(async evento =>
+                {
+                    string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
+                    evento.ContenidoFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                    return evento;
+                });
+
                 if (result is null)
                     throw new BadRequestException("No se pudo encontrar eventos indicados");
 
-                return result;
+                return await Task.WhenAll(tasks);
             }
             catch (Exception ex)
             {

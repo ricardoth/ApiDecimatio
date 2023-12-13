@@ -7,5 +7,6 @@
         Task<int> AddEvento(Evento evento);
         Task<bool> UpdateEvento(Evento evento);
         Task<bool> DeleteEvento(int idEvento);
+        Task<IEnumerable<Evento>> GetEventosFilter(string filtro);
     }
 }

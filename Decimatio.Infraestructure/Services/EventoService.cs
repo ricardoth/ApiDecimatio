@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using Decimatio.Domain.Exceptions;
+
+namespace Decimatio.Infraestructure.Services
 {
     internal sealed class EventoService : IEventoService
     {
@@ -100,6 +102,22 @@
             catch (Exception ex)
             {
                 throw new Exception($"Ha ocurrido un error al eliminar el evento: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<IEnumerable<Evento>> GetEventosFilter(string filtro)
+        {
+            try
+            {
+                var result = await _eventoRepository.GetEventosFilter(filtro);
+                if (result is null)
+                    throw new BadRequestException("No se pudo encontrar eventos indicados");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ha ocurrido un error al obtener los evento: {ex.Message}", ex);
             }
         }
     }

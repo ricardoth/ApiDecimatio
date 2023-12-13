@@ -211,6 +211,29 @@ FROM dbo.AccesoEvento AE
 	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar</value>
     <comment>Get All Eventos</comment>
   </data>
+  <data name="GET_EVENTOS_FILTRO" xml:space="preserve">
+    <value>SELECT E.[IdEvento]
+      ,E.[IdLugar]
+      ,E.[NombreEvento]
+      ,E.[Descripcion]
+      ,E.[Direccion]
+      ,E.[Fecha]
+      ,E.[Flyer]
+      ,E.[ContenidoFlyer]
+      ,E.[Observacion]
+      ,E.[ProductoraResponsable]
+      ,E.[Banner]
+      ,E.[ContenidoBanner]
+      ,E.[Activo]
+	  ,L.IdLugar
+	  ,L.NombreLugar
+  FROM [dbo].[Evento] E
+	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
+  WHERE (E.NombreEvento LIKE '%'+@Filtro+'%'
+	OR L.NombreLugar LIKE '%'+ @Filtro+'%')
+	AND E.Activo = 1</value>
+    <comment>Get Eventos por nombre evento o nombre lugar</comment>
+  </data>
   <data name="GET_EVENTO_ID" xml:space="preserve">
     <value>SELECT 
 	   E.IdEvento

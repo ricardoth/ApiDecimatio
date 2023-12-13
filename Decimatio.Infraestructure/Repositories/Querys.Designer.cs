@@ -229,6 +229,34 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a SELECT E.[IdEvento]
+        ///      ,E.[IdLugar]
+        ///      ,E.[NombreEvento]
+        ///      ,E.[Descripcion]
+        ///      ,E.[Direccion]
+        ///      ,E.[Fecha]
+        ///      ,E.[Flyer]
+        ///      ,E.[ContenidoFlyer]
+        ///      ,E.[Observacion]
+        ///      ,E.[ProductoraResponsable]
+        ///      ,E.[Banner]
+        ///      ,E.[ContenidoBanner]
+        ///      ,E.[Activo]
+        ///	  ,L.IdLugar
+        ///	  ,L.NombreLugar
+        ///  FROM [dbo].[Evento] E
+        ///	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
+        ///  WHERE (E.NombreEvento LIKE &apos;%&apos;+@Filtro+&apos;%&apos;
+        ///	OR L.NombreLugar LIKE &apos;%&apos;+ @Filtro+&apos;%&apos;)
+        ///	AND E.Activo =  [resto de la cadena truncado]&quot;;.
+        /// </summary>
+        internal static string GET_EVENTOS_FILTRO {
+            get {
+                return ResourceManager.GetString("GET_EVENTOS_FILTRO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT t.IdTicket, t.IdUsuario, t.IdEvento, t.IdSector, t.IdMedioPago,
         ///        t.MontoPago, t.MontoTotal, t.FechaTicket, t.Activo, t.FechaCreacion, t.FechaModified,
         ///        u.*, e.*, s.*, m.*, TQR.*, L.*,

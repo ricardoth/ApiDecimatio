@@ -97,5 +97,17 @@
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }
+
+        [HttpGet("GetEventosFilter")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Get([FromQuery] string? filtro)
+        {
+            var result = await _eventoService.GetEventosFilter(filtro);
+            var eventosDtos = _mapper.Map<IEnumerable<EventoDto>>(result);
+            var response = new ApiResponse<IEnumerable<EventoDto>>(eventosDtos);
+            return Ok(response);
+        }
     }
 }

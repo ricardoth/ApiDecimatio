@@ -72,5 +72,30 @@
             using var conn = new SqlConnection(_connection.ConnectionString);
             return await conn.ExecuteScalarAsync<bool>(Querys.UPDATE_EVENTO, dynamicParam);
         }
+
+        public async Task<IEnumerable<Evento>> GetEventosFilter(string filtro)
+        {
+            var dictionary = new Dictionary<string, object>
+            {
+                { "@Filtro", filtro }
+            };
+
+            var dynamicParam = new DynamicParameters(dictionary);
+
+            using var conn = new SqlConnection(_connection.ConnectionString);
+
+            var result = (await conn.QueryAsync<Evento, Lugar, Evento>(
+                Querys.GET_EVENTOS_FILTRO,
+                (evento, lugar) =>
+                {
+                    evento.Lugar = lugar;
+                    return evento;
+                },
+                dynamicParam,
+                splitOn: "IdLugar"
+                )).Distinct().ToList();
+
+            return result;
+        }
     }
 }

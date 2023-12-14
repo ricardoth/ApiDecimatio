@@ -2,7 +2,6 @@
 global using Dapper;
 global using Decimatio.Common.Interfaces;
 global using Decimatio.Common.Options;
-global using Decimatio.Common.Services;
 global using Decimatio.Domain.CustomEntities;
 global using Decimatio.Domain.DTOs;
 global using Decimatio.Domain.Entities;
@@ -18,3 +17,6 @@ global using Microsoft.Extensions.Options;
 global using System.Data.SqlClient;
 global using System.Drawing;
 global using System.Drawing.Imaging;
+global using Decimatio.Infraestructure.Contracts;
+global using Decimatio.Domain.Exceptions;
+global using Decimatio.Infraestructure.Options;

@@ -1,18 +1,21 @@
-﻿using Decimatio.Domain.Exceptions;
-
-namespace Decimatio.Infraestructure.Services
+﻿namespace Decimatio.Infraestructure.Services
 {
     internal sealed class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly PaginationOptions _paginationOptions;
         private readonly IValidator<Usuario> _validator;
+        private readonly IPasswordService _passwordService;
 
-        public UsuarioService(IUsuarioRepository usuarioRepository, IOptions<PaginationOptions> paginationOptions, IValidator<Usuario> validator) 
+        public UsuarioService(IUsuarioRepository usuarioRepository, 
+            IOptions<PaginationOptions> paginationOptions, 
+            IValidator<Usuario> validator,
+            IPasswordService passwordService) 
         {
             _usuarioRepository = usuarioRepository;
             _paginationOptions = paginationOptions.Value;
             _validator = validator;
+            _passwordService = passwordService;
         }
 
         public async Task<PagedList<Usuario>> GetAllUsers(UsuarioQueryFilter filtros)
@@ -84,9 +87,11 @@ namespace Decimatio.Infraestructure.Services
             }
 
             var rutDv = usuario.Rut + usuario.DV;
+
             var user = await _usuarioRepository.GetByRutDv(rutDv);
             if (user == null)
             {
+                usuario.Contrasena = _passwordService.Hash(usuario.Contrasena);
                 await _usuarioRepository.AddUsuario(usuario);
             }
             else {
@@ -111,10 +116,14 @@ namespace Decimatio.Infraestructure.Services
         {
             var result = await _usuarioRepository.Login(usuario);
             if (result is null)
-            {
                 throw new BadRequestException("El Usuario no existe en nuestros registros, por favor registrese");
+            else {
+                var isValid = _passwordService.Check(result.Contrasena, usuario.Contrasena);
+                if (isValid)
+                    return result;
+                else
+                    throw new BadRequestException("La contraseña es incorrecta, por favor verifique");
             }
-            return result;
         }
     }
 }

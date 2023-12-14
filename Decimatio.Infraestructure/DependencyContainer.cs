@@ -7,6 +7,9 @@
             var config = configuration.GetSection(nameof(DataBaseConfig)).Get<DataBaseConfig>();
             services.AddSingleton(config);
 
+            var passwordConfig = configuration.GetSection(nameof(PasswordOptions)).Get<PasswordOptions>();
+            services.AddSingleton(passwordConfig);
+
             // Repositories
             services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<IMedioPagoRepository, MedioPagoRepository>();
@@ -29,6 +32,7 @@
             services.AddScoped<ITipoUsuarioService, TipoUsuarioService>();
             services.AddScoped<IRegionService, RegionService>();
             services.AddScoped<IComunaService, ComunaService>();
+            services.AddSingleton<IPasswordService, PasswordService>();
 
             //Commons & Configurations
             //services.AddScoped<IQRGeneratorService, QRGeneratorService>();

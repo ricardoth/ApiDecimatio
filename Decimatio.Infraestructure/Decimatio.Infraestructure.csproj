@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Repositories\Querys.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

@@ -776,6 +776,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///           ,[Direccion]
         ///           ,[Telefono]
         ///           ,[Correo]
+        ///           ,Contrasena
         ///           ,[Activo]
         ///           ,[FechaCreacion])
         ///     VALUES
@@ -787,8 +788,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///           ,@ApellidoM
         ///           ,@Direccion
         ///           ,@Telefono
-        ///           ,@Correo
-        ///        [resto de la cadena truncado]&quot;;.
+        ///     [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string INSERT_USUARIO {
             get {
@@ -811,8 +811,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[Activo]
         ///      ,[FechaCreacion]
         ///  FROM [dbo].[Usuario]
-        ///  WHERE Correo = @Correo
-        ///	AND Contrasena = @Contrasena.
+        ///  WHERE Correo = @Correo.
         /// </summary>
         internal static string LOGIN_USUARIO {
             get {

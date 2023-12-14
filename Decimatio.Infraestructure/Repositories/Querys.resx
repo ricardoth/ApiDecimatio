@@ -670,6 +670,7 @@ INSERT INTO [dbo].[Ticket]
            ,[Direccion]
            ,[Telefono]
            ,[Correo]
+           ,Contrasena
            ,[Activo]
            ,[FechaCreacion])
      VALUES
@@ -682,6 +683,7 @@ INSERT INTO [dbo].[Ticket]
            ,@Direccion
            ,@Telefono
            ,@Correo
+           ,@Contrasena
            ,@Activo
            ,GETDATE())</value>
     <comment>Inserta un nuevo Usuario</comment>
@@ -701,8 +703,7 @@ INSERT INTO [dbo].[Ticket]
       ,[Activo]
       ,[FechaCreacion]
   FROM [dbo].[Usuario]
-  WHERE Correo = @Correo
-	AND Contrasena = @Contrasena</value>
+  WHERE Correo = @Correo</value>
     <comment>Valida un usuario por correo y contraseña</comment>
   </data>
   <data name="UPDATE_EVENTO" xml:space="preserve">

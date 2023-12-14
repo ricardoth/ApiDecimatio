@@ -8,12 +8,15 @@
         private readonly IUsuarioService _usuarioService;
         private readonly IMapper _mapper;
         private readonly IValidator<Usuario> _validator;
+        private readonly IPasswordService _passwordService;
 
-        public UsuarioController(IUsuarioService usuarioService, IMapper mapper, IValidator<Usuario> validator)
+        public UsuarioController(IUsuarioService usuarioService, IMapper mapper, 
+            IValidator<Usuario> validator, IPasswordService passwordService)
         {
             _usuarioService = usuarioService;
             _mapper = mapper;
             _validator = validator;
+            _passwordService = passwordService;
         }
 
         [HttpGet]
@@ -79,12 +82,9 @@
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post([FromBody] UsuarioDto usuarioDto)
-        { 
+        {
+            usuarioDto.Contrasena = _passwordService.Hash(usuarioDto.Contrasena);
             var usuario = _mapper.Map<Usuario>(usuarioDto);
-            //var validationResult = _validator.Validate(usuario);
-            //if (!validationResult.IsValid)
-            //    return BadRequest(validationResult.Errors);
-
             await _usuarioService.AddUsuario(usuario);
             var response = new ApiResponse<UsuarioDto>(usuarioDto);
             return Ok(response);

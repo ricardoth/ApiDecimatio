@@ -1,5 +1,5 @@
 ﻿using Decimatio.Common;
-using PdfSharp.Charting;
+using Decimatio.Infraestructure.Options;
 
 namespace Decimatio.WebApi.Configuration
 {
@@ -13,9 +13,7 @@ namespace Decimatio.WebApi.Configuration
                 //options.Filters.Add(new ApiValidStateFilterAttribute());
                 //options.Filters.Add(new ApiExceptionFilterAttribute(trace));
             }).AddFluentValidation(c => c.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
-
             #endregion
-
 
             #region Others Dependencies
             service.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -25,6 +23,7 @@ namespace Decimatio.WebApi.Configuration
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
             service.Configure<BasicAuthCredentials>(configuration.GetSection("BasicAuthCredentials"));
+            service.Configure<PasswordOptions>(configuration.GetSection("PasswordOptions"));
 
             service.AddRepositories(configuration);
             service.AddCommonDependencies(configuration);

@@ -7,9 +7,6 @@
             var config = configuration.GetSection(nameof(DataBaseConfig)).Get<DataBaseConfig>();
             services.AddSingleton(config);
 
-            var passwordConfig = configuration.GetSection(nameof(PasswordOptions)).Get<PasswordOptions>();
-            services.AddSingleton(passwordConfig);
-
             // Repositories
             services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<IMedioPagoRepository, MedioPagoRepository>();

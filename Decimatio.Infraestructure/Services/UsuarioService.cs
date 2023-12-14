@@ -91,7 +91,6 @@
             var user = await _usuarioRepository.GetByRutDv(rutDv);
             if (user == null)
             {
-                usuario.Contrasena = _passwordService.Hash(usuario.Contrasena);
                 await _usuarioRepository.AddUsuario(usuario);
             }
             else {

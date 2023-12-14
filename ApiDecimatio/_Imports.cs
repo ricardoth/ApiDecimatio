@@ -12,16 +12,13 @@ global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.Options;
-global using System.Drawing;
 global using System.Net;
 global using System.Net.Http.Headers;
 global using System.Reflection;
 global using System.Security.Claims;
 global using System.Text;
 global using System.Text.Encodings.Web;
-global using ZXing;
-global using ZXing.Common;
-
+global using Decimatio.Infraestructure.Contracts;
 global using Decimatio.Domain.CustomEntities;
 global using Decimatio.Domain.QueryFilters;
 global using Newtonsoft.Json;

@@ -409,7 +409,8 @@ INNER JOIN Sector s ON t.IdSector = s.IdSector
 INNER JOIN MedioPago m ON t.IdMedioPago = m.IdMedioPago
 LEFT JOIN TicketQR TQR ON TQR.IdTicket = T.IdTicket
 INNER JOIN Comuna c on c.IdComuna = L.IdComuna
-INNER JOIN Region r on r.IdRegion = c.IdRegion</value>
+INNER JOIN Region r on r.IdRegion = c.IdRegion
+ORDER BY t.IdTicket DESC</value>
     <comment>Get All Tickets</comment>
   </data>
   <data name="GET_TICKET_ID" xml:space="preserve">

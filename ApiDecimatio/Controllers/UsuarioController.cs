@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.Entities;
-
-namespace Decimatio.WebApi.Controllers
+﻿namespace Decimatio.WebApi.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -83,9 +81,9 @@ namespace Decimatio.WebApi.Controllers
         public async Task<IActionResult> Post([FromBody] UsuarioDto usuarioDto)
         { 
             var usuario = _mapper.Map<Usuario>(usuarioDto);
-            var validationResult = _validator.Validate(usuario);
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
+            //var validationResult = _validator.Validate(usuario);
+            //if (!validationResult.IsValid)
+            //    return BadRequest(validationResult.Errors);
 
             await _usuarioService.AddUsuario(usuario);
             var response = new ApiResponse<UsuarioDto>(usuarioDto);

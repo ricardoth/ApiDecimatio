@@ -6,11 +6,13 @@ namespace Decimatio.Infraestructure.Services
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly PaginationOptions _paginationOptions;
+        private readonly IValidator<Usuario> _validator;
 
-        public UsuarioService(IUsuarioRepository usuarioRepository, IOptions<PaginationOptions> paginationOptions) 
+        public UsuarioService(IUsuarioRepository usuarioRepository, IOptions<PaginationOptions> paginationOptions, IValidator<Usuario> validator) 
         {
             _usuarioRepository = usuarioRepository;
             _paginationOptions = paginationOptions.Value;
+            _validator = validator;
         }
 
         public async Task<PagedList<Usuario>> GetAllUsers(UsuarioQueryFilter filtros)
@@ -75,7 +77,12 @@ namespace Decimatio.Infraestructure.Services
 
         public async Task AddUsuario(Usuario usuario)
         {
-           
+            var validationResult = _validator.Validate(usuario);
+            if (!validationResult.IsValid) {
+                var errores = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                throw new ValidationResultException(errores);
+            }
+
             var rutDv = usuario.Rut + usuario.DV;
             var user = await _usuarioRepository.GetByRutDv(rutDv);
             if (user == null)

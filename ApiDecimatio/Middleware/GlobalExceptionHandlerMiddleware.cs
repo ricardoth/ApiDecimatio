@@ -45,7 +45,11 @@ namespace Decimatio.WebApi.Middleware
                     errorResponse.Message = badRequestException.Message;
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
-              
+
+                case ValidationResultException validationResultException:
+                    errorResponse.Message = validationResultException.Message;
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    break;
 
                 default:
                     _logger.LogError(exception, "Ha ocurrido un error inesperado en la API");

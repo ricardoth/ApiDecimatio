@@ -833,7 +833,13 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	Banner = @Banner,
         ///	ContenidoBanner = @ContenidoBanner,
         ///	Activo = @Activo
-        ///WHERE IdEvento = @IdEvento.
+        ///WHERE IdEvento = @IdEvento
+        ///
+        ///
+        ///IF @@ROWCOUNT &gt; 0
+        ///   SELECT 1 
+        ///ELSE
+        ///   SELECT 0.
         /// </summary>
         internal static string UPDATE_EVENTO {
             get {
@@ -850,7 +856,12 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[FechaCreacion] = GETDATE()
         ///	  ,MapaReferencial = @MapaReferencial
         ///      ,[Activo] = @Activo
-        /// WHERE IdLugar = @IdLugar.
+        /// WHERE IdLugar = @IdLugar
+        ///
+        ///IF @@ROWCOUNT &gt; 0
+        ///   SELECT 1 
+        ///ELSE
+        ///   SELECT 0.
         /// </summary>
         internal static string UPDATE_LUGAR {
             get {
@@ -861,7 +872,12 @@ namespace Decimatio.Infraestructure.Repositories {
         /// <summary>
         ///   Busca una cadena traducida similar a UPDATE dbo.MedioPago SET [NombreMedioPago] =@NombreMedioPago
         ///           ,[Descripcion] = @Descripcion
-        ///           ,[Activo] = @Activo WHERE IdMedioPago = @IdMedioPago.
+        ///           ,[Activo] = @Activo WHERE IdMedioPago = @IdMedioPago
+        ///
+        ///IF @@ROWCOUNT &gt; 0
+        ///   SELECT 1 
+        ///ELSE
+        ///   SELECT 0.
         /// </summary>
         internal static string UPDATE_MEDIO_PAGO {
             get {
@@ -881,7 +897,12 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	Total = @Total,
         ///	ColorHexa = @ColorHexa,
         ///	Activo = @Activo
-        ///WHERE 	IdSector = @IdSector.
+        ///WHERE 	IdSector = @IdSector
+        ///
+        ///IF @@ROWCOUNT &gt; 0
+        ///   SELECT 1 
+        ///ELSE
+        ///   SELECT 0.
         /// </summary>
         internal static string UPDATE_SECTOR {
             get {
@@ -902,7 +923,12 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[Correo] = @Correo
         ///      ,[Activo] = @Activo
         ///      ,[FechaCreacion] = GETDATE()
-        /// WHERE IdUsuario = @IdUsuario.
+        /// WHERE IdUsuario = @IdUsuario
+        ///
+        ///IF @@ROWCOUNT &gt; 0
+        ///   SELECT 1 
+        ///ELSE
+        ///   SELECT 0.
         /// </summary>
         internal static string UPDATE_USUARIO {
             get {

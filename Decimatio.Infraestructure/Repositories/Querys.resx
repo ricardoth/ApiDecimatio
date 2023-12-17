@@ -720,7 +720,13 @@ SET IdLugar = @IdLugar,
 	Banner = @Banner,
 	ContenidoBanner = @ContenidoBanner,
 	Activo = @Activo
-WHERE IdEvento = @IdEvento</value>
+WHERE IdEvento = @IdEvento
+
+
+IF @@ROWCOUNT &gt; 0
+   SELECT 1 
+ELSE
+   SELECT 0</value>
     <comment>Actualiza Evento</comment>
   </data>
   <data name="UPDATE_LUGAR" xml:space="preserve">
@@ -732,13 +738,23 @@ WHERE IdEvento = @IdEvento</value>
       ,[FechaCreacion] = GETDATE()
 	  ,MapaReferencial = @MapaReferencial
       ,[Activo] = @Activo
- WHERE IdLugar = @IdLugar</value>
+ WHERE IdLugar = @IdLugar
+
+IF @@ROWCOUNT &gt; 0
+   SELECT 1 
+ELSE
+   SELECT 0</value>
     <comment>Actualiza un Lugar</comment>
   </data>
   <data name="UPDATE_MEDIO_PAGO" xml:space="preserve">
     <value>UPDATE dbo.MedioPago SET [NombreMedioPago] =@NombreMedioPago
            ,[Descripcion] = @Descripcion
-           ,[Activo] = @Activo WHERE IdMedioPago = @IdMedioPago</value>
+           ,[Activo] = @Activo WHERE IdMedioPago = @IdMedioPago
+
+IF @@ROWCOUNT &gt; 0
+   SELECT 1 
+ELSE
+   SELECT 0</value>
     <comment>Actualiza MedioPago</comment>
   </data>
   <data name="UPDATE_SECTOR" xml:space="preserve">
@@ -753,7 +769,12 @@ SET 	IdEvento = @IdEvento,
 	Total = @Total,
 	ColorHexa = @ColorHexa,
 	Activo = @Activo
-WHERE 	IdSector = @IdSector</value>
+WHERE 	IdSector = @IdSector
+
+IF @@ROWCOUNT &gt; 0
+   SELECT 1 
+ELSE
+   SELECT 0</value>
     <comment>Actualiza un Sector</comment>
   </data>
   <data name="UPDATE_USUARIO" xml:space="preserve">
@@ -769,7 +790,12 @@ WHERE 	IdSector = @IdSector</value>
       ,[Correo] = @Correo
       ,[Activo] = @Activo
       ,[FechaCreacion] = GETDATE()
- WHERE IdUsuario = @IdUsuario</value>
+ WHERE IdUsuario = @IdUsuario
+
+IF @@ROWCOUNT &gt; 0
+   SELECT 1 
+ELSE
+   SELECT 0</value>
     <comment>Actualiza un Usuario</comment>
   </data>
   <data name="VALIDAR_ACCESO_TICKET" xml:space="preserve">

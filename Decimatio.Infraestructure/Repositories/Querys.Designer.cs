@@ -61,6 +61,22 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE dbo.Usuario
+        ///SET Contrasena = @Contrasena
+        ///WHERE IdUsuario = @IdUsuario
+        ///
+        ///IF @@ROWCOUNT &gt; 0
+        ///   SELECT 1 
+        ///ELSE
+        ///   SELECT 0.
+        /// </summary>
+        internal static string CAMBIAR_CONTRASENA {
+            get {
+                return ResourceManager.GetString("CAMBIAR_CONTRASENA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a UPDATE dbo.Evento
         ///SET Activo = 0
         ///WHERE IdEvento = @IdEvento.

@@ -74,7 +74,7 @@
             }
             catch (Exception ex)
             {
-                throw;
+                throw new BadRequestException($"Ha ocurrido un error al actualizar el usuario: {ex.Message}");
             }
         }
 
@@ -107,7 +107,7 @@
             }
             catch (Exception ex)
             {
-                throw;
+                throw new BadRequestException($"Ha ocurrido un error al eliminar el usuario: {ex.Message}");
             }
         }
 
@@ -122,6 +122,28 @@
                     return result;
                 else
                     throw new BadRequestException("La contraseña es incorrecta, por favor verifique");
+            }
+        }
+
+        public async Task<bool> ChangePassword(string contrasena, string confirmContrasena)
+        {
+            try
+            {
+                if (contrasena == null || contrasena == "")
+                    throw new BadRequestException("La contraseña no es válida");
+
+                contrasena = _passwordService.Hash(contrasena);
+
+                var comparedPass = _passwordService.Check(contrasena, confirmContrasena);
+                if (comparedPass)
+                    throw new BadRequestException("Las contraseñas no coinciden, por favor verifique");
+
+                var result = await _usuarioRepository.ChangePassword(contrasena);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException($"Ha ocurrido un error al cambiar la contraseña: {ex.Message}");
             }
         }
     }

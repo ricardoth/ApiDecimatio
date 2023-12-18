@@ -117,6 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CAMBIAR_CONTRASENA" xml:space="preserve">
+    <value>UPDATE dbo.Usuario
+SET Contrasena = @Contrasena
+WHERE IdUsuario = @IdUsuario
+
+IF @@ROWCOUNT &gt; 0
+   SELECT 1 
+ELSE
+   SELECT 0</value>
+    <comment>Cambia contraseña del usuario</comment>
+  </data>
   <data name="DELETE_EVENTO" xml:space="preserve">
     <value>UPDATE dbo.Evento
 SET Activo = 0

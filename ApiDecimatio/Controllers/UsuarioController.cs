@@ -148,7 +148,7 @@
         [HttpPost("ChangePassword")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> ChangePassword([FromBody] string newPass, string confirmPass)
+        public async Task<IActionResult> ChangePassword([FromBody] string newPass, [FromBody] string confirmPass)
         { 
             var result = await _usuarioService.ChangePassword(newPass, confirmPass);
             var response = new ApiResponse<bool>(result);   

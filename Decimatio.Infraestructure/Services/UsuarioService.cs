@@ -125,7 +125,7 @@
             }
         }
 
-        public async Task<bool> ChangePassword(string contrasena, string confirmContrasena)
+        public async Task<bool> ChangePassword(int idUsuario, string contrasena, string confirmContrasena)
         {
             try
             {
@@ -138,7 +138,13 @@
                 if (comparedPass)
                     throw new BadRequestException("Las contraseñas no coinciden, por favor verifique");
 
-                var result = await _usuarioRepository.ChangePassword(contrasena);
+                Usuario user = new()
+                {
+                    IdUsuario = idUsuario,
+                    Contrasena = contrasena,
+                };
+
+                var result = await _usuarioRepository.ChangePassword(user);
                 return result;
             }
             catch (Exception ex)

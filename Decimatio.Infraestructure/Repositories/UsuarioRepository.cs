@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.Entities;
-
-namespace Decimatio.Infraestructure.Repositories
+﻿namespace Decimatio.Infraestructure.Repositories
 {
     internal sealed class UsuarioRepository : IUsuarioRepository
     {
@@ -137,11 +135,12 @@ namespace Decimatio.Infraestructure.Repositories
             return await conn.QueryFirstOrDefaultAsync<Usuario>(Querys.LOGIN_USUARIO, dynamicParam);
         }
 
-        public async Task<bool> ChangePassword(string contrasena)
+        public async Task<bool> ChangePassword(Usuario usuario)
         {
             var dictionary = new Dictionary<string, object>
             {
-                { "@Contrasena", contrasena },
+                { "@IdUsuario", usuario.IdUsuario },
+                { "@Contrasena", usuario.Contrasena },
             };
 
             var dynamicParam = new DynamicParameters(dictionary);

@@ -10,6 +10,6 @@
         Task<bool> UpdateUsuario(Usuario usuario);
         Task<bool> DeleteUsuario(long idUsuario);
         Task<Usuario> Login(Usuario usuario);
-        Task<bool> ChangePassword(Usuario usuario);
+        Task<bool> ChangePassword(UsuarioPass usuario);
     }
 }

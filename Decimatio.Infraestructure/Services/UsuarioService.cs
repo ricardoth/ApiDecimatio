@@ -125,26 +125,21 @@
             }
         }
 
-        public async Task<bool> ChangePassword(int idUsuario, string contrasena, string confirmContrasena)
+        public async Task<bool> ChangePassword(UsuarioPass usuario)
         {
             try
             {
-                if (contrasena == null || contrasena == "")
+                if (usuario.Contrasena == null || usuario.Contrasena == "")
                     throw new BadRequestException("La contraseña no es válida");
 
-                contrasena = _passwordService.Hash(contrasena);
+                usuario.Contrasena = _passwordService.Hash(usuario.Contrasena);
 
-                var comparedPass = _passwordService.Check(contrasena, confirmContrasena);
+                var comparedPass = _passwordService.Check(usuario.Contrasena, usuario.ConfirmarContrasena);
                 if (comparedPass)
                     throw new BadRequestException("Las contraseñas no coinciden, por favor verifique");
 
-                Usuario user = new()
-                {
-                    IdUsuario = idUsuario,
-                    Contrasena = contrasena,
-                };
 
-                var result = await _usuarioRepository.ChangePassword(user);
+                var result = await _usuarioRepository.ChangePassword(usuario);
                 return result;
             }
             catch (Exception ex)

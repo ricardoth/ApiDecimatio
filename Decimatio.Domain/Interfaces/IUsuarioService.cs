@@ -9,6 +9,6 @@
         Task<bool> UpdateUsuario(Usuario usuario);
         Task<bool> DeleteUsuario(long idUsuario);
         Task<Usuario> Login(Usuario usuario);
-        Task<bool> ChangePassword(int idUsuario, string contrasena, string confirmContrasena);
+        Task<bool> ChangePassword(UsuarioPass usuarioDto);
     }
 }

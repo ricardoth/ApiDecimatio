@@ -135,7 +135,7 @@
             return await conn.QueryFirstOrDefaultAsync<Usuario>(Querys.LOGIN_USUARIO, dynamicParam);
         }
 
-        public async Task<bool> ChangePassword(Usuario usuario)
+        public async Task<bool> ChangePassword(UsuarioPass usuario)
         {
             var dictionary = new Dictionary<string, object>
             {

@@ -127,25 +127,24 @@
 
         public async Task<bool> ChangePassword(UsuarioPass usuario)
         {
-            try
-            {
-                if (usuario.Contrasena == null || usuario.Contrasena == "")
-                    throw new BadRequestException("La contraseña no es válida");
+            if (usuario.Contrasena == null || usuario.Contrasena == "")
+                throw new BadRequestException("La contraseña no es válida");
 
-                usuario.Contrasena = _passwordService.Hash(usuario.Contrasena);
+            var userExists = await GetById(usuario.IdUsuario);
+            if (userExists == null)
+                throw new BadRequestException("El Usuario no existe en nuestros registros");
 
-                var comparedPass = _passwordService.Check(usuario.Contrasena, usuario.ConfirmarContrasena);
-                if (comparedPass)
-                    throw new BadRequestException("Las contraseñas no coinciden, por favor verifique");
+            usuario.Contrasena = _passwordService.Hash(usuario.Contrasena);
 
+            var comparedPass = _passwordService.Check(usuario.Contrasena, usuario.ConfirmarContrasena);
+            if (!comparedPass)
+                throw new BadRequestException("Las contraseñas no coinciden, por favor verifique");
 
-                var result = await _usuarioRepository.ChangePassword(usuario);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new BadRequestException($"Ha ocurrido un error al cambiar la contraseña: {ex.Message}");
-            }
+            var result = await _usuarioRepository.ChangePassword(usuario);
+            if (!result)
+                throw new BadRequestException("No se pudo actualizar la contraseña");
+
+            return result;
         }
     }
 }

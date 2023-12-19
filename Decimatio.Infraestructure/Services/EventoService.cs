@@ -140,6 +140,8 @@
             if (filtros.IdEvento > 0)
                 eventos = eventos.Where(x => x.IdEvento == filtros.IdEvento);
 
+            eventos = eventos.Where(x => x.Activo == true);
+
             var pagedList = PagedList<Evento>.Create(eventos, filtros.PageNumber, filtros.PageSize);
             foreach (var evento in pagedList)
             {

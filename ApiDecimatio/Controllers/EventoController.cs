@@ -1,4 +1,6 @@
-﻿namespace Decimatio.WebApi.Controllers
+﻿using Decimatio.Domain.Interfaces;
+
+namespace Decimatio.WebApi.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -26,6 +28,35 @@
 
             var eventosDtos = _mapper.Map<IEnumerable<EventoDto>>(result);
             var response = new ApiResponse<IEnumerable<EventoDto>>(eventosDtos);
+            return Ok(response);
+        }
+
+        [HttpGet("GetEventosPagination")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetEventosPagination([FromQuery] EventoQueryFilter filtros)
+        {
+            var eventos = await _eventoService.GetAllEventosPaginated(filtros);
+
+            var metaData = new MetaData
+            {
+                TotalCount = eventos.TotalCount,
+                PageSize = eventos.PageSize,
+                CurrentPage = eventos.CurrentPage,
+                TotalPages = eventos.TotalPages,
+                HasNextPage = eventos.HasNextPage,
+                HasPreviousPage = eventos.HasPreviousPage,
+                NextPageUrl = "",
+                PreviousPageUrl = "",
+            };
+
+            var eventosDtos = _mapper.Map<IEnumerable<EventoDto>>(eventos);
+            var response = new ApiResponse<IEnumerable<EventoDto>>(eventosDtos)
+            {
+                Meta = metaData
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
             return Ok(response);
         }
 

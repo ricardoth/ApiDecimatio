@@ -1,4 +1,7 @@
-﻿using Decimatio.Domain.Exceptions;
+﻿using Decimatio.Domain.Entities;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
+using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace Decimatio.Infraestructure.Services
 {
@@ -7,35 +10,36 @@ namespace Decimatio.Infraestructure.Services
 		private readonly IEventoRepository _eventoRepository;
         private readonly IBlobFilesService _blobFilesService;
         private readonly BlobContainerConfig _containerConfig;
+        private readonly PaginationOptions _paginationOptions;
 
         public EventoService(IEventoRepository eventoRepository, 
             IBlobFilesService blobFilesService, 
-            BlobContainerConfig containerConfig)
+            BlobContainerConfig containerConfig,
+            PaginationOptions paginationOptions)
         {
             _eventoRepository = eventoRepository;
             _blobFilesService = blobFilesService;
             _containerConfig = containerConfig;
+            _paginationOptions = paginationOptions;
         }
 
         public async Task<IEnumerable<Evento>> GetAllEventos()
         {
-			try
-			{
-				var result = await _eventoRepository.GetAllEventos();
-                var tasks = result.Select(async evento =>
-                {
-                    string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
-                    evento.ContenidoFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
-                    return evento;
-                });
+		
+			var result = await _eventoRepository.GetAllEventos();
+            if (result == null)
+                throw new BadRequestException("No se encuentran eventos en nuestros registros");
+            
+            var tasks = result.Select(async evento =>
+            {
+                string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
+                evento.ContenidoFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                return evento;
+            });
 
-                return await Task.WhenAll(tasks);
-			}
-			catch (Exception ex)
-			{
-				throw new Exception($"Ha ocurrido un error en EventoService: {ex.Message}", ex);
-			}
+            return await Task.WhenAll(tasks);
         }
+
 
         public async Task<Evento> GetById(int idEvento)
         {
@@ -126,6 +130,28 @@ namespace Decimatio.Infraestructure.Services
             {
                 throw new Exception($"Ha ocurrido un error al obtener los evento: {ex.Message}", ex);
             }
+        }
+
+        public async Task<PagedList<Evento>> GetAllEventosPaginated(EventoQueryFilter filtros)
+        {
+            filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
+            filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
+
+            var eventos = await _eventoRepository.GetAllEventos();
+
+            if (eventos is null)
+                throw new BadRequestException("No se encontraron eventos");
+
+            if (filtros.IdEvento > 0)
+                eventos = eventos.Where(x => x.IdEvento == filtros.IdEvento);
+
+            var pagedList = PagedList<Evento>.Create(eventos, filtros.PageNumber, filtros.PageSize);
+            foreach (var evento in pagedList)
+            {
+                string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
+                evento.ContenidoFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+            }
+            return pagedList;
         }
     }
 }

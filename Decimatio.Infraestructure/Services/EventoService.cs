@@ -1,9 +1,4 @@
-﻿using Decimatio.Domain.Entities;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-using static SkiaSharp.HarfBuzz.SKShaper;
-
-namespace Decimatio.Infraestructure.Services
+﻿namespace Decimatio.Infraestructure.Services
 {
     internal sealed class EventoService : IEventoService
     {
@@ -15,12 +10,12 @@ namespace Decimatio.Infraestructure.Services
         public EventoService(IEventoRepository eventoRepository, 
             IBlobFilesService blobFilesService, 
             BlobContainerConfig containerConfig,
-            PaginationOptions paginationOptions)
+            IOptions<PaginationOptions> paginationOptions)
         {
             _eventoRepository = eventoRepository;
             _blobFilesService = blobFilesService;
             _containerConfig = containerConfig;
-            _paginationOptions = paginationOptions;
+            _paginationOptions = paginationOptions.Value;
         }
 
         public async Task<IEnumerable<Evento>> GetAllEventos()

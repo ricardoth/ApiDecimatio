@@ -30,7 +30,7 @@
             }
             catch (Exception ex)
             {
-                throw new Exception($"No se pudo obtener la lista de lugares {ex.Message}");
+                throw new BadRequestException($"No se pudo obtener la lista de lugares {ex.Message}");
             }
         }
 
@@ -46,7 +46,7 @@
             }
             catch (Exception ex)
             {
-                throw new Exception($"No se pudo obtener el lugar {ex.Message}");
+                throw new BadRequestException($"No se pudo obtener el lugar {ex.Message}");
             }
         }
 

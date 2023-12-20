@@ -30,6 +30,7 @@
             services.AddScoped<IRegionService, RegionService>();
             services.AddScoped<IComunaService, ComunaService>();
             services.AddSingleton<IPasswordService, PasswordService>();
+            services.AddSingleton<IMercadoPagoService, MercadoPagoService>();
 
             //Commons & Configurations
             //services.AddScoped<IQRGeneratorService, QRGeneratorService>();

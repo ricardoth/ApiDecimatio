@@ -1,5 +1,6 @@
 ﻿using Decimatio.Common;
 using Decimatio.Infraestructure.Options;
+using MercadoPago.Config;
 
 namespace Decimatio.WebApi.Configuration
 {
@@ -19,7 +20,11 @@ namespace Decimatio.WebApi.Configuration
             service.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             service.Configure<PaginationOptions>(configuration.GetSection("Pagination"));
 
-            service.AddAuthentication("BasicAuthentication")
+            service.Configure<MercadoPagoOptions>(configuration.GetSection("MercadoPagoOptions"));
+            MercadoPagoConfig.AccessToken = "TEST-2316722112827129-121918-2f6270125458fded4a2c767099d9aafa-437710298";
+
+
+                        service.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
             service.Configure<BasicAuthCredentials>(configuration.GetSection("BasicAuthCredentials"));

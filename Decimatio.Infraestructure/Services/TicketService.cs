@@ -199,7 +199,6 @@
             }
             catch (Exception ex)
             {
-
                 throw new InvalidOperationException($"Error al Crear el Ticket", ex);
             }
         }

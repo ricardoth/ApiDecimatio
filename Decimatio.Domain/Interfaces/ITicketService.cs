@@ -8,5 +8,7 @@
         Task<TicketQR> GetTicketQR(int idTicket);
         Task<TicketQR> GetTicketVoucherPDF(int idTicket);
         Task<bool> DeleteDownTicket(long idTicket, bool activo);
+
+        Task<IEnumerable<PreferenceTicket>> GetPreferenceTicketsByTransaction(string transactionId);
     }
 }

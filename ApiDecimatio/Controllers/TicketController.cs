@@ -127,5 +127,16 @@
             return Ok(response);
         }
 
+        [HttpGet("GetPreferenceTickets/{transactionId}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetPreferenceTickets(string transactionId)
+        {
+            var result = await _ticketService.GetPreferenceTicketsByTransaction(transactionId);
+            var preferenceTicketsDto = _mapper.Map<IEnumerable<PreferenceTicketDto>>(result);
+            var response = new ApiResponse<IEnumerable<PreferenceTicketDto>>(preferenceTicketsDto);
+            return Ok(response);
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Repositories
+﻿using Dapper;
+
+namespace Decimatio.Infraestructure.Repositories
 {
     internal sealed class TicketRepository : ITicketRepository
     {
@@ -112,6 +114,18 @@
             using var conn = new SqlConnection(_connection.ConnectionString);
             var result = await conn.ExecuteAsync(Querys.DELETE_TICKET, new { IdTicket = idTicket, Activo = activo });
             return result > 0;
+        }
+
+        public async Task<bool> AddPreferenceTicket(PreferenceTicket ticket)
+        {
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteScalarAsync<bool>(Querys.INSERT_PREFERENCE_TICKET, ticket);
+        }
+
+        public async Task<IEnumerable<PreferenceTicket>> GetPreferenceTicketsByTransaction(string transactionId)
+        {
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryAsync<PreferenceTicket>(Querys.GET_PREFERENCE_TICKETS_BY_TRANSACTION, new { TransactionId = transactionId });
         }
     }
 }

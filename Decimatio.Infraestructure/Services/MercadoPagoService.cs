@@ -10,9 +10,11 @@ namespace Decimatio.Infraestructure.Services
 {
     public sealed class MercadoPagoService : IMercadoPagoService
     {
-        public MercadoPagoService()
+        private readonly ITicketRepository _ticketRepository;    
+
+        public MercadoPagoService(ITicketRepository ticketRepository)
         {
-                
+            _ticketRepository = ticketRepository;        
         }
 
         public async Task<bool> CrearClientePago()
@@ -82,6 +84,7 @@ namespace Decimatio.Infraestructure.Services
         {
             try
             {
+                string transactionId = Guid.NewGuid().ToString();
                 var preferenceRequest = new PreferenceRequest
                 {
                     Items = new List<PreferenceItemRequest>
@@ -95,9 +98,9 @@ namespace Decimatio.Infraestructure.Services
                 },
                     BackUrls = new PreferenceBackUrlsRequest
                     {
-                        Success = "http://localhost:5173/successShop",
-                        Failure = "http://localhost:5173/failureShop",
-                        Pending = "http://localhost:5173/pendingShop"
+                        Success = $"http://localhost:5173/successShop?transactionId={transactionId}",
+                        Failure = $"http://localhost:5173/failureShop?transactionId={transactionId}",
+                        Pending = $"http://localhost:5173/pendingShop?transactionId={transactionId}"
                     },
                     AutoReturn = "approved",
                     
@@ -105,7 +108,31 @@ namespace Decimatio.Infraestructure.Services
 
                 var client = new PreferenceClient();
                 Preference preference = await client.CreateAsync(preferenceRequest);
-                //Insertar pago en la BD y retornar entidad personalizada
+
+                foreach (var item in data.Tickets)
+                {
+                    var preferenceTicket = new PreferenceTicket()
+                    {
+                        PreferenceCode = preference.Id,
+                        TransactionId = transactionId,
+                        IdUsuario = (int)item.IdUsuario,
+                        IdEvento = (int)item.IdEvento,
+                        IdSector = (int)item.IdSector,
+                        IdMedioPago = (int)item.IdMedioPago,
+                        MontoPago = item.MontoPago,
+                        MontoTotal = item.MontoTotal,
+                        FechaTicket = item.FechaTicket,
+                        Activo = item.Activo
+                    };
+
+                    var result = await _ticketRepository.AddPreferenceTicket(preferenceTicket);
+
+                    if (!result) {
+                        // registrar en log (insights) los posibles ticket con errores/no insertados
+                        throw new BadRequestException($"Error al registrar el pago {transactionId}");
+                    }
+                }
+
                 return preference;
             }
             catch (Exception ex)

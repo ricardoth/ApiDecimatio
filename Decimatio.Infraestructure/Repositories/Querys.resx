@@ -345,6 +345,22 @@ WHERE T.IdTicket = @IdTicket</value>
   FROM [dbo].[MedioPago] WHERE IdMedioPago = @IdMedioPago</value>
     <comment>Get Solo un Medio Pago</comment>
   </data>
+  <data name="GET_PREFERENCE_TICKETS_BY_TRANSACTION" xml:space="preserve">
+    <value>SELECT [IdPreference]
+      ,[PreferenceCode]
+      ,[TransactionId]
+      ,[IdUsuario]
+      ,[IdEvento]
+      ,[IdSector]
+      ,[IdMedioPago]
+      ,[MontoPago]
+      ,[MontoTotal]
+      ,[FechaTicket]
+      ,[Activo]
+  FROM [dbo].[PreferenceTicket]
+  WHERE TransactionId = @TransactionId</value>
+    <comment>Obtiene los tickets asociados a un pago</comment>
+  </data>
   <data name="GET_REGIONES" xml:space="preserve">
     <value>SELECT IdRegion
       ,NumeroRegion
@@ -624,6 +640,39 @@ VALUES (
   ,@Descripcion
            ,@Activo)</value>
     <comment>Insert MedioPago</comment>
+  </data>
+  <data name="INSERT_PREFERENCE_TICKET" xml:space="preserve">
+    <value>INSERT INTO dbo.PreferenceTicket(
+	PreferenceCode,
+	TransactionId,
+	IdUsuario,
+	IdEvento,
+	IdSector,
+	IdMedioPago,
+	MontoPago,
+	MontoTotal,
+	FechaTicket,
+	Activo
+)
+
+VALUES (
+	@PreferenceCode,
+	@TransactionId,
+	@IdUsuario,
+	@IdEvento,
+	@IdSector,
+	@IdMedioPago,
+	@MontoPago,
+	@MontoTotal,
+	@FechaTicket,
+	@Activo
+)
+
+IF @@ROWCOUNT &gt; 0
+   SELECT 1 
+ELSE
+   SELECT 0</value>
+    <comment>Inserta un pago de ticket y retorna el código</comment>
   </data>
   <data name="INSERT_TICKET" xml:space="preserve">
     <value>UPDATE dbo.Sector 

@@ -7,8 +7,9 @@
         Task<Ticket> GetInfoTicket(long idTicket);
         Task<IEnumerable<Ticket>> GetAllTicket();
         Task<TicketQR> GetTicketQR(long idTicket);
-
         Task<bool> DeleteDownTicket(long idTicket, bool activo);
 
+        Task<bool> AddPreferenceTicket(PreferenceTicket ticket);
+        Task<IEnumerable<PreferenceTicket>> GetPreferenceTicketsByTransaction(string transactionId);
     }
 }

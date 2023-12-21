@@ -263,5 +263,21 @@
             return Convert.ToBase64String(ticketResultImage);
         }
         #endregion
+
+
+        #region Preference Tickets 
+
+        public async Task<IEnumerable<PreferenceTicket>> GetPreferenceTicketsByTransaction(string transactionId)
+        {
+            if (transactionId is null || transactionId == "")
+                throw new NotFoundException("El transactionId no es válido");
+
+            var result = await _ticketRepository.GetPreferenceTicketsByTransaction(transactionId);
+            if (!result.Any())
+                throw new BadRequestException("No existen tickets asociados a la transacción");
+
+            return result;
+        }
+        #endregion
     }
 }

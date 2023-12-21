@@ -21,6 +21,7 @@
             CreateMap<TicketAcceso, TicketAccesoDto>().ReverseMap();
             CreateMap<AccesoEventoTicket, AccesoEventoTicketDto>().ReverseMap();
             CreateMap<TipoUsuario, TipoUsuarioDto>().ReverseMap();  
+            CreateMap<PreferenceTicket, PreferenceTicketDto>().ReverseMap();    
         }
     }
 }

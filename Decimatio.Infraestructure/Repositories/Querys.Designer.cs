@@ -371,6 +371,27 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a SELECT [IdPreference]
+        ///      ,[PreferenceCode]
+        ///      ,[TransactionId]
+        ///      ,[IdUsuario]
+        ///      ,[IdEvento]
+        ///      ,[IdSector]
+        ///      ,[IdMedioPago]
+        ///      ,[MontoPago]
+        ///      ,[MontoTotal]
+        ///      ,[FechaTicket]
+        ///      ,[Activo]
+        ///  FROM [dbo].[PreferenceTicket]
+        ///  WHERE TransactionId = @TransactionId.
+        /// </summary>
+        internal static string GET_PREFERENCE_TICKETS_BY_TRANSACTION {
+            get {
+                return ResourceManager.GetString("GET_PREFERENCE_TICKETS_BY_TRANSACTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT IdRegion
         ///      ,NumeroRegion
         ///      ,Abreviatura
@@ -697,6 +718,44 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string INSERT_MEDIO_PAGO {
             get {
                 return ResourceManager.GetString("INSERT_MEDIO_PAGO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO dbo.PreferenceTicket(
+        ///	PreferenceCode,
+        ///	TransactionId,
+        ///	IdUsuario,
+        ///	IdEvento,
+        ///	IdSector,
+        ///	IdMedioPago,
+        ///	MontoPago,
+        ///	MontoTotal,
+        ///	FechaTicket,
+        ///	Activo
+        ///)
+        ///
+        ///VALUES (
+        ///	@PreferenceCode,
+        ///	@TransactionId,
+        ///	@IdUsuario,
+        ///	@IdEvento,
+        ///	@IdSector,
+        ///	@IdMedioPago,
+        ///	@MontoPago,
+        ///	@MontoTotal,
+        ///	@FechaTicket,
+        ///	@Activo
+        ///)
+        ///
+        ///IF @@ROWCOUNT &gt; 0
+        ///   SELECT 1 
+        ///ELSE
+        ///   SELECT 0.
+        /// </summary>
+        internal static string INSERT_PREFERENCE_TICKET {
+            get {
+                return ResourceManager.GetString("INSERT_PREFERENCE_TICKET", resourceCulture);
             }
         }
         

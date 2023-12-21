@@ -1,5 +1,4 @@
-﻿using Decimatio.Domain.MercadoPagoEntities;
-using Decimatio.Infraestructure.Models;
+﻿using Decimatio.Infraestructure.Models;
 using MercadoPago.Client;
 using MercadoPago.Client.Customer;
 using MercadoPago.Client.Preference;

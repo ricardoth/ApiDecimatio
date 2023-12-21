@@ -78,7 +78,7 @@ namespace Decimatio.Infraestructure.Services
             
         }
              
-        public async Task<PreferenceResponse> CrearSolicitudPago(PreferenceData data)
+        public async Task<Preference> CrearSolicitudPago(PreferenceData data)
         {
             try
             {
@@ -100,17 +100,13 @@ namespace Decimatio.Infraestructure.Services
                         Pending = "http://localhost:5173/pendingShop"
                     },
                     AutoReturn = "approved",
+                    
                 };
 
                 var client = new PreferenceClient();
                 Preference preference = await client.CreateAsync(preferenceRequest);
                 //Insertar pago en la BD y retornar entidad personalizada
-                PreferenceResponse preferenceResponse = new()
-                {
-                    Preference = preference,
-                    Tickets = data.Tickets,
-                };
-                return preferenceResponse;
+                return preference;
             }
             catch (Exception ex)
             {

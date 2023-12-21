@@ -1,5 +1,6 @@
 ﻿using Decimatio.Infraestructure.Models;
 using MercadoPago.Resource.Customer;
+using MercadoPago.Resource.Preference;
 
 namespace Decimatio.Infraestructure.Contracts
 {
@@ -8,6 +9,6 @@ namespace Decimatio.Infraestructure.Contracts
         Task<IList<Customer>> SearchCliente();
         Task<IList<CustomerCard>> GetTarjetasCliente();
         Task<bool> CrearClientePago();
-        Task<PreferenceResponse> CrearSolicitudPago(PreferenceData data);
+        Task<Preference> CrearSolicitudPago(PreferenceData data);
     }
 }

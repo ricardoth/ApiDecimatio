@@ -1,4 +1,4 @@
-﻿using Decimatio.Domain.MercadoPagoEntities;
+﻿using Decimatio.Infraestructure.Models;
 
 namespace Decimatio.WebApi.Controllers
 {

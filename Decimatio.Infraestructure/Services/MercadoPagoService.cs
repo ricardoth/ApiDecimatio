@@ -1,4 +1,5 @@
 ﻿using Decimatio.Domain.MercadoPagoEntities;
+using Decimatio.Infraestructure.Models;
 using MercadoPago.Client;
 using MercadoPago.Client.Customer;
 using MercadoPago.Client.Preference;
@@ -78,7 +79,7 @@ namespace Decimatio.Infraestructure.Services
             
         }
              
-        public async Task<Preference> CrearSolicitudPago(PreferenceData data)
+        public async Task<PreferenceResponse> CrearSolicitudPago(PreferenceData data)
         {
             try
             {
@@ -99,13 +100,18 @@ namespace Decimatio.Infraestructure.Services
                         Failure = "http://localhost:5173/failureShop",
                         Pending = "http://localhost:5173/pendingShop"
                     },
-                    AutoReturn = "approved"
+                    AutoReturn = "approved",
                 };
 
                 var client = new PreferenceClient();
                 Preference preference = await client.CreateAsync(preferenceRequest);
                 //Insertar pago en la BD y retornar entidad personalizada
-                return preference;
+                PreferenceResponse preferenceResponse = new()
+                {
+                    Preference = preference,
+                    Tickets = data.Tickets,
+                };
+                return preferenceResponse;
             }
             catch (Exception ex)
             {

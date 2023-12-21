@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Decimatio.Domain.Entities;
 
 namespace Decimatio.Infraestructure.Repositories
 {
@@ -124,8 +125,27 @@ namespace Decimatio.Infraestructure.Repositories
 
         public async Task<IEnumerable<PreferenceTicket>> GetPreferenceTicketsByTransaction(string transactionId)
         {
+            var ticketDictionary = new Dictionary<long, PreferenceTicket>();
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.QueryAsync<PreferenceTicket>(Querys.GET_PREFERENCE_TICKETS_BY_TRANSACTION, new { TransactionId = transactionId });
+            var result = (await conn.QueryAsync<PreferenceTicket, Sector, Evento, PreferenceTicket>(
+                Querys.GET_PREFERENCE_TICKETS_BY_TRANSACTION,
+                (ticket, sector, evento) =>
+                {
+                    if (!ticketDictionary.TryGetValue(ticket.IdPreference, out var ticketEntry))
+                    {
+                        ticketEntry = ticket;
+                        ticketDictionary.Add(ticketEntry.IdPreference, ticketEntry);
+
+                    }
+                    ticketEntry.Sector = sector;
+                    ticketEntry.Evento = evento;
+
+                    return ticketEntry;
+                },
+                new { TransactionId = transactionId },
+                splitOn: "IdSector,IdEvento"
+            )).ToList();
+            return result;
         }
     }
 }

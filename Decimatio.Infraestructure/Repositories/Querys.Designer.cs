@@ -371,19 +371,25 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT [IdPreference]
-        ///      ,[PreferenceCode]
-        ///      ,[TransactionId]
-        ///      ,[IdUsuario]
-        ///      ,[IdEvento]
-        ///      ,[IdSector]
-        ///      ,[IdMedioPago]
-        ///      ,[MontoPago]
-        ///      ,[MontoTotal]
-        ///      ,[FechaTicket]
-        ///      ,[Activo]
-        ///  FROM [dbo].[PreferenceTicket]
-        ///  WHERE TransactionId = @TransactionId.
+        ///   Busca una cadena traducida similar a SELECT P.[IdPreference]
+        ///      ,P.[PreferenceCode]
+        ///      ,P.[TransactionId]
+        ///      ,P.[IdUsuario]
+        ///      ,P.[IdEvento]
+        ///      ,P.[IdSector]
+        ///      ,P.[IdMedioPago]
+        ///      ,P.[MontoPago]
+        ///      ,P.[MontoTotal]
+        ///      ,P.[FechaTicket]
+        ///      ,P.[Activo]
+        ///      ,S.IdSector
+        ///      ,S.NombreSector
+        ///      ,E.IdEvento
+        ///      ,E.NombreEvento
+        ///  FROM [dbo].[PreferenceTicket] P
+        ///	INNER JOIN dbo.Sector S ON S.IdSector = P.IdSector
+        ///        INNER JOIN dbo.Evento E ON E.IdEvento = P.IdEvento
+        ///  WHERE TransactionId = @T [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string GET_PREFERENCE_TICKETS_BY_TRANSACTION {
             get {

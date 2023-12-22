@@ -2,6 +2,7 @@
 using MercadoPago.Client;
 using MercadoPago.Client.Customer;
 using MercadoPago.Client.Preference;
+using MercadoPago.Config;
 using MercadoPago.Resource;
 using MercadoPago.Resource.Customer;
 using MercadoPago.Resource.Preference;
@@ -10,11 +11,14 @@ namespace Decimatio.Infraestructure.Services
 {
     public sealed class MercadoPagoService : IMercadoPagoService
     {
-        private readonly ITicketRepository _ticketRepository;    
+        private readonly ITicketRepository _ticketRepository;
+        private readonly MercadoPagoOptions _mercadoPagoOptions;
 
-        public MercadoPagoService(ITicketRepository ticketRepository)
+        public MercadoPagoService(ITicketRepository ticketRepository, IOptions<MercadoPagoOptions> options)
         {
-            _ticketRepository = ticketRepository;        
+            _ticketRepository = ticketRepository;
+            _mercadoPagoOptions = options.Value;
+            MercadoPagoConfig.AccessToken = _mercadoPagoOptions.AccessToken;
         }
 
         public async Task<bool> CrearClientePago()
@@ -98,9 +102,13 @@ namespace Decimatio.Infraestructure.Services
                 },
                     BackUrls = new PreferenceBackUrlsRequest
                     {
-                        Success = $"http://localhost:5173/successShop?transactionId={transactionId}",
-                        Failure = $"http://localhost:5173/failureShop?transactionId={transactionId}",
-                        Pending = $"http://localhost:5173/pendingShop?transactionId={transactionId}"
+                        //Success = $"http://localhost:5173/successShop?transactionId={transactionId}",
+                        //Failure = $"http://localhost:5173/failureShop?transactionId={transactionId}",
+                        //Pending = $"http://localhost:5173/pendingShop?transactionId={transactionId}"
+
+                        Success = $"https://resonancepasstickets.netlify.app/successShop?transactionId={transactionId}",
+                        Failure = $"https://resonancepasstickets.netlify.app/failureShop?transactionId={transactionId}",
+                        Pending = $"https://resonancepasstickets.netlify.app/pendingShop?transactionId={transactionId}"
                     },
                     AutoReturn = "approved",
                     

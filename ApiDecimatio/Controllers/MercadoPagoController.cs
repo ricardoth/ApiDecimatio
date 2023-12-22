@@ -2,7 +2,7 @@
 
 namespace Decimatio.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MercadoPagoController : ControllerBase

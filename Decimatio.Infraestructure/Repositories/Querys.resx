@@ -361,9 +361,12 @@ WHERE T.IdTicket = @IdTicket</value>
       ,S.NombreSector
       ,E.IdEvento
       ,E.NombreEvento
+      ,MP.IdMedioPago
+      ,MP.NombreMedioPago
   FROM [dbo].[PreferenceTicket] P
 	INNER JOIN dbo.Sector S ON S.IdSector = P.IdSector
         INNER JOIN dbo.Evento E ON E.IdEvento = P.IdEvento
+	INNER JOIN dbo.MedioPago MP ON MP.IdMedioPago = P.IdMedioPago
   WHERE TransactionId = @TransactionId</value>
     <comment>Obtiene los tickets asociados a un pago</comment>
   </data>

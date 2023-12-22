@@ -127,9 +127,9 @@ namespace Decimatio.Infraestructure.Repositories
         {
             var ticketDictionary = new Dictionary<long, PreferenceTicket>();
             using var conn = new SqlConnection(_connection.ConnectionString);
-            var result = (await conn.QueryAsync<PreferenceTicket, Sector, Evento, PreferenceTicket>(
+            var result = (await conn.QueryAsync<PreferenceTicket, Sector, Evento, MedioPago, PreferenceTicket>(
                 Querys.GET_PREFERENCE_TICKETS_BY_TRANSACTION,
-                (ticket, sector, evento) =>
+                (ticket, sector, evento, medioPago) =>
                 {
                     if (!ticketDictionary.TryGetValue(ticket.IdPreference, out var ticketEntry))
                     {
@@ -139,11 +139,11 @@ namespace Decimatio.Infraestructure.Repositories
                     }
                     ticketEntry.Sector = sector;
                     ticketEntry.Evento = evento;
-
+                    ticketEntry.MedioPago = medioPago;
                     return ticketEntry;
                 },
                 new { TransactionId = transactionId },
-                splitOn: "IdSector,IdEvento"
+                splitOn: "IdSector,IdEvento,IdMedioPago"
             )).ToList();
             return result;
         }

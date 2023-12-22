@@ -15,5 +15,6 @@
         public bool Activo { get; set; }
         public Evento? Evento { get; set; }
         public Sector? Sector { get; set; }
+        public MedioPago? MedioPago { get; set;}
     }
 }

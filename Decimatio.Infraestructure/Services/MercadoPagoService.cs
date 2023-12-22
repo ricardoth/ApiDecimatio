@@ -27,7 +27,7 @@
                             UnitPrice = data.Price,
                             Quantity = data.Quantity
                         }
-                },
+                    },
                     BackUrls = new PreferenceBackUrlsRequest
                     {
                         Success = $"{_mercadoPagoOptions.BackUrl}/successShop?transactionId={transactionId}",
@@ -41,7 +41,6 @@
                 Preference preference = await client.CreateAsync(preferenceRequest);
 
                 var result = await AddPreferenceTicket(data.Tickets, transactionId, preference.Id);
-
                 return preference;
             }
             catch (Exception ex)

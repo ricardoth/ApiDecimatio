@@ -386,10 +386,11 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,S.NombreSector
         ///      ,E.IdEvento
         ///      ,E.NombreEvento
+        ///      ,MP.IdMedioPago
+        ///      ,MP.NombreMedioPago
         ///  FROM [dbo].[PreferenceTicket] P
         ///	INNER JOIN dbo.Sector S ON S.IdSector = P.IdSector
-        ///        INNER JOIN dbo.Evento E ON E.IdEvento = P.IdEvento
-        ///  WHERE TransactionId = @T [resto de la cadena truncado]&quot;;.
+        ///        INNER JOIN dbo.Evento E ON E [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string GET_PREFERENCE_TICKETS_BY_TRANSACTION {
             get {

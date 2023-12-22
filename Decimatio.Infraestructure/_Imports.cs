@@ -20,3 +20,8 @@ global using System.Drawing.Imaging;
 global using Decimatio.Infraestructure.Contracts;
 global using Decimatio.Domain.Exceptions;
 global using Decimatio.Infraestructure.Options;
+
+global using Decimatio.Infraestructure.Models;
+global using MercadoPago.Client.Preference;
+global using MercadoPago.Config;
+global using MercadoPago.Resource.Preference;

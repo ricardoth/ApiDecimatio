@@ -1,8 +1,6 @@
-﻿using Decimatio.Infraestructure.Models;
-
-namespace Decimatio.WebApi.Controllers
+﻿namespace Decimatio.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MercadoPagoController : ControllerBase
@@ -14,28 +12,9 @@ namespace Decimatio.WebApi.Controllers
             _mercadoPagoService = mercadoPagoService;
         }
 
-        [HttpGet("GetCliente")]
-        public async Task<IActionResult> GetCliente()
-        {
-            var client = await _mercadoPagoService.SearchCliente();
-            return Ok(client);  
-        }
-
-        [HttpGet("GetTarjetas")]
-        public async Task<IActionResult> GetTarjetas()
-        {
-            var client = await _mercadoPagoService.GetTarjetasCliente();
-            return Ok(client);
-        }
-
-        [HttpPost("CreateCliente")]
-        public async Task<IActionResult> CreateCliente()
-        {
-            var preference = await _mercadoPagoService.CrearClientePago();
-            return Ok(preference);
-        }
-
         [HttpPost("CrearPreferencia")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreatePreference([FromBody] PreferenceData data)
         {
             var result = await _mercadoPagoService.CrearSolicitudPago(data);

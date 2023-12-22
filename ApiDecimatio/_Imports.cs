@@ -22,3 +22,4 @@ global using Decimatio.Infraestructure.Contracts;
 global using Decimatio.Domain.CustomEntities;
 global using Decimatio.Domain.QueryFilters;
 global using Newtonsoft.Json;
+global using Decimatio.Infraestructure.Models;

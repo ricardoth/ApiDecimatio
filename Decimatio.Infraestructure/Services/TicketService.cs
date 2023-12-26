@@ -277,7 +277,7 @@
 
             //marcar los descargados para no generar nuevamente los tickets
             var downloaded = await _ticketRepository.UpdateTicketsDownload(transactionId);
-            if (downloaded)
+            if (!downloaded)
                 throw new BadRequestException("Ya se generaron los tickets asociados a la transacción, por favor verifique su sección Mis Tickets");
 
             return result;

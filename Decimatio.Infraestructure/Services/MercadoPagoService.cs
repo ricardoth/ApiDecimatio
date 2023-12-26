@@ -64,6 +64,7 @@
                     MontoPago = item.MontoPago,
                     MontoTotal = item.MontoTotal,
                     FechaTicket = item.FechaTicket,
+                    Descargados = false,
                     Activo = item.Activo
                 };
 

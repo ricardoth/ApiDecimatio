@@ -739,6 +739,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	MontoPago,
         ///	MontoTotal,
         ///	FechaTicket,
+        ///	Descargados,
         ///	Activo
         ///)
         ///
@@ -752,6 +753,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	@MontoPago,
         ///	@MontoTotal,
         ///	@FechaTicket,
+        ///	@Descargados,
         ///	@Activo
         ///)
         ///

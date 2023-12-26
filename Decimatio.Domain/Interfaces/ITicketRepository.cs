@@ -11,5 +11,6 @@
 
         Task<bool> AddPreferenceTicket(PreferenceTicket ticket);
         Task<IEnumerable<PreferenceTicket>> GetPreferenceTicketsByTransaction(string transactionId);
+        Task<bool> UpdateTicketsDownload(string transactionId);
     }
 }

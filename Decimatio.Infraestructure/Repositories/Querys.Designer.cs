@@ -1026,5 +1026,26 @@ namespace Decimatio.Infraestructure.Repositories {
                 return ResourceManager.GetString("VALIDAR_ACCESO_TICKET", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a IF EXISTS (SELECT 1 FROM dbo.PreferenceTicket WHERE TransactionId = @TransactionId AND Descargados = 1)
+        ///	BEGIN
+        ///		SELECT 0
+        ///	END
+        ///	ELSE
+        ///	BEGIN 
+        ///		UPDATE dbo.PreferenceTicket
+        ///		SET Descargados = 1
+        ///		FROM [dbo].[PreferenceTicket] P
+        ///		WHERE TransactionId = @TransactionId
+        ///
+        ///		SELECT 1
+        ///	END.
+        /// </summary>
+        internal static string VALIDAR_TICKETS_DESCARGADOS {
+            get {
+                return ResourceManager.GetString("VALIDAR_TICKETS_DESCARGADOS", resourceCulture);
+            }
+        }
     }
 }

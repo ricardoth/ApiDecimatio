@@ -871,4 +871,20 @@ ELSE
     <value>dbo.sp_ValidarTicket @IdTicket,  @Rut, @Dv, @IdEvento</value>
     <comment>Valida si un ticket corresponde al Rut y DV generados son correctos al emitido (stored procedure)</comment>
   </data>
+  <data name="VALIDAR_TICKETS_DESCARGADOS" xml:space="preserve">
+    <value>IF EXISTS (SELECT 1 FROM dbo.PreferenceTicket WHERE TransactionId = @TransactionId AND Descargados = 1)
+	BEGIN
+		SELECT 0
+	END
+	ELSE
+	BEGIN 
+		UPDATE dbo.PreferenceTicket
+		SET Descargados = 1
+		FROM [dbo].[PreferenceTicket] P
+		WHERE TransactionId = @TransactionId
+
+		SELECT 1
+	END</value>
+    <comment>Cambia el estado de descargados si el cliente ya ha generado sus tickets después de la compra</comment>
+  </data>
 </root>

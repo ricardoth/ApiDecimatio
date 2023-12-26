@@ -1,7 +1,4 @@
-﻿using Dapper;
-using Decimatio.Domain.Entities;
-
-namespace Decimatio.Infraestructure.Repositories
+﻿namespace Decimatio.Infraestructure.Repositories
 {
     internal sealed class TicketRepository : ITicketRepository
     {
@@ -146,6 +143,12 @@ namespace Decimatio.Infraestructure.Repositories
                 splitOn: "IdSector,IdEvento,IdMedioPago"
             )).ToList();
             return result;
+        }
+
+        public async Task<bool> UpdateTicketsDownload(string transactionId)
+        {
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteScalarAsync<bool>(Querys.VALIDAR_TICKETS_DESCARGADOS, new { TransactionId = transactionId});
         }
     }
 }

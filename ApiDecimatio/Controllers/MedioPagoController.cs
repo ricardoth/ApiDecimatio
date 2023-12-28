@@ -1,4 +1,6 @@
-﻿namespace Decimatio.WebApi.Controllers
+﻿using Decimatio.Domain.Interfaces;
+
+namespace Decimatio.WebApi.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -15,6 +17,8 @@
         }
 
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Get()
         {
             var result = await _medioPagoService.GetMediosPagosAsync();
@@ -27,6 +31,8 @@
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Get(int id)
         {
             var result = await _medioPagoService.GetMedioPagoAsync(id);
@@ -39,11 +45,40 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] MedioPago medioPago)
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Post([FromBody] MedioPagoDto medioPagoDto)
         {
+            var medioPago = _mapper.Map<MedioPago>(medioPagoDto);
             await _medioPagoService.AddMedioPagoAsync(medioPago);
-            return Ok(medioPago);
+
+            var response = new ApiResponse<MedioPagoDto>(medioPagoDto);
+            return Ok(response);
         }
 
+        [HttpPut]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Put(int id, MedioPagoDto medioPagoDto)
+        {
+            medioPagoDto.IdMedioPago = id;
+            var medioPago = _mapper.Map<MedioPago>(medioPagoDto);
+
+            var result = await _medioPagoService.UpdateMedioPagoAsync(medioPago);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _medioPagoService.DeleteMedioPagoAsync(id);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
+        }
     }
 }

@@ -27,14 +27,26 @@
             return await conn.QueryFirstOrDefaultAsync<MedioPago>(Querys.GET_MEDIO_PAGO, new { IdMedioPago = id });
         }
 
-        public async Task<int> DeleteMedioPago(int id)
+        public async Task<bool> DeleteMedioPago(int id)
         {
-            throw new NotImplementedException();
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteScalarAsync<bool>(Querys.DELETE_MEDIO_PAGO, new { IdMedioPago = id});
         }
 
-        public async Task UpdateMedioPago(int id, MedioPago medioPago)
+        public async Task<bool> UpdateMedioPago(MedioPago medioPago)
         {
-            throw new NotImplementedException();
+            var dictionary = new Dictionary<string, object>()
+            {
+                { "@IdMedioPago", medioPago.IdMedioPago },
+                { "@NombreMedioPago", medioPago.NombreMedioPago },
+                { "@Descripcion", medioPago.Descripcion },
+                { "@UrlImageBlob", medioPago.UrlImageBlob },
+                { "@Activo", medioPago.Activo },
+            };
+
+            var dynamicParam = new DynamicParameters(dictionary);
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.ExecuteScalarAsync<bool>(Querys.UPDATE_MEDIO_PAGO, dynamicParam);
         }
     }
 }

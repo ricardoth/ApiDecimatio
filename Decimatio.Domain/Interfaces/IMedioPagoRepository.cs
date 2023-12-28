@@ -5,7 +5,7 @@
         Task<IEnumerable<MedioPago>> GetMedioPagos();
         Task<MedioPago> GetMedioPago(int id);
         Task AddMedioPago(MedioPago medioPago);
-        Task<int> DeleteMedioPago(int id);
-        Task UpdateMedioPago(int id, MedioPago medioPago);
+        Task<bool> DeleteMedioPago(int id);
+        Task<bool> UpdateMedioPago(MedioPago medioPago);
     }
 }

@@ -142,7 +142,10 @@ WHERE IdEvento = @IdEvento</value>
     <comment>Elimina un Lugar (Soft Delete)</comment>
   </data>
   <data name="DELETE_MEDIO_PAGO" xml:space="preserve">
-    <value>DELETE FROM dbo.MedioPago WHERE IdMedioPago = @IdMedioPago</value>
+    <value>UPDATE [dbo].[MedioPago]
+   SET 
+      [Activo] = 0
+ WHERE IdMedioPago = @IdMedioPago</value>
     <comment>Eliminar MedioPago</comment>
   </data>
   <data name="DELETE_SECTOR" xml:space="preserve">

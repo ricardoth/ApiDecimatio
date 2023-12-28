@@ -100,7 +100,10 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a DELETE FROM dbo.MedioPago WHERE IdMedioPago = @IdMedioPago.
+        ///   Busca una cadena traducida similar a UPDATE [dbo].[MedioPago]
+        ///   SET 
+        ///      [Activo] = 0
+        /// WHERE IdMedioPago = @IdMedioPago.
         /// </summary>
         internal static string DELETE_MEDIO_PAGO {
             get {

@@ -68,14 +68,37 @@
             }
         }
 
-        public async Task<int> DeleteMedioPagoAsync(int id)
+        public async Task<bool> DeleteMedioPagoAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+                throw new NotFoundException("El Medio de Pago debe ser válido");
+
+            try
+            {
+                var result = await _medioPagoRepository.DeleteMedioPago(id);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException($"No se pudo eliminar el medio de pago {ex.Message}");
+            }
+
         }
 
-        public async Task UpdateMedioPagoAsync(int id, MedioPago medioPago)
+        public async Task<bool> UpdateMedioPagoAsync(MedioPago medioPago)
         {
-            throw new NotImplementedException();
+            if (medioPago.IdMedioPago <= 0)
+                throw new NotFoundException("El Medio de Pago debe ser válido");
+
+            try
+            {
+                var result = await _medioPagoRepository.UpdateMedioPago(medioPago);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException($"No se pudo actualizar el medio de pago {ex.Message}");
+            }
         }
     }
 }

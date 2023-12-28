@@ -716,10 +716,12 @@ namespace Decimatio.Infraestructure.Repositories {
         ///   Busca una cadena traducida similar a INSERT INTO [dbo].[MedioPago]
         ///           ([NombreMedioPago]
         ///           ,[Descripcion]
+        ///           ,[UrlImageBlob]
         ///           ,[Activo])
         ///     VALUES
         ///           (@NombreMedioPago
         ///  ,@Descripcion
+        ///	,@UrlImageBlob
         ///           ,@Activo).
         /// </summary>
         internal static string INSERT_MEDIO_PAGO {
@@ -954,9 +956,12 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a UPDATE dbo.MedioPago SET [NombreMedioPago] =@NombreMedioPago
+        ///   Busca una cadena traducida similar a UPDATE dbo.MedioPago 
+        ///SET [NombreMedioPago] = @NombreMedioPago
         ///           ,[Descripcion] = @Descripcion
-        ///           ,[Activo] = @Activo WHERE IdMedioPago = @IdMedioPago
+        ///	   ,[UrlImageBlob] = @UrlImageBlob
+        ///           ,[Activo] = @Activo 
+        ///WHERE IdMedioPago = @IdMedioPago
         ///
         ///IF @@ROWCOUNT &gt; 0
         ///   SELECT 1 

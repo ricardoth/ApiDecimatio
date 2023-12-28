@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using Decimatio.Domain.Entities;
+
+namespace Decimatio.Infraestructure.Services
 {
     internal sealed class MedioPagoService : IMedioPagoService
     {
@@ -59,11 +61,17 @@
         {
             try
             {
+                if (medioPago.UrlImageBlob is not null || medioPago.UrlImageBlob != "")
+                {
+                    string imageNamePath = _containerConfig.FolderMedioPago + medioPago.NombreMedioPago;
+                    var flyerContent = Convert.FromBase64String(medioPago.UrlImageBlob);
+                    await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
+                }
+                medioPago.UrlImageBlob = medioPago.NombreMedioPago;
                 await _medioPagoRepository.AddMedioPago(medioPago);
             }
             catch (Exception ex)
             {
-
                 throw new Exception($"Se ha producido un error, mensaje: {ex.Message}", ex);
             }
         }
@@ -92,6 +100,13 @@
 
             try
             {
+                if (medioPago.UrlImageBlob is not null || medioPago.UrlImageBlob != "")
+                {
+                    string imageNamePath = _containerConfig.FolderMedioPago + medioPago.NombreMedioPago;
+                    var flyerContent = Convert.FromBase64String(medioPago.UrlImageBlob);
+                    await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
+                }
+                medioPago.UrlImageBlob = medioPago.NombreMedioPago;
                 var result = await _medioPagoRepository.UpdateMedioPago(medioPago);
                 return result;
             }

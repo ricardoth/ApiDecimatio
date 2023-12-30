@@ -31,6 +31,7 @@
             services.AddScoped<IComunaService, ComunaService>();
             services.AddSingleton<IPasswordService, PasswordService>();
             services.AddScoped<IMercadoPagoService, MercadoPagoService>();
+            services.AddScoped<IPayPalService, PayPalService>();
 
             //Commons & Configurations
             //services.AddScoped<IQRGeneratorService, QRGeneratorService>();

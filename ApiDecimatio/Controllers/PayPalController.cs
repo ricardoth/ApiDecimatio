@@ -1,4 +1,6 @@
-﻿namespace Decimatio.WebApi.Controllers
+﻿using Decimatio.Domain.IntegrationEntities;
+
+namespace Decimatio.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,11 +21,10 @@
         }
 
         [HttpPost("CreatePayment")]
-        public async Task<IActionResult> CreatePayment()
+        public async Task<IActionResult> CreatePayment(Order order)
         {
-            var result = await _payPalService.CreatePayment();
+            var result = await _payPalService.CreatePayment(order);
             return Ok(result);
         }
-
     }
 }

@@ -25,3 +25,4 @@ global using Decimatio.Infraestructure.Models;
 global using MercadoPago.Client.Preference;
 global using MercadoPago.Config;
 global using MercadoPago.Resource.Preference;
+global using Decimatio.Domain.IntegrationEntities;

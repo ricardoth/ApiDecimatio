@@ -3,6 +3,6 @@
     public interface IPayPalService
     {
         Task<string> CreateAccessToken();
-        Task<string> CreatePayment();
+        Task<PaymentResponse> CreatePayment(Order order);
     }
 }

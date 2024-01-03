@@ -4,5 +4,6 @@
     {
         Task<string> CreateAccessToken();
         Task<PaymentResponse> CreatePayment(Order order);
+        Task<string> CaptureOrder(string orderId);
     }
 }

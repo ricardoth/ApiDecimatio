@@ -31,17 +31,44 @@ namespace Decimatio.Infraestructure.Services
 
         public async Task<PaymentResponse> CreatePayment(Order order)
         {
-            var accessToken = await CreateAccessToken();
+            try
+            {
+                var accessToken = await CreateAccessToken();
 
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var json = JsonConvert.SerializeObject(order);
-            var response = await client.PostAsync("https://api.sandbox.paypal.com/v2/checkout/orders", new StringContent(json, Encoding.UTF8, "application/json"));
-            var content = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<PaymentResponse>(content);
+                var json = JsonConvert.SerializeObject(order);
+                var response = await client.PostAsync("https://api.sandbox.paypal.com/v2/checkout/orders", new StringContent(json, Encoding.UTF8, "application/json"));
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<PaymentResponse>(content);
 
-            return result;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException($"No se pudo generar la orden a PayPal {ex.Message}");
+            }
+        }
+
+        public async Task<string> CaptureOrder(string orderId)
+        {
+            try
+            {
+                var accesoToken = await CreateAccessToken();
+
+           
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accesoToken);
+                var emptyContent = new StringContent(string.Empty, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync($"https://api.sandbox.paypal.com/v2/checkout/orders/{orderId}/capture", emptyContent);
+                var content = await response.Content.ReadAsStringAsync();
+                return content;
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException($"No se pudo capturar la orden a PayPal {ex.Message}"); 
+            }
         }
     }
 }

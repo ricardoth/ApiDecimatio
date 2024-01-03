@@ -26,5 +26,12 @@ namespace Decimatio.WebApi.Controllers
             var result = await _payPalService.CreatePayment(order);
             return Ok(result);
         }
+
+        [HttpPost("CaptureOrder")]
+        public async Task<IActionResult> CaptureOrder(string orderId)
+        {
+            var result = await _payPalService.CaptureOrder(orderId);
+            return Ok(result);
+        }
     }
 }

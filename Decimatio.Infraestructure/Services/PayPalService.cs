@@ -6,7 +6,9 @@ namespace Decimatio.Infraestructure.Services
 {
     internal sealed class PayPalService : IPayPalService
     {
+        //private readonly string _clientId = "ATgNm3Dnww0rTXWRhxPtg7310vakWeg167ZOiE2SYI1vMJVY36OZey5co7-O5r_t7Uq4pwu8RB1oGMSo"; /PROD
         private readonly string _clientId = "AT4w7-G38w84HOFF_FrAMsfoM3_59X-730stJupYzgEaP0pAVyC7NZf8jh1OqaDu3CXKvJoGPoo6gf70";
+        //private readonly string _secretKey = "EH1JntzyspKFafsWbdqrNnubL3yGYMT6y5w7YIR4WToBlXYRjjXX84yBmKV9c02CZbR10aYlYFkCFfcy"; /PROD
         private readonly string _secretKey = "EMQa6WqBSR8LgDmKcQrHw0XditfCcSWnE_Xk86m_19wwx9L1fhOLw4chaZlkNZtqjPKjvgssByq0iWxI";
 
         public async Task<string> CreateAccessToken()

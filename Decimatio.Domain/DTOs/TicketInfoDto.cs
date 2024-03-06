@@ -10,5 +10,7 @@
         public string? ApellidoP { get; set; }
         public string? ApellidoM { get; set; }
         public string? Correo { get; set; }
+        public long? IdEvento { get; set; }
+        public long? IdSector { get; set; }
     }
 }

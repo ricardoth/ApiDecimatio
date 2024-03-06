@@ -113,10 +113,12 @@
                     FechaTicket = ticketDto.FechaTicket,
                     MontoTotal = ticketDto.MontoTotal,
                     RutUsuario = $"{ticketDto?.Usuario?.Rut}-{ticketDto?.Usuario?.DV}",
-                    Nombres = ticketDto.Usuario.Nombres,
-                    ApellidoP = ticketDto.Usuario.ApellidoP,
+                    Nombres = ticketDto?.Usuario?.Nombres,
+                    ApellidoP = ticketDto?.Usuario?.ApellidoP,
                     ApellidoM = ticketDto.Usuario.ApellidoM,
-                    Correo = ticketDto.Usuario.Correo
+                    Correo = ticketDto.Usuario.Correo,
+                    IdEvento = ticketDto.Evento?.IdEvento,
+                    IdSector = ticketDto.Sector?.IdSector
                 };
 
                 string base64QRImage = GeneratoQRCodeBase64(json);

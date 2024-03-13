@@ -14,5 +14,9 @@
         public string EstadoTicket { get; set; }
         public DateTime? FechaHoraEntrada { get; set; }
         public DateTime? FechaHoraSalida { get; set; }
+        public long IdEvento { get; set; }
+        public string NombreEvento { get; set; }
+        public long IdSector { get; set; }
+        public string NombreSector { get; set; }
     }
 }

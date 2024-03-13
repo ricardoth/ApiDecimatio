@@ -175,7 +175,7 @@ WHERE IdTicket = @IdTicket</value>
   <data name="GET_ACCESOS_TICKET" xml:space="preserve">
     <value>SELECT 
 	   AE.IdAccesoEvento
-      ,AE.IdTicket
+          ,AE.IdTicket
 	  ,T.IdUsuario
 	  ,U.Rut
 	  ,U.Dv
@@ -186,10 +186,16 @@ WHERE IdTicket = @IdTicket</value>
 	  ,ET.EstadoTicket
       ,AE.FechaHoraEntrada
       ,AE.FechaHoraSalida
+      ,T.IdEvento
+      ,E.NombreEvento
+      ,T.IdSector
+      ,S.NombreSector
 FROM dbo.AccesoEvento AE
 	INNER JOIN dbo.Ticket T ON T.IdTicket = AE.IdTicket AND T.Activo = 1
 	INNER JOIN dbo.Usuario U ON U.IdUsuario = T.IdUsuario
-	INNER JOIN dbo.EstadoTicket ET ON ET.IdEstadoTicket = AE.IdEstadoTicket</value>
+	INNER JOIN dbo.EstadoTicket ET ON ET.IdEstadoTicket = AE.IdEstadoTicket
+	INNER JOIN dbo.Evento E ON E.IdEvento = T.IdEvento
+	INNER JOIN dbo.Sector S ON S.IdSector = T.IdSector</value>
     <comment>Get Accesos Ticket para mostrar</comment>
   </data>
   <data name="GET_COMUNAS_BY_REGION" xml:space="preserve">

@@ -153,7 +153,7 @@ namespace Decimatio.Infraestructure.Repositories {
         /// <summary>
         ///   Busca una cadena traducida similar a SELECT 
         ///	   AE.IdAccesoEvento
-        ///      ,AE.IdTicket
+        ///          ,AE.IdTicket
         ///	  ,T.IdUsuario
         ///	  ,U.Rut
         ///	  ,U.Dv
@@ -164,10 +164,14 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	  ,ET.EstadoTicket
         ///      ,AE.FechaHoraEntrada
         ///      ,AE.FechaHoraSalida
+        ///      ,T.IdEvento
+        ///      ,E.NombreEvento
+        ///      ,T.IdSector
+        ///      ,S.NombreSector
         ///FROM dbo.AccesoEvento AE
         ///	INNER JOIN dbo.Ticket T ON T.IdTicket = AE.IdTicket AND T.Activo = 1
         ///	INNER JOIN dbo.Usuario U ON U.IdUsuario = T.IdUsuario
-        ///	INNER JOIN dbo.EstadoTicket ET ON ET.IdEstadoTicket = AE.IdEstadoTicket.
+        ///	INNER JOIN dbo.EstadoTicket E [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string GET_ACCESOS_TICKET {
             get {

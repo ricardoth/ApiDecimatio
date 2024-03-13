@@ -195,7 +195,8 @@ FROM dbo.AccesoEvento AE
 	INNER JOIN dbo.Usuario U ON U.IdUsuario = T.IdUsuario
 	INNER JOIN dbo.EstadoTicket ET ON ET.IdEstadoTicket = AE.IdEstadoTicket
 	INNER JOIN dbo.Evento E ON E.IdEvento = T.IdEvento
-	INNER JOIN dbo.Sector S ON S.IdSector = T.IdSector</value>
+	INNER JOIN dbo.Sector S ON S.IdSector = T.IdSector
+ORDER BY AE.IdAccesoEvento DESC</value>
     <comment>Get Accesos Ticket para mostrar</comment>
   </data>
   <data name="GET_COMUNAS_BY_REGION" xml:space="preserve">

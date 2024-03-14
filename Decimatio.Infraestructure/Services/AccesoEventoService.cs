@@ -31,6 +31,12 @@
             if (filtros.IdEstadoTicket > 0)
                 result = result.Where(x => x.IdEstadoTicket == filtros.IdEstadoTicket);
 
+            if (filtros.IdEvento > 0)
+                result = result.Where(x => x.IdEvento == filtros.IdEvento);
+
+            if (filtros.IdSector > 0)
+                result = result.Where(x => x.IdSector == filtros.IdSector);
+
             if (filtros.FechaHoraEntrada.HasValue)
                 result = result.Where(x => x.FechaHoraEntrada == filtros.FechaHoraEntrada);
 

@@ -83,7 +83,9 @@
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post([FromBody] UsuarioDto usuarioDto)
         {
-            usuarioDto.Contrasena = _passwordService.Hash(usuarioDto.Contrasena);
+            if (usuarioDto.Contrasena is not null) 
+                usuarioDto.Contrasena = _passwordService.Hash(usuarioDto.Contrasena);
+
             var usuario = _mapper.Map<Usuario>(usuarioDto);
             await _usuarioService.AddUsuario(usuario);
             var response = new ApiResponse<UsuarioDto>(usuarioDto);
@@ -98,6 +100,9 @@
         {
             if (id <= 0)
                 return NotFound("No se encuentra el elemento");
+
+            if (usuarioDto.Contrasena is not null)
+                usuarioDto.Contrasena = _passwordService.Hash(usuarioDto.Contrasena);
 
             var usuario = _mapper.Map<Usuario>(usuarioDto);
             usuario.IdUsuario = id;

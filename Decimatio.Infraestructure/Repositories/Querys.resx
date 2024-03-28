@@ -755,7 +755,7 @@ INSERT INTO [dbo].[Ticket]
            ,[Correo]
            ,Contrasena
            ,[Activo]
-	   ,[EsExtranjero]
+           ,[EsExtranjero]
            ,[FechaCreacion])
      VALUES
            (@IdTipoUsuario

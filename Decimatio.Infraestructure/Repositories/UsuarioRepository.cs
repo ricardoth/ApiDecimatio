@@ -71,6 +71,7 @@
                 { "@Correo", usuario.Correo },
                 { "@Contrasena", usuario.Contrasena },
                 { "@Activo", usuario.Activo },
+                { "@EsExtranjero", usuario.EsExtranjero },
             };
 
             var dynamicParam = new DynamicParameters(dictionary);
@@ -93,6 +94,7 @@
                 { "@Telefono", usuario.Telefono },
                 { "@Correo", usuario.Correo },
                 { "@Activo", usuario.Activo },
+                { "@EsExtranjero", usuario.EsExtranjero },
             };
 
             var dynamicParam = new DynamicParameters(dictionary);

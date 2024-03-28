@@ -485,6 +485,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,U.[Telefono]
       ,U.[Correo]
       ,U.[Activo]
+      ,U.EsExtranjero
       ,U.[FechaCreacion]
 	  ,TU.IdTipoUsuario
 	  ,TU.NombreTipoUsuario
@@ -505,6 +506,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,[Telefono]
       ,[Correo]
       ,U.[Activo]
+      ,U.[EsExtranjero]
       ,U.[FechaCreacion]
   FROM [dbo].[Usuario] U
 	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario
@@ -526,6 +528,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,[Telefono]
       ,[Correo]
       ,[Activo]
+      ,[EsExtranjero]
       ,[FechaCreacion]
   FROM [dbo].[Usuario]
   WHERE IdUsuario = @IdUsuario</value>
@@ -543,6 +546,7 @@ WHERE T.IdTicket = @IdTicket</value>
       ,[Telefono]
       ,[Correo]
       ,[Activo]
+      ,[EsExtranjero]
       ,[FechaCreacion]
   FROM [dbo].[Usuario]
   WHERE CONCAT(Rut, DV) = @RutDv</value>

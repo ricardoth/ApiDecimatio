@@ -542,6 +542,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[Telefono]
         ///      ,[Correo]
         ///      ,[Activo]
+        ///      ,[EsExtranjero]
         ///      ,[FechaCreacion]
         ///  FROM [dbo].[Usuario]
         ///  WHERE IdUsuario = @IdUsuario.
@@ -564,6 +565,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[Telefono]
         ///      ,[Correo]
         ///      ,[Activo]
+        ///      ,[EsExtranjero]
         ///      ,[FechaCreacion]
         ///  FROM [dbo].[Usuario]
         ///  WHERE CONCAT(Rut, DV) = @RutDv.
@@ -586,6 +588,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,U.[Telefono]
         ///      ,U.[Correo]
         ///      ,U.[Activo]
+        ///      ,U.EsExtranjero
         ///      ,U.[FechaCreacion]
         ///	  ,TU.IdTipoUsuario
         ///	  ,TU.NombreTipoUsuario
@@ -611,13 +614,14 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[Telefono]
         ///      ,[Correo]
         ///      ,U.[Activo]
+        ///      ,U.[EsExtranjero]
         ///      ,U.[FechaCreacion]
         ///  FROM [dbo].[Usuario] U
         ///	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario
         ///  WHERE Nombres LIKE &apos;%&apos;+@Filtro+&apos;%&apos;
         ///	OR ApellidoP LIKE &apos;%&apos;+ @Filtro+&apos;%&apos;
         ///	OR ApellidoM LIKE &apos;%&apos;+ @Filtro+&apos;%&apos;
-        ///	OR CAST(Rut AS VARCHAR) LIKE &apos;%&apos;+ @Filtro+&apos;%&apos;.
+        ///	OR CAST(Rut AS VARCHAR) [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string GET_USUARIOS_FILTRO {
             get {

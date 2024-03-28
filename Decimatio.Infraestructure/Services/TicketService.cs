@@ -252,7 +252,12 @@
 
         private string GetTicketFileName(TicketBodyQRDto ticketDto)
         {
-            string fileName = $"Ticket N° {ticketDto.IdTicket} | Rut: {ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}.pdf";
+            string fileName;
+            if (ticketDto?.Usuario?.EsExtranjero == false)
+                fileName = $"Ticket N° {ticketDto.IdTicket} | Rut: {ticketDto.Usuario.Rut}-{ticketDto.Usuario.DV}.pdf";
+            else 
+                fileName = $"Ticket N° {ticketDto.IdTicket} | Correo: {ticketDto.Usuario.Correo}.pdf";
+
             string filePathName = $"{_containerConfig.FolderName}{fileName}";
             return filePathName;
         }

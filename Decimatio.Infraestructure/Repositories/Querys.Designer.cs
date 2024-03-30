@@ -1046,6 +1046,15 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a dbo.sp_ValidarTicketExtranjero @IdTicket, @Correo, @IdEvento.
+        /// </summary>
+        internal static string VALIDAR_ACCESO_TICKET_EXTRANJERO {
+            get {
+                return ResourceManager.GetString("VALIDAR_ACCESO_TICKET_EXTRANJERO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a IF EXISTS (SELECT 1 FROM dbo.PreferenceTicket WHERE TransactionId = @TransactionId AND Descargados = 1)
         ///	BEGIN
         ///		SELECT 0

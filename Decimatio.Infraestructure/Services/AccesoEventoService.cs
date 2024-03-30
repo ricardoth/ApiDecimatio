@@ -57,7 +57,11 @@
         {
             try
             {
-                var result = await _accesoEventoRepository.ValidarAccesoTicket(ticketAcceso);
+                AccesoEventoStatus result = new();
+                if (ticketAcceso.EsExtranjero)
+                    result = await _accesoEventoRepository.ValidarAccesoTicketExtranjero(ticketAcceso);
+                else
+                    result = await _accesoEventoRepository.ValidarAccesoTicket(ticketAcceso);
 
                 AccesoEvento accesoEvento = new();
                 accesoEvento.IdTicket = ticketAcceso.IdTicket;

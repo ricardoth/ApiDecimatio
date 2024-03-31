@@ -87,8 +87,13 @@
             }
 
             var rutDv = usuario.Rut + usuario.DV;
+            Usuario? user = null; 
 
-            var user = await _usuarioRepository.GetByRutDv(rutDv);
+            if (!(bool)usuario.EsExtranjero)
+                user = await _usuarioRepository.GetByRutDv(rutDv);
+            else 
+                user = await _usuarioRepository.GetByCorreo(usuario.Correo);
+
             if (user == null)
             {
                 await _usuarioRepository.AddUsuario(usuario);

@@ -516,6 +516,24 @@ WHERE T.IdTicket = @IdTicket</value>
 	OR CAST(Rut AS VARCHAR) LIKE '%'+ @Filtro+'%'</value>
     <comment>Get usuarios por filtro nombre, rut y otros</comment>
   </data>
+  <data name="GET_USUARIO_CORREO" xml:space="preserve">
+    <value>SELECT TOP 1 [IdUsuario]
+      ,[IdTipoUsuario]
+      ,[Rut]
+      ,[DV]
+      ,[Nombres]
+      ,[ApellidoP]
+      ,[ApellidoM]
+      ,[Direccion]
+      ,[Telefono]
+      ,[Correo]
+      ,[Activo]
+      ,[EsExtranjero]
+      ,[FechaCreacion]
+  FROM [dbo].[Usuario]
+  WHERE Correo = @Correo</value>
+    <comment>Se obtiene el usuario por correo para casos de extranjeros</comment>
+  </data>
   <data name="GET_USUARIO_ID" xml:space="preserve">
     <value>SELECT [IdUsuario]
       ,[IdTipoUsuario]

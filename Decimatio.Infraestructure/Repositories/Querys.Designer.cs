@@ -531,6 +531,29 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a SELECT TOP 1 [IdUsuario]
+        ///      ,[IdTipoUsuario]
+        ///      ,[Rut]
+        ///      ,[DV]
+        ///      ,[Nombres]
+        ///      ,[ApellidoP]
+        ///      ,[ApellidoM]
+        ///      ,[Direccion]
+        ///      ,[Telefono]
+        ///      ,[Correo]
+        ///      ,[Activo]
+        ///      ,[EsExtranjero]
+        ///      ,[FechaCreacion]
+        ///  FROM [dbo].[Usuario]
+        ///  WHERE Correo = @Correo.
+        /// </summary>
+        internal static string GET_USUARIO_CORREO {
+            get {
+                return ResourceManager.GetString("GET_USUARIO_CORREO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT [IdUsuario]
         ///      ,[IdTipoUsuario]
         ///      ,[Rut]

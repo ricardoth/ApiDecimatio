@@ -14,3 +14,6 @@ Proyecto de Generación y Gestión de Tickets para Eventos o Recitales, Genera Q
 * QRCoder
 * QuestPDF
 * PDFSharp (Generación de más de un ticket)
+
+## Arquitectura
+![Arqutectura](/arquitectura.png)

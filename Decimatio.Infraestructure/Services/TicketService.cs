@@ -138,7 +138,7 @@
 
                 string htmlTemplateEmail = await EscribirPlantillaEmail(ticketDto);
 
-                var emailDto = new EmailTicketDto(json.Correo, fileName, htmlTemplateEmail, base64HtmlTicket, ticketDto);
+                var emailDto = new EmailTicketDto(json.Correo, ticketDto.Evento.NombreEvento, htmlTemplateEmail, base64HtmlTicket, ticketDto);
 
                 await _emailService.SendEmail(emailDto);
 

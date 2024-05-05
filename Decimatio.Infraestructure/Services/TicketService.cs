@@ -135,10 +135,11 @@
                 ticketQR.NombreTicketComprobante = fileName;
                 await AddTicketQR(ticketQR);
                 string base64HtmlTicket = await SaveTicketImageToBlobStorage(base64QRImage, ticketDto, fileName);
+                string emailToName =$"{ticketDto.Evento.NombreEvento} - {ticketDto.IdTicket}";
 
                 string htmlTemplateEmail = await EscribirPlantillaEmail(ticketDto);
 
-                var emailDto = new EmailTicketDto(json.Correo, ticketDto.Evento.NombreEvento, htmlTemplateEmail, base64HtmlTicket, ticketDto);
+                var emailDto = new EmailTicketDto(json.Correo, emailToName, htmlTemplateEmail, base64HtmlTicket, ticketDto);
 
                 await _emailService.SendEmail(emailDto);
 

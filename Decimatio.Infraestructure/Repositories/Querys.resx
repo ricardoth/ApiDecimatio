@@ -531,7 +531,12 @@ WHERE T.IdTicket = @IdTicket</value>
       ,[EsExtranjero]
       ,[FechaCreacion]
   FROM [dbo].[Usuario]
-  WHERE Correo = @Correo</value>
+  WHERE 
+  Correo = @Correo
+  AND Nombres = @Nombres
+  AND ApellidoP = @ApellidoP
+  AND ApellidoM = @ApellidoM
+  AND EsExtranjero = 1</value>
     <comment>Se obtiene el usuario por correo para casos de extranjeros</comment>
   </data>
   <data name="GET_USUARIO_ID" xml:space="preserve">

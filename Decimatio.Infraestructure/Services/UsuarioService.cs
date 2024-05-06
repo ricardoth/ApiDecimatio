@@ -92,7 +92,7 @@
             if (!(bool)usuario.EsExtranjero)
                 user = await _usuarioRepository.GetByRutDv(rutDv);
             else 
-                user = await _usuarioRepository.GetByCorreo(usuario.Correo);
+                user = await _usuarioRepository.GetByCorreo(usuario);
 
             if (user == null)
             {

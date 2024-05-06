@@ -545,7 +545,12 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,[EsExtranjero]
         ///      ,[FechaCreacion]
         ///  FROM [dbo].[Usuario]
-        ///  WHERE Correo = @Correo.
+        ///  WHERE 
+        ///  Correo = @Correo
+        ///  AND Nombres = @Nombres
+        ///  AND ApellidoP = @ApellidoP
+        ///  AND ApellidoM = @ApellidoM
+        ///  AND EsExtranjero = 1.
         /// </summary>
         internal static string GET_USUARIO_CORREO {
             get {

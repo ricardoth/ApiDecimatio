@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.Entities;
-
-namespace Decimatio.Infraestructure.Repositories
+﻿namespace Decimatio.Infraestructure.Repositories
 {
     internal sealed class UsuarioRepository : IUsuarioRepository
     {
@@ -152,11 +150,14 @@ namespace Decimatio.Infraestructure.Repositories
             return await conn.ExecuteScalarAsync<bool>(Querys.CAMBIAR_CONTRASENA, dynamicParam);
         }
 
-        public async Task<Usuario> GetByCorreo(string correo)
+        public async Task<Usuario> GetByCorreo(Usuario usuario)
         {
             var dictionary = new Dictionary<string, object>
             {
-                { "@Correo", correo },
+                { "@Correo", usuario.Correo },
+                { "@Nombres", usuario.Nombres },
+                { "@ApellidoP", usuario.ApellidoP },
+                { "@ApellidoM", usuario.ApellidoM },
             };
 
             var dynamicParam = new DynamicParameters(dictionary);

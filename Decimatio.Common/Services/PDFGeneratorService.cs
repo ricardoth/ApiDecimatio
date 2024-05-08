@@ -83,7 +83,7 @@
 
         private void ComposeHeader(IContainer container, TicketBodyQRDto ticket)
         {
-            string logoImage = Path.Combine(currentDirectory, "resonancePassBGWhite.png");
+            string logoImage = Path.Combine(currentDirectory, "logoMors2.png");
 
             container.Background(Colors.Black).Row(row =>
             {
@@ -92,7 +92,7 @@
                     .PaddingTop(10)
                     .Column(col =>
                 {
-                    col.Item().Text("Resonance Pass Presenta").FontSize(13).FontColor(Colors.White).SemiBold();
+                    col.Item().Text($"{ticket.Evento.ProductoraResponsable} Presenta").FontSize(13).FontColor(Colors.White).SemiBold();
                 });
 
                 row.RelativeItem()
@@ -113,6 +113,7 @@
         private void ComposeContent(IContainer container, TicketBodyQRDto ticket, string base64Pdf)
         {
             string warningIconImage = Path.Combine(currentDirectory, "attention.png");
+            string logoImage = Path.Combine(currentDirectory, "fondoMorsVicitOmnia.png");
             string formatDay = ticket.Evento.Fecha.ToString("dddd", new CultureInfo("es-ES"));
             string anio = ticket.Evento.Fecha.ToString("yyyy", new CultureInfo("es-ES"));
             string formatDate = ticket.Evento.Fecha.ToString("d' de 'MMMM", new CultureInfo("es-ES"));
@@ -120,44 +121,45 @@
             long montoTotalFormat = (long)ticket.MontoTotal;
             string pais = "Chile";
 
-            container.Column(col => 
+            container.Column(col =>
             {
-                col.Item().Row(row =>
+                col.Item().Element(innerContainer =>
                 {
-                    row.RelativeItem()
-                        .Padding(25)
-                        .Column(innerCol =>
-                        {
-                            innerCol.Item().Text($"{ticket?.Evento?.NombreEvento}").FontSize(15).SemiBold();
-                            innerCol.Item().Text($"Fecha: {formatDay.ToUpper()}, {formatDate} {anio}").FontSize(12);
-                            innerCol.Item().Text($"Hora: {formatHora}").FontSize(12);
-
-                            innerCol.Spacing(5);
-
-                            innerCol.Item().Text($"{ticket?.Evento?.Lugar?.NombreLugar} #{ticket?.Evento?.Lugar?.Numeracion}").FontSize(14).SemiBold();
-                            innerCol.Item().Text($"{ticket?.Evento?.Lugar?.Comuna?.NombreComuna}, {pais}").FontSize(12);
-
-                            innerCol.Spacing(5);
-
-                            innerCol.Item().Text($"Sector: {ticket?.Sector?.NombreSector}").FontSize(14).SemiBold();
-                            innerCol.Item().Text($"Valor: ${montoTotalFormat}");
-
-                        });
-
-                    row.AutoItem().PaddingTop(10).PaddingBottom(10).LineVertical(1).LineColor(Colors.Grey.Medium);
-
-                    row.ConstantItem(1).Background(Colors.White);
-
-                    row.RelativeItem().Column(innerCol =>
-                    {
-                        innerCol.Item().Height(300).Element(innerContainer =>
-                        {
-                            var imageStream = Base64ToImageStream(base64Pdf);
-                            innerContainer.Image(imageStream);
-                        });
-
-                    });
+                    innerContainer.Image(logoImage);
                 });
+
+                col.Item().PaddingTop(-370).Row(row =>
+                    {
+                        row.RelativeItem()
+                            .Padding(25)
+                            .Column(innerCol =>
+                            {
+                                innerCol.Item().Text($"{ticket?.Evento?.NombreEvento}").FontSize(15).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+                                innerCol.Item().Text($"Fecha: {formatDay.ToUpper()}, {formatDate} {anio}").FontSize(12).FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+                                innerCol.Item().Text($"Hora: {formatHora}").FontSize(12).FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+
+                                innerCol.Spacing(5);
+
+                                innerCol.Item().Text($"{ticket?.Evento?.Lugar?.NombreLugar} #{ticket?.Evento?.Lugar?.Numeracion}").FontSize(14).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+                                innerCol.Item().Text($"{ticket?.Evento?.Lugar?.Comuna?.NombreComuna}, {pais}").FontSize(12).FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+
+                                innerCol.Spacing(5);
+
+                                innerCol.Item().Text($"Sector: {ticket?.Sector?.NombreSector}").FontSize(14).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+                                innerCol.Item().Text($"Valor: ${montoTotalFormat}").FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+
+                            });
+
+                        row.RelativeItem().Column(innerCol =>
+                        {
+                            innerCol.Item().Height(300).Element(innerContainer =>
+                            {
+                                var imageStream = Base64ToImageStream(base64Pdf);
+                                innerContainer.Image(imageStream);
+                            });
+
+                        });
+                    });
 
                 col.Item().Row(row =>
                 {
@@ -167,8 +169,7 @@
                         .Padding(25)
                         .Text(text =>
                         {
-                            text.Span("Este es un ticket electrónico. Por favor, muestra este ticket para ingresar al evento. Para más información visita nuestra página web: ").FontColor(Colors.White);
-                            text.Hyperlink("resonancepass.com", "https://www.resonancepass.com").FontColor(Colors.White);
+                            text.Span("Este es un ticket electrónico. Por favor, muestra este ticket para ingresar al evento.").FontColor(Colors.White);
                         });
                 });
 
@@ -186,12 +187,6 @@
                             col.Item().Text("Este ticket es tu entrada al evento, posee un código único e intransferible y es la garantía de acceso. Si tienes algún problema sobre el acceso del ticket, por favor cominucate con nosotros para ayudarte.")
                                 .FontSize(9);
                             col.Item().PaddingVertical(5).LineHorizontal(1).LineColor(Colors.Grey.Medium);
-
-                            col.Item().Text(text =>
-                            {
-                                text.Span("Ante cualquier duda o consulta acerca del evento o este ticket, puedes ponerte en contacto con nosotros enviando un correo a ").FontSize(9);
-                                text.Span($"{_emailConfig.From}.").FontSize(9).SemiBold();
-                            });
                         });
 
                     row.ConstantItem(45).Background(Colors.Grey.Lighten3).Padding(5).Column(col =>
@@ -200,7 +195,92 @@
                     });
                 });
             });
-            
+
+
+            //container.Column(col => 
+            //{
+            //    col.Item().Row(row =>
+            //    {
+            //        row.RelativeItem()
+            //            .Padding(25)
+            //            .Column(innerCol =>
+            //            {
+            //                innerCol.Item().Text($"{ticket?.Evento?.NombreEvento}").FontSize(15).SemiBold();
+            //                innerCol.Item().Text($"Fecha: {formatDay.ToUpper()}, {formatDate} {anio}").FontSize(12);
+            //                innerCol.Item().Text($"Hora: {formatHora}").FontSize(12);
+
+            //                innerCol.Spacing(5);
+
+            //                innerCol.Item().Text($"{ticket?.Evento?.Lugar?.NombreLugar} #{ticket?.Evento?.Lugar?.Numeracion}").FontSize(14).SemiBold();
+            //                innerCol.Item().Text($"{ticket?.Evento?.Lugar?.Comuna?.NombreComuna}, {pais}").FontSize(12);
+
+            //                innerCol.Spacing(5);
+
+            //                innerCol.Item().Text($"Sector: {ticket?.Sector?.NombreSector}").FontSize(14).SemiBold();
+            //                innerCol.Item().Text($"Valor: ${montoTotalFormat}");
+
+            //            });
+
+            //        row.AutoItem().PaddingTop(10).PaddingBottom(10).LineVertical(1).LineColor(Colors.Grey.Medium);
+
+            //        row.ConstantItem(1).Background(Colors.White);
+
+
+            //        row.RelativeItem().Column(innerCol =>
+            //        {
+            //            innerCol.Item().Height(300).Element(innerContainer =>
+            //            {
+            //                var imageStream = Base64ToImageStream(base64Pdf);
+            //                innerContainer.Image(imageStream);
+            //            });
+
+            //        });
+
+            //    });
+
+
+            //col.Item().Row(row =>
+            //{
+            //    row.RelativeItem()
+            //        .Height(100)
+            //        .Background(Colors.Black)
+            //        .Padding(25)
+            //        .Text(text =>
+            //        {
+            //            text.Span("Este es un ticket electrónico. Por favor, muestra este ticket para ingresar al evento. Para más información visita nuestra página web: ").FontColor(Colors.White);
+            //            //text.Hyperlink("resonancepass.com", "https://www.resonancepass.com").FontColor(Colors.White);
+            //        });
+            //});
+
+            //col.Spacing(5);
+
+            //col.Item().Row(row =>
+            //{
+            //    row.RelativeItem()
+            //        .Background(Colors.Grey.Lighten3)
+            //        .Padding(10)
+            //        .Column(col =>
+            //        {
+            //            col.Item().Text("NO HAGAS COPIAS DE ESTA ENTRADA, SOLAMENTE EL PRIMERO EN PASAR POR LOS LECTORES TENDRÁ ACCESO AL EVENTO.").FontSize(10).SemiBold();
+            //            col.Item().PaddingVertical(5).LineHorizontal(1).LineColor(Colors.Grey.Medium);
+            //            col.Item().Text("Este ticket es tu entrada al evento, posee un código único e intransferible y es la garantía de acceso. Si tienes algún problema sobre el acceso del ticket, por favor cominucate con nosotros para ayudarte.")
+            //                .FontSize(9);
+            //            col.Item().PaddingVertical(5).LineHorizontal(1).LineColor(Colors.Grey.Medium);
+
+            //            //col.Item().Text(text =>
+            //            //{
+            //            //    text.Span("Ante cualquier duda o consulta acerca del evento o este ticket, puedes ponerte en contacto con nosotros enviando un correo a ").FontSize(9);
+            //            //    text.Span($"{_emailConfig.From}.").FontSize(9).SemiBold();
+            //            //});
+            //        });
+
+            //    row.ConstantItem(45).Background(Colors.Grey.Lighten3).Padding(5).Column(col =>
+            //    {
+            //        col.Item().Image(warningIconImage);
+            //    });
+            //});
+            //});
+
         }
     }
 }

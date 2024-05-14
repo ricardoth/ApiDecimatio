@@ -795,8 +795,8 @@ INSERT INTO [dbo].[Ticket]
            ,@Telefono
            ,@Correo
            ,@Contrasena
-           ,@EsExtranjero
            ,@Activo
+ 	   ,@EsExtranjero
            ,GETDATE())</value>
     <comment>Inserta un nuevo Usuario</comment>
   </data>

@@ -174,7 +174,6 @@
                 });
 
                 col.Spacing(5);
-
                 col.Item().Row(row =>
                 {
                     row.RelativeItem()

@@ -150,5 +150,14 @@
             }
             return pagedList;
         }
+
+        public async Task<IEnumerable<Evento>> GetAllEventosCombobox()
+        {
+            var result = await _eventoRepository.GetAllEventos();
+            if (result == null)
+                throw new BadRequestException("No se encuentran eventos en nuestros registros");
+
+            return result;
+        }
     }
 }

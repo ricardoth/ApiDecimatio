@@ -3,6 +3,7 @@
     public interface IEventoService
     {
         Task<IEnumerable<Evento>> GetAllEventos();
+        Task<IEnumerable<Evento>> GetAllEventosCombobox();
         Task<PagedList<Evento>> GetAllEventosPaginated(EventoQueryFilter filtros);
         Task<Evento> GetById(int idEvento);
         Task AddEvento(Evento evento);

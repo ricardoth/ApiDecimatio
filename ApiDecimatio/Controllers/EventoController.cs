@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.Interfaces;
-
-namespace Decimatio.WebApi.Controllers
+﻿namespace Decimatio.WebApi.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -30,6 +28,20 @@ namespace Decimatio.WebApi.Controllers
             var response = new ApiResponse<IEnumerable<EventoDto>>(eventosDtos);
             return Ok(response);
         }
+
+        [HttpGet("GetEventosCombobox")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetAllEventosCombobox()
+        {
+            var result = await _eventoService.GetAllEventosCombobox();
+            if (result == null) return BadRequest();
+
+            var eventosDtos = _mapper.Map<IEnumerable<EventoDto>>(result);
+            var response = new ApiResponse<IEnumerable<EventoDto>>(eventosDtos);
+            return Ok(response);
+        }
+
 
         [HttpGet("GetEventosPagination")]
         [ProducesResponseType((int)HttpStatusCode.OK)]

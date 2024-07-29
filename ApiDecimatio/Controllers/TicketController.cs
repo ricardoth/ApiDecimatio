@@ -138,5 +138,21 @@
             var response = new ApiResponse<IEnumerable<PreferenceTicketDto>>(preferenceTicketsDto);
             return Ok(response);
         }
+
+        #region Excel
+        [HttpGet("GetTicketsExcel")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetTicketsExcel([FromQuery] TicketQueryFilter filtros)
+        {
+            var tickets = await _ticketService.GetAllTicketsExcel(filtros);
+            if (!tickets.Any())
+                return BadRequest();
+
+            var ticketsDto = _mapper.Map<IEnumerable<TicketDto>>(tickets);
+            var response = new ApiResponse<IEnumerable<TicketDto>>(ticketsDto);
+            return Ok(response);
+        }
+        #endregion
     }
 }

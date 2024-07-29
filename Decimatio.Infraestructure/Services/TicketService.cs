@@ -291,5 +291,27 @@
             return result;
         }
         #endregion
+
+        #region Exportar Excel Historial Tickets
+        public async Task<IEnumerable<Ticket>> GetAllTicketsExcel(TicketQueryFilter filtros)
+        {
+            try
+            {
+                var tickets = await _ticketRepository.GetAllTicket();
+
+                if (filtros.IdEvento > 0)
+                    tickets = tickets.Where(x => x.IdEvento == filtros.IdEvento);
+
+                if (filtros.IdSector > 0)
+                    tickets = tickets.Where(x => x.IdSector == filtros.IdSector);
+
+                return tickets;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ha ocurrido un error en TicketService {ex.Message}", ex);
+            }
+        }
+        #endregion
     }
 }

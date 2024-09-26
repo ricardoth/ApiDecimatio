@@ -305,7 +305,8 @@
                 if (filtros.IdSector > 0)
                     tickets = tickets.Where(x => x.IdSector == filtros.IdSector);
 
-                return tickets;
+
+                return tickets.Where(x => x.Activo == true);
             }
             catch (Exception ex)
             {

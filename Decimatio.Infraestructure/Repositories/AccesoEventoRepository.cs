@@ -55,5 +55,18 @@
             using var conn = new SqlConnection(_connection.ConnectionString);
             return await conn.QueryFirstOrDefaultAsync<AccesoEventoStatus>(Querys.VALIDAR_ACCESO_TICKET_EXTRANJERO, dynamicParam);
         }
+
+        public async Task<AccesoEventoStatus> ValidarAccesoTicketFullAccess(TicketAcceso ticketAcceso)
+        {
+            var dictionary = new Dictionary<string, object>()
+            {
+                { "@IdTicket", ticketAcceso.IdTicket },
+                { "@IdEvento", ticketAcceso.IdEvento },
+            };
+
+            var dynamicParam = new DynamicParameters(dictionary);
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryFirstOrDefaultAsync<AccesoEventoStatus>(Querys.VALIDAR_ACCESO_TICKET_FULL_ACCESS, dynamicParam);
+        }
     }
 }

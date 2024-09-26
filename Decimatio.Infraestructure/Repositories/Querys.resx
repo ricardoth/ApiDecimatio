@@ -922,6 +922,10 @@ ELSE
     <value>dbo.sp_ValidarTicketExtranjero @IdTicket, @Correo, @IdEvento</value>
     <comment>Valida un ticket si corresponde al correo son correctos al emitido</comment>
   </data>
+  <data name="VALIDAR_ACCESO_TICKET_FULL_ACCESS" xml:space="preserve">
+    <value>dbo.sp_ValidarTicketFullAccess @IdTicket, @IdEvento</value>
+    <comment>Valida un ticket Full Access (Por un fix determinado)</comment>
+  </data>
   <data name="VALIDAR_TICKETS_DESCARGADOS" xml:space="preserve">
     <value>IF EXISTS (SELECT 1 FROM dbo.PreferenceTicket WHERE TransactionId = @TransactionId AND Descargados = 1)
 	BEGIN

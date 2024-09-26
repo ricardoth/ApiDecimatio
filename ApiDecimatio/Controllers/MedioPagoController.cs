@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.Interfaces;
-
-namespace Decimatio.WebApi.Controllers
+﻿namespace Decimatio.WebApi.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]

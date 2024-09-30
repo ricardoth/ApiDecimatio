@@ -1,6 +1,5 @@
 ﻿using Decimatio.Common;
 using Decimatio.Infraestructure.Options;
-using MercadoPago.Config;
 
 namespace Decimatio.WebApi.Configuration
 {

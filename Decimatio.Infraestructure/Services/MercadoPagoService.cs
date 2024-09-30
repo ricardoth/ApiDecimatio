@@ -3,11 +3,15 @@
     public sealed class MercadoPagoService : IMercadoPagoService
     {
         private readonly ITicketRepository _ticketRepository;
+        private readonly IMercadoPagoRepository _mercadoPagoRepository;
         private readonly MercadoPagoOptions _mercadoPagoOptions;
 
-        public MercadoPagoService(ITicketRepository ticketRepository, IOptions<MercadoPagoOptions> options)
+        public MercadoPagoService(ITicketRepository ticketRepository,
+            IMercadoPagoRepository mercadoPagoRepository,   
+            IOptions<MercadoPagoOptions> options)
         {
             _ticketRepository = ticketRepository;
+            _mercadoPagoRepository = mercadoPagoRepository;
             _mercadoPagoOptions = options.Value;
             MercadoPagoConfig.AccessToken = _mercadoPagoOptions.AccessToken;
         }
@@ -46,6 +50,22 @@
             catch (Exception ex)
             {
                 throw new BadRequestException($"Error al crear el pago: {ex.Message}");
+            }
+        }
+
+        public async Task<IEnumerable<PreferenceTicket>> GetAllPreferenceTickets()
+        {
+            try
+            {
+                var results = await _mercadoPagoRepository.GetAll();
+                if (!results.Any())
+                    throw new NotFoundException("No se encontraron registros");
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException($"Error al obtener los datos de mercado pago: {ex.Message}");
             }
         }
 

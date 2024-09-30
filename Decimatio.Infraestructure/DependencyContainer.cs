@@ -18,6 +18,7 @@
             services.AddScoped<ITipoUsuarioRepository, TipoUsuarioRepository>();
             services.AddScoped<IRegionRepository, RegionRepository>();
             services.AddScoped<IComunaRepository, ComunaRepository>();
+            services.AddScoped<IMercadoPagoRepository, MercadoPagoRepository>();
 
             services.AddScoped<IMedioPagoService, MedioPagoService>();
             services.AddScoped<ITicketService, TicketService>();

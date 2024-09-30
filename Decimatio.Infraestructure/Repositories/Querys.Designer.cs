@@ -381,6 +381,37 @@ namespace Decimatio.Infraestructure.Repositories {
         ///   Busca una cadena traducida similar a SELECT P.[IdPreference]
         ///      ,P.[PreferenceCode]
         ///      ,P.[TransactionId]
+        ///	  ,P.[IdUsuario]
+        ///      ,P.[IdEvento]
+        ///      ,P.[IdSector]
+        ///      ,P.[IdMedioPago]
+        ///      ,P.[MontoPago]
+        ///      ,P.[MontoTotal]
+        ///      ,P.[Descargados]
+        ///	  ,P.Activo
+        ///      ,P.[FechaTicket]
+        ///      ,P.[FecCreacion]
+        ///	  ,U.IdUsuario
+        ///	  ,U.Nombres
+        ///	  ,U.ApellidoP
+        ///	  ,U.ApellidoM
+        ///	  ,E.IdEvento
+        ///	  ,E.NombreEvento
+        ///	  ,S.IdSector
+        ///	  ,S.NombreSector
+        ///  FROM [dbo].[PreferenceTicket] P
+        ///	INNER JOIN dbo.Usuario U ON U.IdUsuario =  P [resto de la cadena truncado]&quot;;.
+        /// </summary>
+        internal static string GET_PREFERENCE_TICKET_MERCADO_PAGO {
+            get {
+                return ResourceManager.GetString("GET_PREFERENCE_TICKET_MERCADO_PAGO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT P.[IdPreference]
+        ///      ,P.[PreferenceCode]
+        ///      ,P.[TransactionId]
         ///      ,P.[IdUsuario]
         ///      ,P.[IdEvento]
         ///      ,P.[IdSector]

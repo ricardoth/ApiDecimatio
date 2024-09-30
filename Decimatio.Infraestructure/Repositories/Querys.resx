@@ -380,6 +380,34 @@ WHERE T.IdTicket = @IdTicket</value>
   WHERE TransactionId = @TransactionId</value>
     <comment>Obtiene los tickets asociados a un pago</comment>
   </data>
+  <data name="GET_PREFERENCE_TICKET_MERCADO_PAGO" xml:space="preserve">
+    <value>SELECT P.[IdPreference]
+      ,P.[PreferenceCode]
+      ,P.[TransactionId]
+	  ,P.[IdUsuario]
+      ,P.[IdEvento]
+      ,P.[IdSector]
+      ,P.[IdMedioPago]
+      ,P.[MontoPago]
+      ,P.[MontoTotal]
+      ,P.[Descargados]
+	  ,P.Activo
+      ,P.[FechaTicket]
+      ,P.[FecCreacion]
+	  ,U.IdUsuario
+	  ,U.Nombres
+	  ,U.ApellidoP
+	  ,U.ApellidoM
+	  ,E.IdEvento
+	  ,E.NombreEvento
+	  ,S.IdSector
+	  ,S.NombreSector
+  FROM [dbo].[PreferenceTicket] P
+	INNER JOIN dbo.Usuario U ON U.IdUsuario =  P.IdUsuario
+	INNER JOIN dbo.Evento E ON E.IdEvento = P.IdEvento
+	INNER JOIN dbo.Sector S ON S.IdSector = P.IdSector</value>
+    <comment>Get All Registros de Trazas de Mercado Pago</comment>
+  </data>
   <data name="GET_REGIONES" xml:space="preserve">
     <value>SELECT IdRegion
       ,NumeroRegion

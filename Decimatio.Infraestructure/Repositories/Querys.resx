@@ -405,7 +405,8 @@ WHERE T.IdTicket = @IdTicket</value>
   FROM [dbo].[PreferenceTicket] P
 	INNER JOIN dbo.Usuario U ON U.IdUsuario =  P.IdUsuario
 	INNER JOIN dbo.Evento E ON E.IdEvento = P.IdEvento
-	INNER JOIN dbo.Sector S ON S.IdSector = P.IdSector</value>
+	INNER JOIN dbo.Sector S ON S.IdSector = P.IdSector
+  ORDER BY P.IdPreference DESC</value>
     <comment>Get All Registros de Trazas de Mercado Pago</comment>
   </data>
   <data name="GET_REGIONES" xml:space="preserve">

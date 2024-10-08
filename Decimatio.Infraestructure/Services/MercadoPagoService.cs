@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using Decimatio.Domain.MercadoPagoEntitites;
+
+namespace Decimatio.Infraestructure.Services
 {
     public sealed class MercadoPagoService : IMercadoPagoService
     {
@@ -14,6 +16,19 @@
             _mercadoPagoRepository = mercadoPagoRepository;
             _mercadoPagoOptions = options.Value;
             MercadoPagoConfig.AccessToken = _mercadoPagoOptions.AccessToken;
+        }
+
+        public async Task<bool> CrearNotificacionPago(MercadoPagoNotification notification)
+        {
+            try
+            {
+                var result = await _mercadoPagoRepository.AddNotificationPayment(notification);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException($"No se pudo insertar la notificación");
+            }
         }
 
         public async Task<Preference> CrearSolicitudPago(PreferenceData data)
@@ -32,6 +47,16 @@
                             Quantity = data.Quantity
                         }
                     },
+                    //Payer = new PreferencePayerRequest
+                    //{ 
+                    //    Name = $"{data.Tickets.FirstOrDefault().Usuario.Nombres} {data.Tickets.FirstOrDefault().Usuario.ApellidoP}",
+                    //    Email = data.Tickets.FirstOrDefault().Usuario.Correo,
+                    //    Identification = new MercadoPago.Client.Common.IdentificationRequest
+                    //    {
+                    //        Type = "CI",
+                    //        Number = $"{data.Tickets.FirstOrDefault().Usuario.Rut}-{data.Tickets.FirstOrDefault().Usuario.DV}"
+                    //    }
+                    //},
                     BackUrls = new PreferenceBackUrlsRequest
                     {
                         Success = $"{_mercadoPagoOptions.BackUrl}/successShop?transactionId={transactionId}",
@@ -39,6 +64,7 @@
                         Pending = $"{_mercadoPagoOptions.BackUrl}/pendingShop?transactionId={transactionId}"
                     },
                     AutoReturn = "approved",
+                    NotificationUrl = $"https://api-decimatio-dev.azurewebsites.net/api/Notificacion/PaymentNotification"
                 };
 
                 var client = new PreferenceClient();

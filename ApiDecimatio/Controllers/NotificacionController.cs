@@ -1,6 +1,4 @@
 ﻿using Decimatio.Domain.MercadoPagoEntitites;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Decimatio.WebApi.Controllers
 {
@@ -26,7 +24,15 @@ namespace Decimatio.WebApi.Controllers
                 //var payment = 
                 //Guardar en  bd la notificación
                 var notificationResult = await _mercadoPagoService.CrearNotificacionPago(notification);
-                //Guardar en BD la traza del pago
+                //llamar al endpoint de mercadopago GET payments, nos retorna external_preference y otros campos
+
+                //Rescatar el campo external_preference (transactionId) y en estado approved (validar si efectuó el pago)
+
+                //Rescatar tickets asociados al transactionId 
+                //Guardar en BD la respuesta
+
+                //Enviar a COLA Azure QUEUE
+                //return 200 siempre
             }
             return Ok();
         }

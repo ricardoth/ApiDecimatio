@@ -722,22 +722,10 @@ VALUES (
     <value>INSERT INTO [dbo].[NotificationMercadoPago]
            ([PaymentId]
            ,[LiveMode]
-           ,[PaymentStatus]
-           ,[StatusDetail]
-           ,[TransactionAmount]
-           ,[PayerName]
-           ,[PayerSurname]
-           ,[PayerEmail]
            ,[FechaCreacion])
      VALUES
            (@PaymentId
            ,@LiveMode
-           ,@PaymentStatus
-           ,@StatusDetail
-           ,@TransactionAmount
-           ,@PayerName
-           ,@PayerSurname
-           ,@PayerEmail
            ,GETDATE())</value>
     <comment>Inserta una notificacion de mercvado pago</comment>
   </data>

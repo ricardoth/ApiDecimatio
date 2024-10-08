@@ -804,22 +804,11 @@ namespace Decimatio.Infraestructure.Repositories {
         ///   Busca una cadena traducida similar a INSERT INTO [dbo].[NotificationMercadoPago]
         ///           ([PaymentId]
         ///           ,[LiveMode]
-        ///           ,[PaymentStatus]
-        ///           ,[StatusDetail]
-        ///           ,[TransactionAmount]
-        ///           ,[PayerName]
-        ///           ,[PayerSurname]
-        ///           ,[PayerEmail]
         ///           ,[FechaCreacion])
         ///     VALUES
         ///           (@PaymentId
         ///           ,@LiveMode
-        ///           ,@PaymentStatus
-        ///           ,@StatusDetail
-        ///           ,@TransactionAmount
-        ///           ,@PayerName
-        ///           ,@PayerSurname
-        ///           ,@PayerEma [resto de la cadena truncado]&quot;;.
+        ///           ,GETDATE()).
         /// </summary>
         internal static string INSERT_NOTIFICATION_MERCADOPAGO {
             get {

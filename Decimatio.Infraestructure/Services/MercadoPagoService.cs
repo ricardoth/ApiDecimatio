@@ -18,7 +18,7 @@ namespace Decimatio.Infraestructure.Services
             MercadoPagoConfig.AccessToken = _mercadoPagoOptions.AccessToken;
         }
 
-        public async Task<bool> CrearNotificacionPago(MercadoPagoNotification notification)
+        public async Task<int> CrearNotificacionPago(MercadoPagoNotification notification)
         {
             try
             {

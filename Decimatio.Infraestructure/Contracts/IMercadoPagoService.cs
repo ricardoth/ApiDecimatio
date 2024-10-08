@@ -6,6 +6,6 @@ namespace Decimatio.Infraestructure.Contracts
     {
         Task<Preference> CrearSolicitudPago(PreferenceData data);
         Task<IEnumerable<PreferenceTicket>> GetAllPreferenceTickets();
-        Task<bool> CrearNotificacionPago(MercadoPagoNotification notification);
+        Task<int> CrearNotificacionPago(MercadoPagoNotification notification);
     }
 }

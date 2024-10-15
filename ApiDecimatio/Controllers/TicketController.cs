@@ -109,6 +109,13 @@
             return Ok(result);
         }
 
+        [HttpPost("TicketQueue")]
+        public async Task<IActionResult> GenerarTicketQueue([FromBody] string preferenceCode)
+        {
+            var result = await _ticketService.AddQueueTicket(preferenceCode);
+            return Ok(result);
+        }
+
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]

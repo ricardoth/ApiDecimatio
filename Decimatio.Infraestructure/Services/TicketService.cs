@@ -1,4 +1,7 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using System.IO;
+using System.Text;
+
+namespace Decimatio.Infraestructure.Services
 {
     internal sealed class TicketService : ITicketService
     {
@@ -10,11 +13,13 @@
         private readonly IMapper _mapper;
         private readonly PaginationOptions _paginationOptions;
         private readonly BlobContainerConfig _containerConfig;
+        private readonly IMercadoPagoRepository _mercadoPagoRepository;
 
         public TicketService(ITicketRepository ticketRepository, IQRGeneratorService qRGeneratorService, 
             IPDFGeneratorService pdfGeneratorService,
             IBlobFilesService blobFilesService, IMapper mapper, IEmailService emailService,
-            IOptions<PaginationOptions> paginationOptions, BlobContainerConfig containerConfig)
+            IOptions<PaginationOptions> paginationOptions, BlobContainerConfig containerConfig
+            , IMercadoPagoRepository mercadoPagoRepository)
         {
             _ticketRepository = ticketRepository;
             _qrGeneratorService = qRGeneratorService;
@@ -24,6 +29,7 @@
             _emailService = emailService;
             _paginationOptions = paginationOptions.Value;
             _containerConfig = containerConfig;
+            _mercadoPagoRepository = mercadoPagoRepository;
         }
 
         #region Get All Tickets y QR
@@ -311,6 +317,32 @@
             catch (Exception ex)
             {
                 throw new Exception($"Ha ocurrido un error en TicketService {ex.Message}", ex);
+            }
+        }
+
+        public async Task<string> AddQueueTicket(string preferenceCode)
+        {
+            try
+            {
+                var tickets = await _mercadoPagoRepository.GetByPreferenceCode(preferenceCode);
+                if (!tickets.Any())
+                    throw new NotFoundException("No se encontraron tickets asociados al pago");
+
+                //Guardar Ticket
+
+                //Generar QR
+
+                //Setear plantilla html de entrada
+                //enviar a Microservicio API Email Sender
+                string strTickets = $"Se han generado {tickets.Count()}";
+                byte[] bytes = Encoding.UTF8.GetBytes(strTickets);
+                string result = Convert.ToBase64String(bytes);
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
         #endregion

@@ -6,5 +6,6 @@ namespace Decimatio.Domain.Interfaces
     {
         Task<IEnumerable<PreferenceTicket>> GetAll();
         Task<int> AddNotificationPayment(MercadoPagoNotification notification);
+        Task<IEnumerable<PreferenceTicket>> GetByPreferenceCode(string preferenceCode);
     }
 }

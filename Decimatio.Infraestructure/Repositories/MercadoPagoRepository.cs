@@ -42,6 +42,11 @@ namespace Decimatio.Infraestructure.Repositories
             return result;
         }
 
-
+        public async Task<IEnumerable<PreferenceTicket>> GetByPreferenceCode(string preferenceCode)
+        {
+            using var connection = new SqlConnection(_connection.ConnectionString);
+            var result = await connection.QueryAsync<PreferenceTicket>(Querys.GET_PREFERENCE_TICKET_BY_PREFERENCE_CODE, new { PreferenceCode = preferenceCode});
+            return result;
+        }
     }
 }

@@ -378,6 +378,29 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a SELECT [IdPreference]
+        ///      ,[PreferenceCode]
+        ///      ,[TransactionId]
+        ///      ,[IdUsuario]
+        ///      ,[IdEvento]
+        ///      ,[IdSector]
+        ///      ,[IdMedioPago]
+        ///      ,[MontoPago]
+        ///      ,[MontoTotal]
+        ///      ,[FechaTicket]
+        ///      ,[Descargados]
+        ///      ,[Activo]
+        ///      ,[FecCreacion]
+        ///  FROM [dbo].[PreferenceTicket]
+        ///  WHERE PreferenceCode = @PreferenceCode.
+        /// </summary>
+        internal static string GET_PREFERENCE_TICKET_BY_PREFERENCE_CODE {
+            get {
+                return ResourceManager.GetString("GET_PREFERENCE_TICKET_BY_PREFERENCE_CODE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT P.[IdPreference]
         ///      ,P.[PreferenceCode]
         ///      ,P.[TransactionId]

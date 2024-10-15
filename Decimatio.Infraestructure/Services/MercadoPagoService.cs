@@ -64,7 +64,7 @@ namespace Decimatio.Infraestructure.Services
                         Pending = $"{_mercadoPagoOptions.BackUrl}/pendingShop?transactionId={transactionId}"
                     },
                     AutoReturn = "approved",
-                    NotificationUrl = $"https://api-decimatio-dev.azurewebsites.net/api/Notificacion/PaymentNotification"
+                    NotificationUrl = $"https://api-pagos-dev.azurewebsites.net/api/Notification"
                 };
 
                 var client = new PreferenceClient();

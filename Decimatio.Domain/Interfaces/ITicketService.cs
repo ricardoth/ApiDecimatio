@@ -11,5 +11,6 @@
         Task<bool> DeleteDownTicket(long idTicket, bool activo);
 
         Task<IEnumerable<PreferenceTicket>> GetPreferenceTicketsByTransaction(string transactionId);
+        Task<string> AddQueueTicket(string preferenceCode);
     }
 }

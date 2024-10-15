@@ -380,6 +380,24 @@ WHERE T.IdTicket = @IdTicket</value>
   WHERE TransactionId = @TransactionId</value>
     <comment>Obtiene los tickets asociados a un pago</comment>
   </data>
+  <data name="GET_PREFERENCE_TICKET_BY_PREFERENCE_CODE" xml:space="preserve">
+    <value>SELECT [IdPreference]
+      ,[PreferenceCode]
+      ,[TransactionId]
+      ,[IdUsuario]
+      ,[IdEvento]
+      ,[IdSector]
+      ,[IdMedioPago]
+      ,[MontoPago]
+      ,[MontoTotal]
+      ,[FechaTicket]
+      ,[Descargados]
+      ,[Activo]
+      ,[FecCreacion]
+  FROM [dbo].[PreferenceTicket]
+  WHERE PreferenceCode = @PreferenceCode</value>
+    <comment>Obtiene los registros asociados a un preferenceCode de MercadoPago</comment>
+  </data>
   <data name="GET_PREFERENCE_TICKET_MERCADO_PAGO" xml:space="preserve">
     <value>SELECT P.[IdPreference]
       ,P.[PreferenceCode]

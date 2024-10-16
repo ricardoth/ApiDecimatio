@@ -110,9 +110,9 @@
         }
 
         [HttpPost("TicketQueue")]
-        public async Task<IActionResult> GenerarTicketQueue([FromBody] PreferenceRequest preference)
+        public async Task<IActionResult> GenerarTicketQueue([FromBody] string preferenceCode)
         {
-            var result = await _ticketService.AddQueueTicket(preference.PreferenceCode);
+            var result = await _ticketService.AddQueueTicket(preferenceCode);
             return Ok(result);
         }
 

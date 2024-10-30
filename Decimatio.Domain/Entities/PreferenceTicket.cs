@@ -14,6 +14,7 @@
         public DateTime FechaTicket { get; set; }
         public bool Descargados { get; set; }
         public bool Activo { get; set; }
+        public MerchantOrder? MerchantOrder { get; set; }
         public Usuario? Usuario { get; set; }
         public Evento? Evento { get; set; }
         public Sector? Sector { get; set; }

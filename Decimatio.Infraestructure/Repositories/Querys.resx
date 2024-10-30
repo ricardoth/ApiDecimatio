@@ -399,7 +399,8 @@ WHERE T.IdTicket = @IdTicket</value>
     <comment>Obtiene los registros asociados a un preferenceCode de MercadoPago</comment>
   </data>
   <data name="GET_PREFERENCE_TICKET_MERCADO_PAGO" xml:space="preserve">
-    <value>SELECT P.[IdPreference]
+    <value>SELECT distinct 
+	 P.[IdPreference]
       ,P.[PreferenceCode]
       ,P.[TransactionId]
 	  ,P.[IdUsuario]
@@ -412,19 +413,34 @@ WHERE T.IdTicket = @IdTicket</value>
 	  ,P.Activo
       ,P.[FechaTicket]
       ,P.[FecCreacion]
-	  ,U.IdUsuario
-	  ,U.Nombres
-	  ,U.ApellidoP
-	  ,U.ApellidoM
-	  ,E.IdEvento
-	  ,E.NombreEvento
-	  ,S.IdSector
-	  ,S.NombreSector
-  FROM [dbo].[PreferenceTicket] P
-	INNER JOIN dbo.Usuario U ON U.IdUsuario =  P.IdUsuario
-	INNER JOIN dbo.Evento E ON E.IdEvento = P.IdEvento
-	INNER JOIN dbo.Sector S ON S.IdSector = P.IdSector
-  ORDER BY P.IdPreference DESC</value>
+	,MO.IdMerchantOrder
+	,MO.Id
+	,MO.Status
+	,MO.ExternalReference
+	,MO.PreferenceId
+	,MO.MarketPlace
+	,MO.DateCreated
+	,MO.LastUpdate
+	,MO.TotalAmount
+	,MO.PaidAmount
+	,MO.Cancelled
+	,MO.OrderStatus
+	,U.IdUsuario
+	,U.Rut
+	,U.Nombres
+	,U.ApellidoP
+	,U.ApellidoM
+	,U.Correo
+	,E.IdEvento
+	,E.NombreEvento
+	,S.IdSector
+	,S.NombreSector
+FROM dbo.PreferenceTicket P
+LEFT JOIN dbo.MerchantOrder MO ON MO.PreferenceId = P.PreferenceCode
+INNER JOIN dbo.Usuario U ON U.IdUsuario = P.IdUsuario
+INNER JOIN dbo.Evento E ON E.IdEvento = P.IdEvento
+INNER JOIN dbo.Sector S ON S.IdSector = P.IdSector
+order by IdPreference desc</value>
     <comment>Get All Registros de Trazas de Mercado Pago</comment>
   </data>
   <data name="GET_REGIONES" xml:space="preserve">

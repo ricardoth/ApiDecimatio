@@ -401,7 +401,8 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT P.[IdPreference]
+        ///   Busca una cadena traducida similar a SELECT distinct 
+        ///	 P.[IdPreference]
         ///      ,P.[PreferenceCode]
         ///      ,P.[TransactionId]
         ///	  ,P.[IdUsuario]
@@ -414,16 +415,18 @@ namespace Decimatio.Infraestructure.Repositories {
         ///	  ,P.Activo
         ///      ,P.[FechaTicket]
         ///      ,P.[FecCreacion]
-        ///	  ,U.IdUsuario
-        ///	  ,U.Nombres
-        ///	  ,U.ApellidoP
-        ///	  ,U.ApellidoM
-        ///	  ,E.IdEvento
-        ///	  ,E.NombreEvento
-        ///	  ,S.IdSector
-        ///	  ,S.NombreSector
-        ///  FROM [dbo].[PreferenceTicket] P
-        ///	INNER JOIN dbo.Usuario U ON U.IdUsuario =  P [resto de la cadena truncado]&quot;;.
+        ///	,MO.IdMerchantOrder
+        ///	,MO.Id
+        ///	,MO.Status
+        ///	,MO.ExternalReference
+        ///	,MO.PreferenceId
+        ///	,MO.MarketPlace
+        ///	,MO.DateCreated
+        ///	,MO.LastUpdate
+        ///	,MO.TotalAmount
+        ///	,MO.PaidAmount
+        ///	,MO.Cancelled
+        ///	,MO.OrderStat [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string GET_PREFERENCE_TICKET_MERCADO_PAGO {
             get {

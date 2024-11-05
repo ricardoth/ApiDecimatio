@@ -29,9 +29,8 @@
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
 
-        public static PagedList<T> CreatePaginationFromDb(IEnumerable<T> source, int pageNumber, int pageSize)
+        public static PagedList<T> CreatePaginationFromDb(IEnumerable<T> source, int count, int pageNumber, int pageSize)
         {
-            var count = source.Count();
             var items = source.ToList();
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }

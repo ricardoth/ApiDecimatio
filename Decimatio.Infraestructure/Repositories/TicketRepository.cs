@@ -54,7 +54,7 @@
             return result;
         }
 
-        public async Task<IEnumerable<Ticket>> GetAllTicket(int pageNumber, int pageSize)
+        public async Task<IEnumerable<Ticket>> GetAllTicket(TicketQueryFilter filtros)
         {
             var ticketDictionary = new Dictionary<long, Ticket>();
             using var conn = new SqlConnection(_connection.ConnectionString);
@@ -77,7 +77,9 @@
                     ticketEntry.Evento.Lugar.Comuna = comuna;
                     return ticketEntry;
                 },
-                  new { PageNumber = pageNumber, PageSize = pageSize },
+                  new { PageNumber = filtros.PageNumber, PageSize = filtros.PageSize, 
+                        IdTicket = filtros.IdTicket, IdUsuario = filtros.IdUsuario,
+                        IdEvento = filtros.IdEvento, IdSector = filtros.IdSector},
                   splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar,IdComuna"
                 )).ToList();
             if (result == null) throw new Exception("No se encuentra coindidencia para el Ticket");
@@ -179,6 +181,12 @@
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
             return await conn.ExecuteScalarAsync<bool>(Querys.VALIDAR_TICKETS_DESCARGADOS, new { TransactionId = transactionId});
+        }
+
+        public async Task<int> GetCounterTicket()
+        {
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryFirstOrDefaultAsync<int>(Querys.GET_TICKET_COUNTER);
         }
     }
 }

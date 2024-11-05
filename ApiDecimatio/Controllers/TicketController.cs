@@ -2,7 +2,7 @@
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;

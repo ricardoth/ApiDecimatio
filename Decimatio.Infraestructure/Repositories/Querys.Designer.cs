@@ -545,6 +545,16 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a SELECT COUNT(*) AS Contador
+        ///FROM Ticket.
+        /// </summary>
+        internal static string GET_TICKET_COUNTER {
+            get {
+                return ResourceManager.GetString("GET_TICKET_COUNTER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT TQ.* , T.*
         ///FROM dbo.Ticket T
         ///	LEFT JOIN dbo.TicketQR TQ ON T.IdTicket =  TQ.IdTicket
@@ -562,12 +572,12 @@ namespace Decimatio.Infraestructure.Repositories {
         ///        u.*, e.*, s.*, m.*, TQR.*, L.*,
         ///		c.*, r.*
         ///FROM Ticket t
-        ///INNER JOIN Usuario u ON t.IdUsuario = u.IdUsuario
-        ///INNER JOIN Evento e ON t.IdEvento = e.IdEvento
-        ///INNER JOIN [dbo].[Lugar] L ON L.IdLugar = E.IdLugar
-        ///INNER JOIN Sector s ON t.IdSector = s.IdSector
-        ///INNER JOIN MedioPago m ON t.IdMedioPago = m.IdMedioPago
-        ///LEFT JOIN TicketQR T [resto de la cadena truncado]&quot;;.
+        ///	INNER JOIN Usuario u ON t.IdUsuario = u.IdUsuario
+        ///	INNER JOIN Evento e ON t.IdEvento = e.IdEvento
+        ///	INNER JOIN [dbo].[Lugar] L ON L.IdLugar = E.IdLugar
+        ///	INNER JOIN Sector s ON t.IdSector = s.IdSector
+        ///	INNER JOIN MedioPago m ON t.IdMedioPago = m.IdMedioPago
+        ///	LEFT JOIN Tick [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string GET_TICKETS {
             get {

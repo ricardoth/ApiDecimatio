@@ -40,22 +40,9 @@ namespace Decimatio.Infraestructure.Services
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
             try
             {
-
-                var tickets = await _ticketRepository.GetAllTicket(filtros.PageNumber, filtros.PageSize);
-
-                //if (filtros.IdTicket > 0)
-                //    tickets = tickets.Where(x => x.IdTicket == filtros.IdTicket);
-
-                //if (filtros.IdUsuario > 0)
-                //    tickets = tickets.Where(x => x.IdUsuario == filtros.IdUsuario);
-
-                //if (filtros.IdEvento > 0)
-                //    tickets = tickets.Where(x => x.IdEvento == filtros.IdEvento);
-
-                //if (filtros.IdSector > 0)
-                //    tickets = tickets.Where(x => x.IdSector == filtros.IdSector);
-
-                var pagedTickets = PagedList<Ticket>.CreatePaginationFromDb(tickets, filtros.PageNumber, filtros.PageSize);
+                var tickets = await _ticketRepository.GetAllTicket(filtros);
+                var counters = await _ticketRepository.GetCounterTicket();
+                var pagedTickets = PagedList<Ticket>.CreatePaginationFromDb(tickets, counters, filtros.PageNumber, filtros.PageSize);
                 return pagedTickets;
             }
             catch (Exception ex)

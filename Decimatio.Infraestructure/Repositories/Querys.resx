@@ -511,16 +511,20 @@ order by IdPreference desc</value>
         u.*, e.*, s.*, m.*, TQR.*, L.*,
 		c.*, r.*
 FROM Ticket t
-INNER JOIN Usuario u ON t.IdUsuario = u.IdUsuario
-INNER JOIN Evento e ON t.IdEvento = e.IdEvento
-INNER JOIN [dbo].[Lugar] L ON L.IdLugar = E.IdLugar
-INNER JOIN Sector s ON t.IdSector = s.IdSector
-INNER JOIN MedioPago m ON t.IdMedioPago = m.IdMedioPago
-LEFT JOIN TicketQR TQR ON TQR.IdTicket = T.IdTicket
-INNER JOIN Comuna c on c.IdComuna = L.IdComuna
-INNER JOIN Region r on r.IdRegion = c.IdRegion
+	INNER JOIN Usuario u ON t.IdUsuario = u.IdUsuario
+	INNER JOIN Evento e ON t.IdEvento = e.IdEvento
+	INNER JOIN [dbo].[Lugar] L ON L.IdLugar = E.IdLugar
+	INNER JOIN Sector s ON t.IdSector = s.IdSector
+	INNER JOIN MedioPago m ON t.IdMedioPago = m.IdMedioPago
+	LEFT JOIN TicketQR TQR ON TQR.IdTicket = T.IdTicket
+	INNER JOIN Comuna c on c.IdComuna = L.IdComuna
+	INNER JOIN Region r on r.IdRegion = c.IdRegion
+WHERE (@IdTicket IS NULL OR t.IdTicket = @IdTicket)
+	AND (@IdUsuario IS NULL OR t.IdUsuario = @IdUsuario)
+	AND (@IdEvento IS NULL OR t.IdEvento = @IdEvento)
+	AND (@IdSector IS NULL OR t.IdSector = @IdSector)
 ORDER BY t.IdTicket DESC
-OFFSET (@PageNumber - 1) * @PageSize ROWS
+	OFFSET (@PageNumber - 1) * @PageSize ROWS
 FETCH NEXT @PageSize ROWS ONLY</value>
     <comment>Get All Tickets</comment>
   </data>
@@ -540,6 +544,11 @@ INNER JOIN Comuna c on c.IdComuna = L.IdComuna
 INNER JOIN Region r on r.IdRegion = c.IdRegion
 ORDER BY t.IdTicket DESC</value>
     <comment>Get tickets all for excel report</comment>
+  </data>
+  <data name="GET_TICKET_COUNTER" xml:space="preserve">
+    <value>SELECT COUNT(*) AS Contador
+FROM Ticket</value>
+    <comment>Obtiene el conteo total de registros de Tickets</comment>
   </data>
   <data name="GET_TICKET_ID" xml:space="preserve">
     <value>SELECT TQ.* , T.*

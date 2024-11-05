@@ -38,6 +38,13 @@ namespace Decimatio.Infraestructure.Services
         {
             filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
+
+            if (filtros.IdEvento == 0)
+                filtros.IdEvento = null;
+
+            if (filtros.IdSector == 0)
+                filtros.IdSector = null;
+
             try
             {
                 var tickets = await _ticketRepository.GetAllTicket(filtros);

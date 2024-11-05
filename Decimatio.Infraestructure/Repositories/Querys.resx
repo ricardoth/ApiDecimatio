@@ -519,8 +519,27 @@ INNER JOIN MedioPago m ON t.IdMedioPago = m.IdMedioPago
 LEFT JOIN TicketQR TQR ON TQR.IdTicket = T.IdTicket
 INNER JOIN Comuna c on c.IdComuna = L.IdComuna
 INNER JOIN Region r on r.IdRegion = c.IdRegion
-ORDER BY t.IdTicket DESC</value>
+ORDER BY t.IdTicket DESC
+OFFSET (@PageNumber - 1) * @PageSize ROWS
+FETCH NEXT @PageSize ROWS ONLY</value>
     <comment>Get All Tickets</comment>
+  </data>
+  <data name="GET_TICKETS_REPORT" xml:space="preserve">
+    <value>SELECT t.IdTicket, t.IdUsuario, t.IdEvento, t.IdSector, t.IdMedioPago,
+        t.MontoPago, t.MontoTotal, t.FechaTicket, t.Activo, t.FechaCreacion, t.FechaModified,
+        u.*, e.*, s.*, m.*, TQR.*, L.*,
+		c.*, r.*
+FROM Ticket t
+INNER JOIN Usuario u ON t.IdUsuario = u.IdUsuario
+INNER JOIN Evento e ON t.IdEvento = e.IdEvento
+INNER JOIN [dbo].[Lugar] L ON L.IdLugar = E.IdLugar
+INNER JOIN Sector s ON t.IdSector = s.IdSector
+INNER JOIN MedioPago m ON t.IdMedioPago = m.IdMedioPago
+LEFT JOIN TicketQR TQR ON TQR.IdTicket = T.IdTicket
+INNER JOIN Comuna c on c.IdComuna = L.IdComuna
+INNER JOIN Region r on r.IdRegion = c.IdRegion
+ORDER BY t.IdTicket DESC</value>
+    <comment>Get tickets all for excel report</comment>
   </data>
   <data name="GET_TICKET_ID" xml:space="preserve">
     <value>SELECT TQ.* , T.*

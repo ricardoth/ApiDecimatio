@@ -41,21 +41,21 @@ namespace Decimatio.Infraestructure.Services
             try
             {
 
-                var tickets = await _ticketRepository.GetAllTicket();
+                var tickets = await _ticketRepository.GetAllTicket(filtros.PageNumber, filtros.PageSize);
 
-                if (filtros.IdTicket > 0)
-                    tickets = tickets.Where(x => x.IdTicket == filtros.IdTicket);
+                //if (filtros.IdTicket > 0)
+                //    tickets = tickets.Where(x => x.IdTicket == filtros.IdTicket);
 
-                if (filtros.IdUsuario > 0)
-                    tickets = tickets.Where(x => x.IdUsuario == filtros.IdUsuario);
+                //if (filtros.IdUsuario > 0)
+                //    tickets = tickets.Where(x => x.IdUsuario == filtros.IdUsuario);
 
-                if (filtros.IdEvento > 0)
-                    tickets = tickets.Where(x => x.IdEvento == filtros.IdEvento);
+                //if (filtros.IdEvento > 0)
+                //    tickets = tickets.Where(x => x.IdEvento == filtros.IdEvento);
 
-                if (filtros.IdSector > 0)
-                    tickets = tickets.Where(x => x.IdSector == filtros.IdSector);
+                //if (filtros.IdSector > 0)
+                //    tickets = tickets.Where(x => x.IdSector == filtros.IdSector);
 
-                var pagedTickets = PagedList<Ticket>.Create(tickets, filtros.PageNumber, filtros.PageSize);
+                var pagedTickets = PagedList<Ticket>.CreatePaginationFromDb(tickets, filtros.PageNumber, filtros.PageSize);
                 return pagedTickets;
             }
             catch (Exception ex)
@@ -303,7 +303,7 @@ namespace Decimatio.Infraestructure.Services
         {
             try
             {
-                var tickets = await _ticketRepository.GetAllTicket();
+                var tickets = await _ticketRepository.GetAllTicketReport();
 
                 if (filtros.IdEvento > 0)
                     tickets = tickets.Where(x => x.IdEvento == filtros.IdEvento);

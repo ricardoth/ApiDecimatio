@@ -54,7 +54,7 @@
             return result;
         }
 
-        public async Task<IEnumerable<Ticket>> GetAllTicket()
+        public async Task<IEnumerable<Ticket>> GetAllTicket(int pageNumber, int pageSize)
         {
             var ticketDictionary = new Dictionary<long, Ticket>();
             using var conn = new SqlConnection(_connection.ConnectionString);
@@ -77,7 +77,37 @@
                     ticketEntry.Evento.Lugar.Comuna = comuna;
                     return ticketEntry;
                 },
-                    splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar,IdComuna"
+                  new { PageNumber = pageNumber, PageSize = pageSize },
+                  splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar,IdComuna"
+                )).ToList();
+            if (result == null) throw new Exception("No se encuentra coindidencia para el Ticket");
+            return result;
+        }
+
+        public async Task<IEnumerable<Ticket>> GetAllTicketReport()
+        {
+            var ticketDictionary = new Dictionary<long, Ticket>();
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            var result = (await conn.QueryAsync<Ticket, Usuario, Evento, Sector, MedioPago, Lugar, Comuna, Ticket>(
+                Querys.GET_TICKETS,
+                (ticket, usuario, evento, sector, medioPago, lugar, comuna) =>
+                {
+                    if (!ticketDictionary.TryGetValue(ticket.IdTicket, out var ticketEntry))
+                    {
+                        ticketEntry = ticket;
+                        ticketDictionary.Add(ticketEntry.IdTicket, ticketEntry);
+
+                    }
+
+                    ticketEntry.Usuario = usuario;
+                    ticketEntry.Evento = evento;
+                    ticketEntry.Sector = sector;
+                    ticketEntry.MedioPago = medioPago;
+                    ticketEntry.Evento.Lugar = lugar;
+                    ticketEntry.Evento.Lugar.Comuna = comuna;
+                    return ticketEntry;
+                },
+                  splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar,IdComuna"
                 )).ToList();
             if (result == null) throw new Exception("No se encuentra coindidencia para el Ticket");
             return result;

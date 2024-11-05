@@ -5,7 +5,8 @@
         Task<long> AddTicket(Ticket ticket);
         Task<int> AddTicketQR(TicketQR ticketQR);
         Task<Ticket> GetInfoTicket(long idTicket);
-        Task<IEnumerable<Ticket>> GetAllTicket();
+        Task<IEnumerable<Ticket>> GetAllTicket(int pageNumber, int pageSize);
+        Task<IEnumerable<Ticket>> GetAllTicketReport();
         Task<TicketQR> GetTicketQR(long idTicket);
         Task<bool> DeleteDownTicket(long idTicket, bool activo);
 

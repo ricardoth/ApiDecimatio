@@ -86,7 +86,7 @@
             return result;
         }
 
-        public async Task<IEnumerable<Ticket>> GetAllTicketReport()
+        public async Task<IEnumerable<Ticket>> GetAllTicketReport(TicketQueryFilter filtros)
         {
             var ticketDictionary = new Dictionary<long, Ticket>();
             using var conn = new SqlConnection(_connection.ConnectionString);
@@ -108,6 +108,15 @@
                     ticketEntry.Evento.Lugar = lugar;
                     ticketEntry.Evento.Lugar.Comuna = comuna;
                     return ticketEntry;
+                },
+                new
+                {
+                    PageNumber = filtros.PageNumber,
+                    PageSize = filtros.PageSize,
+                    IdTicket = filtros.IdTicket,
+                    IdUsuario = filtros.IdUsuario,
+                    IdEvento = filtros.IdEvento,
+                    IdSector = filtros.IdSector
                 },
                   splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar,IdComuna"
                 )).ToList();

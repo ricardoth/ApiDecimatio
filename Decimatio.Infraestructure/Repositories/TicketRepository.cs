@@ -86,12 +86,12 @@
             return result;
         }
 
-        public async Task<IEnumerable<Ticket>> GetAllTicketReport(TicketQueryFilter filtros)
+        public async Task<IEnumerable<Ticket>> GetAllTicketReport()
         {
             var ticketDictionary = new Dictionary<long, Ticket>();
             using var conn = new SqlConnection(_connection.ConnectionString);
             var result = (await conn.QueryAsync<Ticket, Usuario, Evento, Sector, MedioPago, Lugar, Comuna, Ticket>(
-                Querys.GET_TICKETS,
+                Querys.GET_TICKETS_REPORT,
                 (ticket, usuario, evento, sector, medioPago, lugar, comuna) =>
                 {
                     if (!ticketDictionary.TryGetValue(ticket.IdTicket, out var ticketEntry))
@@ -108,15 +108,6 @@
                     ticketEntry.Evento.Lugar = lugar;
                     ticketEntry.Evento.Lugar.Comuna = comuna;
                     return ticketEntry;
-                },
-                new
-                {
-                    PageNumber = filtros.PageNumber,
-                    PageSize = filtros.PageSize,
-                    IdTicket = filtros.IdTicket,
-                    IdUsuario = filtros.IdUsuario,
-                    IdEvento = filtros.IdEvento,
-                    IdSector = filtros.IdSector
                 },
                   splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar,IdComuna"
                 )).ToList();

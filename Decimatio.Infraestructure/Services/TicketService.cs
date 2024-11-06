@@ -289,12 +289,9 @@ namespace Decimatio.Infraestructure.Services
         #region Exportar Excel Historial Tickets
         public async Task<IEnumerable<Ticket>> GetAllTicketsExcel(TicketQueryFilter filtros)
         {
-            filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
-            filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
-           
             try
             {
-                var tickets = await _ticketRepository.GetAllTicketReport(filtros);
+                var tickets = await _ticketRepository.GetAllTicketReport();
 
                 if (filtros.IdEvento > 0)
                     tickets = tickets.Where(x => x.IdEvento == filtros.IdEvento);

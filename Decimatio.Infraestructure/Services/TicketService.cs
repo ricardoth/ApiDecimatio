@@ -308,31 +308,40 @@ namespace Decimatio.Infraestructure.Services
             }
         }
 
+        #endregion
+
         public async Task<string> AddQueueTicket(string preferenceCode)
         {
             try
             {
+                var newTickets = new List<Ticket>();
                 var tickets = await _mercadoPagoRepository.GetByPreferenceCode(preferenceCode);
                 if (!tickets.Any())
                     throw new NotFoundException("No se encontraron tickets asociados al pago");
 
-                //Guardar Ticket
+                foreach (var item in tickets)
+                {
+                    var tkt = new Ticket()
+                    {
+                        IdUsuario = item.IdUsuario,
+                        IdEvento = item.IdEvento,
+                        IdSector = item.IdSector,
+                        IdMedioPago = item.IdMedioPago,
+                        MontoPago = item.MontoPago,
+                        MontoTotal =  item.MontoTotal,
+                        FechaTicket = item.FechaTicket,
+                        Activo = true
+                    };
+                    newTickets.Add(tkt);
+                }
 
-                //Generar QR
-
-                //Setear plantilla html de entrada
-                //enviar a Microservicio API Email Sender
-                string strTickets = $"Se han generado {tickets.Count()}";
-                byte[] bytes = Encoding.UTF8.GetBytes(strTickets);
-                string result = Convert.ToBase64String(bytes);
+                var result = await AddTickets(newTickets);
                 return result;
             }
             catch (Exception ex)
             {
-
-                throw;
+                throw new InvalidOperationException($"Error al Generar los tickets asociados al preferenceId: {preferenceCode}", ex);
             }
         }
-        #endregion
     }
 }

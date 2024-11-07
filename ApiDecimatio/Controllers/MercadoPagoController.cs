@@ -23,15 +23,7 @@
             var response = new ApiResponse<IEnumerable<PreferenceTicketDto>>(preferenceTicketsDtos);
             return Ok(response);
         }
-
-        [HttpPost("CrearPreferencia")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreatePreference([FromBody] PreferenceData data)
-        {
-            var result = await _mercadoPagoService.CrearSolicitudPago(data);
-            return Ok(result);
-        }
+        
 
         [HttpGet("Feedback")]
         public IActionResult Feedback(string payment_id, string status, string merchant_order_id)
@@ -43,7 +35,5 @@
                 MerchantOrder = merchant_order_id
             });
         }
-
-        
     }
 }

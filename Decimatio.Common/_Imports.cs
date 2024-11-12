@@ -4,8 +4,6 @@ global using System.Text.Json;
 global using Decimatio.Common.Interfaces;
 global using Decimatio.Common.Options;
 global using Azure.Storage.Blobs;
-global using MailKit.Net.Smtp;
-global using MimeKit;
 global using Decimatio.Domain.DTOs;
 global using System.Security.Cryptography;
 global using System.Text;

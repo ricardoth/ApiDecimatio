@@ -856,22 +856,6 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a INSERT INTO [dbo].[NotificationMercadoPago]
-        ///           ([PaymentId]
-        ///           ,[LiveMode]
-        ///           ,[FechaCreacion])
-        ///     VALUES
-        ///           (@PaymentId
-        ///           ,@LiveMode
-        ///           ,GETDATE()).
-        /// </summary>
-        internal static string INSERT_NOTIFICATION_MERCADOPAGO {
-            get {
-                return ResourceManager.GetString("INSERT_NOTIFICATION_MERCADOPAGO", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a INSERT INTO dbo.PreferenceTicket(
         ///	PreferenceCode,
         ///	TransactionId,

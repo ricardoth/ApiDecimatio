@@ -8,17 +8,6 @@
 
   <ItemGroup>
     <None Remove="Controllers\EventoController.cs~RF2b636a98.TMP" />
-    <None Remove="Template\IaETicket.html" />
-    <None Remove="Template\plantillaticket.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Template\IaETicket.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Template\plantillaticket.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -50,12 +39,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Template\decimatio2.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Template\plantillaEmailTicketConfirm.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Template\plantillaETicket.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Template\resonancePassBGWhite.png">

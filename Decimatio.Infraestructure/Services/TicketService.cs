@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Text;
-
-namespace Decimatio.Infraestructure.Services
+﻿namespace Decimatio.Infraestructure.Services
 {
     internal sealed class TicketService : ITicketService
     {
@@ -9,16 +6,20 @@ namespace Decimatio.Infraestructure.Services
         private readonly IQRGeneratorService _qrGeneratorService;
         private readonly IPDFGeneratorService _pdfGeneratorService;
         private readonly IBlobFilesService _blobFilesService;
-        private readonly IEmailService _emailService;   
+        private readonly IEmailSenderService _emailSenderService;
         private readonly IMapper _mapper;
         private readonly PaginationOptions _paginationOptions;
         private readonly BlobContainerConfig _containerConfig;
         private readonly IMercadoPagoRepository _mercadoPagoRepository;
 
-        public TicketService(ITicketRepository ticketRepository, IQRGeneratorService qRGeneratorService, 
+        public TicketService(ITicketRepository ticketRepository, 
+            IQRGeneratorService qRGeneratorService, 
             IPDFGeneratorService pdfGeneratorService,
-            IBlobFilesService blobFilesService, IMapper mapper, IEmailService emailService,
-            IOptions<PaginationOptions> paginationOptions, BlobContainerConfig containerConfig
+            IBlobFilesService blobFilesService, 
+            IMapper mapper, 
+            IEmailSenderService emailSenderService,
+            IOptions<PaginationOptions> paginationOptions, 
+            BlobContainerConfig containerConfig
             , IMercadoPagoRepository mercadoPagoRepository)
         {
             _ticketRepository = ticketRepository;
@@ -26,7 +27,7 @@ namespace Decimatio.Infraestructure.Services
             _pdfGeneratorService = pdfGeneratorService;
             _mapper = mapper;
             _blobFilesService = blobFilesService;
-            _emailService = emailService;
+            _emailSenderService = emailSenderService;
             _paginationOptions = paginationOptions.Value;
             _containerConfig = containerConfig;
             _mercadoPagoRepository = mercadoPagoRepository;
@@ -94,9 +95,8 @@ namespace Decimatio.Infraestructure.Services
             try
             {
                 var result = await _ticketRepository.AddTicket(ticket);
-
                 if (result == 0)
-                    return null;
+                    throw new Exception($"Ha ocurrido un error al guardar el ticket");
 
                 Ticket ticketWithInfo = await _ticketRepository.GetInfoTicket(result);
                 var ticketDto = _mapper.Map<TicketBodyQRDto>(ticketWithInfo);
@@ -131,11 +131,26 @@ namespace Decimatio.Infraestructure.Services
                 string base64HtmlTicket = await SaveTicketImageToBlobStorage(base64QRImage, ticketDto, fileName);
                 string emailToName =$"{ticketDto.Evento.NombreEvento} - {ticketDto.IdTicket}";
 
-                string htmlTemplateEmail = await EscribirPlantillaEmail(ticketDto);
-
-                var emailDto = new EmailTicketDto(json.Correo, emailToName, htmlTemplateEmail, base64HtmlTicket, ticketDto);
-
-                await _emailService.SendEmail(emailDto);
+                var emailDto = new EmailTicketDto()
+                {
+                    To = json.Correo,
+                    Subject = emailToName,
+                    Base64 = base64HtmlTicket,
+                    IdTicket = ticketDto.IdTicket,
+                    Nombres = ticketDto.Usuario.Nombres,
+                    ApellidoPaterno = ticketDto.Usuario.ApellidoP,
+                    ApellidoMaterno = ticketDto.Usuario.ApellidoM,
+                    NombreEvento = ticketDto.Evento.NombreEvento,
+                    NombreLugar = ticketDto.Evento.Lugar.NombreLugar,
+                    NombreSector = ticketDto.Sector.NombreSector,
+                    MontoTotal = (long)ticketDto.MontoTotal
+                };
+             
+                var resultEmail = await _emailSenderService.SendEmailTicket(emailDto);
+                if (resultEmail != "")
+                {
+                    //Traza de que no se envío el correo
+                }
 
                 return base64HtmlTicket;
             }
@@ -208,23 +223,6 @@ namespace Decimatio.Infraestructure.Services
             return htmlPdfQuest;
         }
 
-        public async Task<string> EscribirPlantillaEmail(TicketBodyQRDto ticketBodyQR)
-        {
-            string currentDirectory = Directory.GetCurrentDirectory() + "\\Template";
-            string htmlTemplatePath = Path.Combine(currentDirectory, "plantillaEmailTicketConfirm.html");
-            string htmlTemplate = File.ReadAllText(htmlTemplatePath);
-            long montoTotalFormat = (long)ticketBodyQR.MontoTotal;
-
-            string htmlTemplateEmail = htmlTemplate.Replace("{IdTicket}", ticketBodyQR.IdTicket.ToString())
-                                        .Replace("{NombreUser}", $"{ticketBodyQR.Usuario.Nombres} {ticketBodyQR.Usuario.ApellidoP}")
-                                        .Replace("{NombreEvento}", ticketBodyQR.Evento.NombreEvento)
-                                        .Replace("{NombreLugar}", ticketBodyQR.Evento.Lugar.NombreLugar)
-                                        .Replace("{NombreSector}", ticketBodyQR.Sector.NombreSector)
-                                        .Replace("{MontoTotal}", montoTotalFormat.ToString());
-
-            return htmlTemplateEmail;
-        }
-
         private string GeneratoQRCodeBase64(TicketInfoDto ticket)
         {
             using MemoryStream memoryStream = new();
@@ -278,9 +276,9 @@ namespace Decimatio.Infraestructure.Services
                 throw new BadRequestException("No existen tickets asociados a la transacción");
 
             //marcar los descargados para no generar nuevamente los tickets
-            var downloaded = await _ticketRepository.UpdateTicketsDownload(transactionId);
-            if (!downloaded)
-                throw new BadRequestException("Ya se generaron los tickets asociados a la transacción, por favor verifique su sección Mis Tickets");
+            //var downloaded = await _ticketRepository.UpdateTicketsDownload(transactionId);
+            //if (!downloaded)
+            //    throw new BadRequestException("Ya se generaron los tickets asociados a la transacción, por favor verifique su sección Mis Tickets");
 
             return result;
         }
@@ -336,6 +334,7 @@ namespace Decimatio.Infraestructure.Services
                 }
 
                 var result = await AddTickets(newTickets);
+                await _ticketRepository.UpdateTicketsDownload(tickets.FirstOrDefault().TransactionId);
                 return result;
             }
             catch (Exception ex)

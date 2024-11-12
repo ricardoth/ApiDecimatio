@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.16.0" />
+    <PackageReference Include="Flurl.Http" Version="4.0.2" />
     <PackageReference Include="MailKit" Version="4.1.0" />
     <PackageReference Include="PDFsharp" Version="6.0.0" />
     <PackageReference Include="PuppeteerSharp" Version="9.1.0" />

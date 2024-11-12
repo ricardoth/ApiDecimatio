@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.MercadoPagoEntitites;
-
-namespace Decimatio.Infraestructure.Repositories
+﻿namespace Decimatio.Infraestructure.Repositories
 {
     public class MercadoPagoRepository : IMercadoPagoRepository
     {
@@ -11,20 +9,6 @@ namespace Decimatio.Infraestructure.Repositories
             _connection = connection;   
         }
 
-        public async Task<int> AddNotificationPayment(MercadoPagoNotification notification)
-        {
-            var dictionary = new Dictionary<string, object>()
-            {
-                { "@PaymentId", notification.Data.Id },
-                { "@LiveMode", notification.LiveMode }
-              
-            };
-
-            var dynamicParam = new DynamicParameters(dictionary);
-            using var conn = new SqlConnection(_connection.ConnectionString);
-            var result = await conn.ExecuteAsync(Querys.INSERT_NOTIFICATION_MERCADOPAGO, dynamicParam);
-            return result;
-        }
 
         public async Task<IEnumerable<PreferenceTicket>> GetAll()
         {

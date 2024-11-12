@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.MercadoPagoEntitites;
-
-namespace Decimatio.Infraestructure.Services
+﻿namespace Decimatio.Infraestructure.Services
 {
     public sealed class MercadoPagoService : IMercadoPagoService
     {
@@ -13,19 +11,6 @@ namespace Decimatio.Infraestructure.Services
             _mercadoPagoRepository = mercadoPagoRepository;
             _mercadoPagoOptions = options.Value;
             MercadoPagoConfig.AccessToken = _mercadoPagoOptions.AccessToken;
-        }
-
-        public async Task<int> CrearNotificacionPago(MercadoPagoNotification notification)
-        {
-            try
-            {
-                var result = await _mercadoPagoRepository.AddNotificationPayment(notification);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new BadRequestException($"No se pudo insertar la notificación");
-            }
         }
 
         public async Task<IEnumerable<PreferenceTicket>> GetAllPreferenceTickets()

@@ -18,7 +18,7 @@
             services.AddScoped<ITipoUsuarioRepository, TipoUsuarioRepository>();
             services.AddScoped<IRegionRepository, RegionRepository>();
             services.AddScoped<IComunaRepository, ComunaRepository>();
-            services.AddScoped<IMercadoPagoRepository, MercadoPagoRepository>();
+            services.AddScoped<IPreferenceRepository, PreferenceRepository>();
 
             services.AddScoped<IMedioPagoService, MedioPagoService>();
             services.AddScoped<ITicketService, TicketService>();
@@ -31,22 +31,7 @@
             services.AddScoped<IRegionService, RegionService>();
             services.AddScoped<IComunaService, ComunaService>();
             services.AddSingleton<IPasswordService, PasswordService>();
-            services.AddScoped<IMercadoPagoService, MercadoPagoService>();
             services.AddScoped<IPayPalService, PayPalService>();
-
-            //Commons & Configurations
-            //services.AddScoped<IQRGeneratorService, QRGeneratorService>();
-            //services.AddScoped<IEmailService, EmailService>();  
-            //services.AddScoped<IBlobFilesService, BlobFilesService>();
-            //services.AddScoped<IPDFGeneratorService, PDFGeneratorService>();
-            //var blobConfig = configuration.GetSection(nameof(BlobContainerConfig)).Get<BlobContainerConfig>();
-            //services.AddSingleton(blobConfig);
-
-            //var emailConfig = configuration.GetSection(nameof(EmailConfig)).Get<EmailConfig>();
-            //services.AddSingleton(emailConfig);
-
-            //var encryptedConfig = configuration.GetSection(nameof(EncryptedTicketConfig)).Get<EncryptedTicketConfig>();
-            //services.AddSingleton(encryptedConfig);
         }
     }
 }

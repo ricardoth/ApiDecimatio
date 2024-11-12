@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.Domain.Interfaces
 {
-    public interface IMercadoPagoRepository
+    public interface IPreferenceRepository
     {
         Task<IEnumerable<PreferenceTicket>> GetAll();
         Task<IEnumerable<PreferenceTicket>> GetByPreferenceCode(string preferenceCode);

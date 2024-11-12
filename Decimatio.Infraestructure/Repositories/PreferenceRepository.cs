@@ -1,14 +1,13 @@
 ﻿namespace Decimatio.Infraestructure.Repositories
 {
-    public class MercadoPagoRepository : IMercadoPagoRepository
+    public class PreferenceRepository : IPreferenceRepository
     {
         private readonly DataBaseConfig _connection;
 
-        public MercadoPagoRepository(DataBaseConfig connection)
+        public PreferenceRepository(DataBaseConfig connection)
         {
             _connection = connection;   
         }
-
 
         public async Task<IEnumerable<PreferenceTicket>> GetAll()
         {

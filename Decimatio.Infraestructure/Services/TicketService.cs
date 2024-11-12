@@ -10,7 +10,7 @@
         private readonly IMapper _mapper;
         private readonly PaginationOptions _paginationOptions;
         private readonly BlobContainerConfig _containerConfig;
-        private readonly IMercadoPagoRepository _mercadoPagoRepository;
+        private readonly IPreferenceRepository _preferenceRepository;
 
         public TicketService(ITicketRepository ticketRepository, 
             IQRGeneratorService qRGeneratorService, 
@@ -19,8 +19,8 @@
             IMapper mapper, 
             IEmailSenderService emailSenderService,
             IOptions<PaginationOptions> paginationOptions, 
-            BlobContainerConfig containerConfig
-            , IMercadoPagoRepository mercadoPagoRepository)
+            BlobContainerConfig containerConfig, 
+            IPreferenceRepository preferenceRepository)
         {
             _ticketRepository = ticketRepository;
             _qrGeneratorService = qRGeneratorService;
@@ -30,7 +30,7 @@
             _emailSenderService = emailSenderService;
             _paginationOptions = paginationOptions.Value;
             _containerConfig = containerConfig;
-            _mercadoPagoRepository = mercadoPagoRepository;
+            _preferenceRepository = preferenceRepository;
         }
 
         #region Get All Tickets y QR
@@ -275,12 +275,23 @@
             if (!result.Any())
                 throw new BadRequestException("No existen tickets asociados a la transacción");
 
-            //marcar los descargados para no generar nuevamente los tickets
-            //var downloaded = await _ticketRepository.UpdateTicketsDownload(transactionId);
-            //if (!downloaded)
-            //    throw new BadRequestException("Ya se generaron los tickets asociados a la transacción, por favor verifique su sección Mis Tickets");
-
             return result;
+        }
+
+        public async Task<IEnumerable<PreferenceTicket>> GetAllPreferenceTickets()
+        {
+            try
+            {
+                var results = await _preferenceRepository.GetAll();
+                if (!results.Any())
+                    throw new NotFoundException("No se encontraron registros");
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException($"Error al obtener los datos de mercado pago: {ex.Message}");
+            }
         }
         #endregion
 
@@ -313,7 +324,7 @@
             try
             {
                 var newTickets = new List<Ticket>();
-                var tickets = await _mercadoPagoRepository.GetByPreferenceCode(preferenceCode);
+                var tickets = await _preferenceRepository.GetByPreferenceCode(preferenceCode);
                 if (!tickets.Any())
                     throw new NotFoundException("No se encontraron tickets asociados al pago");
 

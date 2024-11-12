@@ -2,7 +2,7 @@
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;
@@ -158,6 +158,17 @@
 
             var ticketsDto = _mapper.Map<IEnumerable<TicketDto>>(tickets);
             var response = new ApiResponse<IEnumerable<TicketDto>>(ticketsDto);
+            return Ok(response);
+        }
+        #endregion
+
+        #region Preference Tickets
+        [HttpGet("GetPreferenceTickets")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _ticketService.GetAllPreferenceTickets();
+            var preferenceTicketsDtos = _mapper.Map<IEnumerable<PreferenceTicketDto>>(result);
+            var response = new ApiResponse<IEnumerable<PreferenceTicketDto>>(preferenceTicketsDtos);
             return Ok(response);
         }
         #endregion

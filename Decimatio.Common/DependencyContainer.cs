@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Common
+﻿using Microsoft.Extensions.Configuration;
+
+namespace Decimatio.Common
 {
     public static class DependencyContainer
     {

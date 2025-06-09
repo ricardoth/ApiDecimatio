@@ -15,5 +15,4 @@ global using QuestPDF.Helpers;
 global using System.Globalization;
 global using QuestPDF.Infrastructure;
 global using Decimatio.Common.Services;
-global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;

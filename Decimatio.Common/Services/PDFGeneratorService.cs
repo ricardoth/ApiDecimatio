@@ -6,6 +6,7 @@
 
         public PDFGeneratorService()
         {
+
         }
 
         public byte[] GeneratePDFVoucher(string base64Pdf, TicketBodyQRDto ticket)

@@ -11,14 +11,7 @@
 
         public async Task<IEnumerable<Domain.Entities.Region>> GetAllRegions()
         {
-            try
-            {
-                return await _regionRepository.GetAllRegions();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return await _regionRepository.GetAllRegions();
         }
     }
 }

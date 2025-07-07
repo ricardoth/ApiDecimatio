@@ -40,51 +40,31 @@
             filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
 
-            try
-            {
-                var tickets = await _ticketRepository.GetAllTicket(filtros);
-                var counters = await _ticketRepository.GetCounterTicket();
-                var pagedTickets = PagedList<Ticket>.CreatePaginationFromDb(tickets, counters, filtros.PageNumber, filtros.PageSize);
-                return pagedTickets;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ha ocurrido un error en TicketService {ex.Message}", ex);
-            }        
+            var tickets = await _ticketRepository.GetAllTicket(filtros);
+            var counters = await _ticketRepository.GetCounterTicket();
+            var pagedTickets = PagedList<Ticket>.CreatePaginationFromDb(tickets, counters, filtros.PageNumber, filtros.PageSize);
+            return pagedTickets;
+           
         }
 
         public async Task<TicketQR> GetTicketQR(int idTicket)
         {
-            try
-            {
-                var ticket = await _ticketRepository.GetTicketQR(idTicket);
-                return ticket; 
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ha ocurrido un error en TicketService {ex.Message}", ex);
-            }
+            var ticket = await _ticketRepository.GetTicketQR(idTicket);
+            return ticket; 
         }
 
         public async Task<TicketQR> GetTicketVoucherPDF(int idTicket)
         {
-            try
-            {
-                var ticket = await _ticketRepository.GetInfoTicket(idTicket);
-                var ticketDto = _mapper.Map<TicketBodyQRDto>(ticket);
+            var ticket = await _ticketRepository.GetInfoTicket(idTicket);
+            var ticketDto = _mapper.Map<TicketBodyQRDto>(ticket);
 
-                string fileName = GetTicketFileName(ticketDto);
-                var ticketQR = await GetTicketQR(idTicket);
+            string fileName = GetTicketFileName(ticketDto);
+            var ticketQR = await GetTicketQR(idTicket);
 
-                var comprobante = await _blobFilesService.GetImageFromBlobStorage(fileName);
-                ticketQR.NombreTicketComprobante = comprobante;
+            var comprobante = await _blobFilesService.GetImageFromBlobStorage(fileName);
+            ticketQR.NombreTicketComprobante = comprobante;
 
-                return ticketQR;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ha ocurrido un error en TicketService {ex.Message}", ex);
-            }
+            return ticketQR;
         }
         #endregion
 
@@ -92,72 +72,65 @@
         #region Agregar Ticket
         public async Task<string> AddTicket(Ticket ticket)
         {
-            try
+            var result = await _ticketRepository.AddTicket(ticket);
+            if (result == 0)
+                throw new Exception($"Ha ocurrido un error al guardar el ticket");
+
+            Ticket ticketWithInfo = await _ticketRepository.GetInfoTicket(result);
+            var ticketDto = _mapper.Map<TicketBodyQRDto>(ticketWithInfo);
+
+            var json = new TicketInfoDto()
             {
-                var result = await _ticketRepository.AddTicket(ticket);
-                if (result == 0)
-                    throw new Exception($"Ha ocurrido un error al guardar el ticket");
+                IdTicket = result,
+                FechaTicket = ticketDto.FechaTicket,
+                MontoTotal = ticketDto.MontoTotal,
+                RutUsuario = $"{ticketDto?.Usuario?.Rut}-{ticketDto?.Usuario?.DV}",
+                Nombres = ticketDto?.Usuario?.Nombres,
+                ApellidoP = ticketDto?.Usuario?.ApellidoP,
+                ApellidoM = ticketDto.Usuario.ApellidoM,
+                Correo = ticketDto.Usuario.Correo,
+                IdEvento = ticketDto.Evento?.IdEvento,
+                IdSector = ticketDto.Sector?.IdSector
+            };
 
-                Ticket ticketWithInfo = await _ticketRepository.GetInfoTicket(result);
-                var ticketDto = _mapper.Map<TicketBodyQRDto>(ticketWithInfo);
+            string base64QRImage = GeneratoQRCodeBase64(json);
 
-                var json = new TicketInfoDto()
-                {
-                    IdTicket = result,
-                    FechaTicket = ticketDto.FechaTicket,
-                    MontoTotal = ticketDto.MontoTotal,
-                    RutUsuario = $"{ticketDto?.Usuario?.Rut}-{ticketDto?.Usuario?.DV}",
-                    Nombres = ticketDto?.Usuario?.Nombres,
-                    ApellidoP = ticketDto?.Usuario?.ApellidoP,
-                    ApellidoM = ticketDto.Usuario.ApellidoM,
-                    Correo = ticketDto.Usuario.Correo,
-                    IdEvento = ticketDto.Evento?.IdEvento,
-                    IdSector = ticketDto.Sector?.IdSector
-                };
+            TicketQR ticketQR = new TicketQR()
+            {
+                IdTicket = result,
+                Contenido = base64QRImage,
+                Ticket = ticket,
+            };
 
-                string base64QRImage = GeneratoQRCodeBase64(json);
+            string fileName = GetTicketFileName(ticketDto);
 
-                TicketQR ticketQR = new TicketQR()
-                {
-                    IdTicket = result,
-                    Contenido = base64QRImage,
-                    Ticket = ticket,
-                };
+            ticketQR.NombreTicketComprobante = fileName;
+            await AddTicketQR(ticketQR);
+            string base64HtmlTicket = await SaveTicketImageToBlobStorage(base64QRImage, ticketDto, fileName);
+            string emailToName =$"{ticketDto.Evento.NombreEvento} - {ticketDto.IdTicket}";
 
-                string fileName = GetTicketFileName(ticketDto);
-
-                ticketQR.NombreTicketComprobante = fileName;
-                await AddTicketQR(ticketQR);
-                string base64HtmlTicket = await SaveTicketImageToBlobStorage(base64QRImage, ticketDto, fileName);
-                string emailToName =$"{ticketDto.Evento.NombreEvento} - {ticketDto.IdTicket}";
-
-                var emailDto = new EmailTicketDto()
-                {
-                    To = json.Correo,
-                    Subject = emailToName,
-                    Base64 = base64HtmlTicket,
-                    IdTicket = ticketDto.IdTicket,
-                    Nombres = ticketDto.Usuario.Nombres,
-                    ApellidoPaterno = ticketDto.Usuario.ApellidoP,
-                    ApellidoMaterno = ticketDto.Usuario.ApellidoM,
-                    NombreEvento = ticketDto.Evento.NombreEvento,
-                    NombreLugar = ticketDto.Evento.Lugar.NombreLugar,
-                    NombreSector = ticketDto.Sector.NombreSector,
-                    MontoTotal = (long)ticketDto.MontoTotal
-                };
+            var emailDto = new EmailTicketDto()
+            {
+                To = json.Correo,
+                Subject = emailToName,
+                Base64 = base64HtmlTicket,
+                IdTicket = ticketDto.IdTicket,
+                Nombres = ticketDto.Usuario.Nombres,
+                ApellidoPaterno = ticketDto.Usuario.ApellidoP,
+                ApellidoMaterno = ticketDto.Usuario.ApellidoM,
+                NombreEvento = ticketDto.Evento.NombreEvento,
+                NombreLugar = ticketDto.Evento.Lugar.NombreLugar,
+                NombreSector = ticketDto.Sector.NombreSector,
+                MontoTotal = (long)ticketDto.MontoTotal
+            };
              
-                var resultEmail = await _emailSenderService.SendEmailTicket(emailDto);
-                if (resultEmail != "")
-                {
-                    //Traza de que no se envío el correo
-                }
-
-                return base64HtmlTicket;
-            }
-            catch (Exception ex)
+            var resultEmail = await _emailSenderService.SendEmailTicket(emailDto);
+            if (resultEmail != "")
             {
-                throw new InvalidOperationException($"Error al Crear el Ticket", ex);
+                //Traza de que no se envío el correo
             }
+
+            return base64HtmlTicket;
         }
 
         public async Task<TicketQR> AddTicketQR(TicketQR ticketQR)
@@ -165,28 +138,14 @@
             if (ticketQR == null)
                 throw new ArgumentNullException(nameof(ticketQR));
 
-            try
-            {
-                await _ticketRepository.AddTicketQR(ticketQR);
-                return ticketQR;
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("Error al agregar el TicketQR", ex);
-            }
+            await _ticketRepository.AddTicketQR(ticketQR);
+            return ticketQR;
         }
 
         public async Task<bool> DeleteDownTicket(long idTicket, bool activo)
         {
-            try
-            {
-                var result = await _ticketRepository.DeleteDownTicket(idTicket, activo);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("Error al eliminar el Ticket, Ha ocurrido un error en Services", ex);
-            }
+            var result = await _ticketRepository.DeleteDownTicket(idTicket, activo);
+            return result;
         }
         #endregion
 
@@ -194,25 +153,18 @@
         public async Task<string> AddTickets(IEnumerable<Ticket> tickets)
         {
             List<string> strList = new List<string>();
-            try
+          
+            if (!tickets.Any())
+                throw new Exception("No se encontraron tickets para generar");
+
+            foreach (var ticket in tickets)
             {
-                if (!tickets.Any())
-                    throw new Exception("No se encontraron tickets para generar");
-
-
-                foreach (var ticket in tickets)
-                {
-                    var objTicket = await AddTicket(ticket);
-                    strList.Add(objTicket.ToString());
-                }
-
-                string ticketsPdf64 = _pdfGeneratorService.CombinePdfFiles(strList);
-                return ticketsPdf64;
+                var objTicket = await AddTicket(ticket);
+                strList.Add(objTicket.ToString());
             }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException($"Error al Crear el Ticket", ex);
-            }
+
+            string ticketsPdf64 = _pdfGeneratorService.CombinePdfFiles(strList);
+            return ticketsPdf64;
         }
         #endregion
 
@@ -226,21 +178,11 @@
         private string GeneratoQRCodeBase64(TicketInfoDto ticket)
         {
             using MemoryStream memoryStream = new();
-            try
-            {
-                Bitmap qrCodeImage = _qrGeneratorService.GenerateQRCodeTicket(ticket);
-                qrCodeImage.Save(memoryStream, ImageFormat.Png);
-                byte[] imageBytes = memoryStream.ToArray();
-                return Convert.ToBase64String(imageBytes);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Ha ocurrido un error al generar el TicketQR");
-            }
-            finally
-            {
-                memoryStream.Close();
-            }
+            Bitmap qrCodeImage = _qrGeneratorService.GenerateQRCodeTicket(ticket);
+            qrCodeImage.Save(memoryStream, ImageFormat.Png);
+            byte[] imageBytes = memoryStream.ToArray();
+            memoryStream.Close();
+            return Convert.ToBase64String(imageBytes);
         }
 
         private string GetTicketFileName(TicketBodyQRDto ticketDto)
@@ -280,78 +222,55 @@
 
         public async Task<IEnumerable<PreferenceTicket>> GetAllPreferenceTickets()
         {
-            try
-            {
-                var results = await _preferenceRepository.GetAll();
-                if (!results.Any())
-                    throw new NotFoundException("No se encontraron registros");
+            var results = await _preferenceRepository.GetAll();
+            if (!results.Any())
+                throw new NotFoundException("No se encontraron registros");
 
-                return results;
-            }
-            catch (Exception ex)
-            {
-                throw new BadRequestException($"Error al obtener los datos de mercado pago: {ex.Message}");
-            }
+            return results;
         }
         #endregion
 
         #region Exportar Excel Historial Tickets
         public async Task<IEnumerable<Ticket>> GetAllTicketsExcel(TicketQueryFilter filtros)
         {
-            try
-            {
-                var tickets = await _ticketRepository.GetAllTicketReport();
+            var tickets = await _ticketRepository.GetAllTicketReport();
 
-                if (filtros.IdEvento > 0)
-                    tickets = tickets.Where(x => x.IdEvento == filtros.IdEvento);
+            if (filtros.IdEvento > 0)
+                tickets = tickets.Where(x => x.IdEvento == filtros.IdEvento);
 
-                if (filtros.IdSector > 0)
-                    tickets = tickets.Where(x => x.IdSector == filtros.IdSector);
+            if (filtros.IdSector > 0)
+                tickets = tickets.Where(x => x.IdSector == filtros.IdSector);
 
-
-                return tickets.Where(x => x.Activo == true);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ha ocurrido un error en TicketService {ex.Message}", ex);
-            }
+            return tickets.Where(x => x.Activo == true);
         }
-
         #endregion
 
         public async Task<string> AddQueueTicket(string preferenceCode)
         {
-            try
-            {
-                var newTickets = new List<Ticket>();
-                var tickets = await _preferenceRepository.GetByPreferenceCode(preferenceCode);
-                if (!tickets.Any())
-                    throw new NotFoundException("No se encontraron tickets asociados al pago");
+            var newTickets = new List<Ticket>();
+            var tickets = await _preferenceRepository.GetByPreferenceCode(preferenceCode);
+            if (!tickets.Any())
+                throw new NotFoundException("No se encontraron tickets asociados al pago");
 
-                foreach (var item in tickets)
+            foreach (var item in tickets)
+            {
+                var tkt = new Ticket()
                 {
-                    var tkt = new Ticket()
-                    {
-                        IdUsuario = item.IdUsuario,
-                        IdEvento = item.IdEvento,
-                        IdSector = item.IdSector,
-                        IdMedioPago = item.IdMedioPago,
-                        MontoPago = item.MontoPago,
-                        MontoTotal =  item.MontoTotal,
-                        FechaTicket = item.FechaTicket,
-                        Activo = true
-                    };
-                    newTickets.Add(tkt);
-                }
+                    IdUsuario = item.IdUsuario,
+                    IdEvento = item.IdEvento,
+                    IdSector = item.IdSector,
+                    IdMedioPago = item.IdMedioPago,
+                    MontoPago = item.MontoPago,
+                    MontoTotal =  item.MontoTotal,
+                    FechaTicket = item.FechaTicket,
+                    Activo = true
+                };
+                newTickets.Add(tkt);
+            }
 
-                var result = await AddTickets(newTickets);
-                await _ticketRepository.UpdateTicketsDownload(tickets.FirstOrDefault().TransactionId);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException($"Error al Generar los tickets asociados al preferenceId: {preferenceCode}", ex);
-            }
+            var result = await AddTickets(newTickets);
+            await _ticketRepository.UpdateTicketsDownload(tickets.FirstOrDefault().TransactionId);
+            return result;
         }
     }
 }

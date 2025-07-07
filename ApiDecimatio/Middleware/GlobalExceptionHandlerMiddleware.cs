@@ -1,4 +1,5 @@
 ﻿using Decimatio.Domain.Exceptions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Decimatio.WebApi.Middleware
 {
@@ -53,10 +54,10 @@ namespace Decimatio.WebApi.Middleware
 
                 default:
                     _logger.LogError(exception, "Ha ocurrido un error inesperado en la API");
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }
 
-            errorResponse.StatusCode = context.Response.StatusCode;
             await context.Response.WriteAsync(System.Text.Json.JsonSerializer.Serialize(errorResponse));
         }
     }

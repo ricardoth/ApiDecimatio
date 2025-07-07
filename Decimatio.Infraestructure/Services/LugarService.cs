@@ -15,23 +15,16 @@
 
         public async Task<IEnumerable<Lugar>> GetAllLugares()
         {
-            try
+            var result = await _lugarRepository.GetAllLugares();
+            var tasks = result.Select(async lugar =>
             {
-                var result = await _lugarRepository.GetAllLugares();
-                var tasks = result.Select(async lugar =>
-                {
-                    lugar.NombreMapaReferencial = lugar.MapaReferencial;
-                    string imageNamePath = _containerConfig.ReferencialMapName + lugar.MapaReferencial;
-                    lugar.MapaReferencial = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
-                    return lugar;
-                });
+                lugar.NombreMapaReferencial = lugar.MapaReferencial;
+                string imageNamePath = _containerConfig.ReferencialMapName + lugar.MapaReferencial;
+                lugar.MapaReferencial = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                return lugar;
+            });
 
-                return await Task.WhenAll(tasks);
-            }
-            catch (Exception ex)
-            {
-                throw new BadRequestException($"No se pudo obtener la lista de lugares {ex.Message}");
-            }
+            return await Task.WhenAll(tasks);
         }
 
         public async Task<Lugar> GetById(int idLugar)
@@ -52,52 +45,31 @@
 
         public async Task AddLugar(Lugar lugar)
         {
-            try
+            if (lugar.MapaReferencial is not null || lugar.MapaReferencial != "")
             {
-                if (lugar.MapaReferencial is not null || lugar.MapaReferencial != "")
-                {
-                    string imageNamePath = _containerConfig.ReferencialMapName + lugar.NombreMapaReferencial;
-                    var flyerContent = Convert.FromBase64String(lugar.MapaReferencial);
-                    await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
-                }
-                lugar.MapaReferencial = lugar.NombreMapaReferencial;
-                await _lugarRepository.AddLugar(lugar);
+                string imageNamePath = _containerConfig.ReferencialMapName + lugar.NombreMapaReferencial;
+                var flyerContent = Convert.FromBase64String(lugar.MapaReferencial);
+                await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }
-            catch (Exception ex)
-            {
-                throw new Exception($"No se pudo agregar el lugar {ex.Message}"); 
-            }
+            lugar.MapaReferencial = lugar.NombreMapaReferencial;
+            await _lugarRepository.AddLugar(lugar);
         }
 
         public async Task<bool> UpdateLugar(Lugar lugar)
         {
-            try
+            if (lugar.MapaReferencial is not null || lugar.MapaReferencial != "")
             {
-                if (lugar.MapaReferencial is not null || lugar.MapaReferencial != "")
-                {
-                    string imageNamePath = _containerConfig.ReferencialMapName + lugar.NombreMapaReferencial;
-                    var flyerContent = Convert.FromBase64String(lugar.MapaReferencial);
-                    await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
-                }
-                lugar.MapaReferencial = lugar.NombreMapaReferencial;
-                return await _lugarRepository.UpdateLugar(lugar);
+                string imageNamePath = _containerConfig.ReferencialMapName + lugar.NombreMapaReferencial;
+                var flyerContent = Convert.FromBase64String(lugar.MapaReferencial);
+                await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }
-            catch (Exception ex)
-            {
-                throw new Exception($"No se pudo editar el lugar {ex.Message}");
-            }
+            lugar.MapaReferencial = lugar.NombreMapaReferencial;
+            return await _lugarRepository.UpdateLugar(lugar);
         }
 
         public async Task<bool> DeleteLugar(int idLugar)
         {
-            try
-            {
-                return await _lugarRepository.DeleteLugar(idLugar);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"No se pudo eliminar el lugar {ex.Message}");
-            }
+            return await _lugarRepository.DeleteLugar(idLugar);
         }
     }
 }

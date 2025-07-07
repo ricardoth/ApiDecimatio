@@ -23,59 +23,32 @@
             filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
 
-            try
-            {
-                var usuarios = await _usuarioRepository.GetAllUsers();
+            var usuarios = await _usuarioRepository.GetAllUsers();
 
-                if (filtros.IdUsuario > 0)
-                    usuarios = usuarios.Where(x => x.IdUsuario == filtros.IdUsuario);
+            if (filtros.IdUsuario > 0)
+                usuarios = usuarios.Where(x => x.IdUsuario == filtros.IdUsuario);
 
-                var pagedUsuarios = PagedList<Usuario>.Create(usuarios, filtros.PageNumber, filtros.PageSize);
-                return pagedUsuarios;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ha ocurrido un error en UsuarioService {ex.Message}", ex);
-            }
+            var pagedUsuarios = PagedList<Usuario>.Create(usuarios, filtros.PageNumber, filtros.PageSize);
+            return pagedUsuarios;
+            
         }
 
         public async Task<IEnumerable<Usuario>> GetAllUsersFilter(string filtro)
         {
-            try
-            {
-                var result = await _usuarioRepository.GetAllUsersFilter(filtro);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            var result = await _usuarioRepository.GetAllUsersFilter(filtro);
+            return result;
         }
 
         public async Task<Usuario> GetById(long idUsuario)
         {
-            try
-            {
-                var result = await _usuarioRepository.GetById(idUsuario);
-                return result;  
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            var result = await _usuarioRepository.GetById(idUsuario);
+            return result;  
         }
 
         public async Task<bool> UpdateUsuario(Usuario usuario)
         {
-            try
-            {
-                var result = await _usuarioRepository.UpdateUsuario(usuario);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new BadRequestException($"Ha ocurrido un error al actualizar el usuario: {ex.Message}");
-            }
+            var result = await _usuarioRepository.UpdateUsuario(usuario);
+            return result;
         }
 
         public async Task AddUsuario(Usuario usuario)
@@ -105,15 +78,8 @@
 
         public async Task<bool> DeleteUsuario(long idUsuario)
         {
-            try
-            {
-                var result = await _usuarioRepository.DeleteUsuario(idUsuario);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new BadRequestException($"Ha ocurrido un error al eliminar el usuario: {ex.Message}");
-            }
+            var result = await _usuarioRepository.DeleteUsuario(idUsuario);
+            return result;
         }
 
         public async Task<Usuario> Login(Usuario usuario)

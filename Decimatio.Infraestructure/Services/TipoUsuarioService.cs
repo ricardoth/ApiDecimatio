@@ -11,14 +11,7 @@
 
         public async Task<IEnumerable<TipoUsuario>> GetAllTiposUsuarios()
         {
-            try
-            {
-                return await _tipoUsuarioRepository.GetAllTipoUsuarios();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return await _tipoUsuarioRepository.GetAllTipoUsuarios();
         }
     }
 }

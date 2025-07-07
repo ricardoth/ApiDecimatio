@@ -55,33 +55,25 @@
 
         public async Task<AccesoEventoStatus> ValidarAccesoTicket(TicketAcceso ticketAcceso)
         {
-            try
+            AccesoEventoStatus result = new();
+            if (ticketAcceso.EsExtranjero)
+                result = await _accesoEventoRepository.ValidarAccesoTicketExtranjero(ticketAcceso);
+            else 
             {
-                AccesoEventoStatus result = new();
-                if (ticketAcceso.EsExtranjero)
-                    result = await _accesoEventoRepository.ValidarAccesoTicketExtranjero(ticketAcceso);
-                else 
-                {
-                    if (ticketAcceso.IdEvento == 9)
-                        result = await _accesoEventoRepository.ValidarAccesoTicketFullAccess(ticketAcceso);
-                    else
-                        result = await _accesoEventoRepository.ValidarAccesoTicket(ticketAcceso);
+                if (ticketAcceso.IdEvento == 9)
+                    result = await _accesoEventoRepository.ValidarAccesoTicketFullAccess(ticketAcceso);
+                else
+                    result = await _accesoEventoRepository.ValidarAccesoTicket(ticketAcceso);
 
-                }
-
-                AccesoEvento accesoEvento = new();
-                accesoEvento.IdTicket = ticketAcceso.IdTicket;
-                accesoEvento.IdEstadoTicket = result.StatusCode;
-                accesoEvento.FechaHoraEntrada = DateTime.Now;
-
-                int accesoEventoResult = await _accesoEventoRepository.RegistroAccesoEvento(accesoEvento);
-
-                return result;
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Ha ocurrido un error en Validar el Ticket");
-            }
+
+            AccesoEvento accesoEvento = new();
+            accesoEvento.IdTicket = ticketAcceso.IdTicket;
+            accesoEvento.IdEstadoTicket = result.StatusCode;
+            accesoEvento.FechaHoraEntrada = DateTime.Now;
+
+            int accesoEventoResult = await _accesoEventoRepository.RegistroAccesoEvento(accesoEvento);
+            return result;
         }
     }
 }

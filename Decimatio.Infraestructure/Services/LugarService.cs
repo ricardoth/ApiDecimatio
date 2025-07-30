@@ -33,6 +33,7 @@
             {
                 var result = await _lugarRepository.GetById(idLugar);
 
+                result.NombreMapaReferencial = result.MapaReferencial;
                 string imageNamePath = _containerConfig.ReferencialMapName + result.MapaReferencial;
                 result.MapaReferencial = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
                 return result;

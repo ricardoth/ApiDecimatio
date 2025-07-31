@@ -303,14 +303,16 @@ WHERE T.IdTicket = @IdTicket</value>
       ,L.Ubicacion
       ,L.Numeracion
       ,L.FechaCreacion
-	  ,L.MapaReferencial
+   ,L.MapaReferencial
       ,L.Activo
-	  ,C.IdComuna
-	  ,C.IdRegion
-	  ,C.NombreComuna
-	  ,R.IdRegion
-	  ,R.NombreRegion
-	  ,R.Abreviatura
+   ,C.IdComuna
+   ,C.IdRegion
+   ,C.NombreComuna
+   ,C.Activo
+   ,R.IdRegion
+   ,R.NombreRegion
+   ,R.Abreviatura
+   ,R.Activo
   FROM dbo.Lugar L
   INNER JOIN dbo.Comuna C ON C.IdComuna = L.IdComuna
   INNER JOIN dbo.Region R ON R.IdRegion = C.IdRegion</value>
@@ -323,17 +325,19 @@ WHERE T.IdTicket = @IdTicket</value>
       ,L.Ubicacion
       ,L.Numeracion
       ,L.FechaCreacion
-	  ,L.MapaReferencial
+   ,L.MapaReferencial
       ,L.Activo
-	  ,C.IdComuna
-	  ,C.IdRegion
-	  ,C.NombreComuna
-	  ,R.IdRegion
-	  ,R.NombreRegion
-	  ,R.Abreviatura
+   ,C.IdComuna
+   ,C.IdRegion
+   ,C.NombreComuna
+   ,C.Activo
+   ,R.IdRegion
+   ,R.NombreRegion
+   ,R.Abreviatura
+   ,R.Activo
   FROM dbo.Lugar L
-	  INNER JOIN dbo.Comuna C ON C.IdComuna = L.IdComuna
-	  INNER JOIN dbo.Region R ON R.IdRegion = C.IdRegion
+   INNER JOIN dbo.Comuna C ON C.IdComuna = L.IdComuna
+   INNER JOIN dbo.Region R ON R.IdRegion = C.IdRegion
   WHERE L.IdLugar = @IdLugar</value>
     <comment>Get Solo un Lugar</comment>
   </data>

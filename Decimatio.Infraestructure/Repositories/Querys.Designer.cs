@@ -305,17 +305,19 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,L.Ubicacion
         ///      ,L.Numeracion
         ///      ,L.FechaCreacion
-        ///	  ,L.MapaReferencial
+        ///   ,L.MapaReferencial
         ///      ,L.Activo
-        ///	  ,C.IdComuna
-        ///	  ,C.IdRegion
-        ///	  ,C.NombreComuna
-        ///	  ,R.IdRegion
-        ///	  ,R.NombreRegion
-        ///	  ,R.Abreviatura
+        ///   ,C.IdComuna
+        ///   ,C.IdRegion
+        ///   ,C.NombreComuna
+        ///   ,C.Activo
+        ///   ,R.IdRegion
+        ///   ,R.NombreRegion
+        ///   ,R.Abreviatura
+        ///   ,R.Activo
         ///  FROM dbo.Lugar L
-        ///	  INNER JOIN dbo.Comuna C ON C.IdComuna = L.IdComuna
-        ///	  INNER JOIN dbo.Region R ON R.IdRegion = C.IdRegion
+        ///   INNER JOIN dbo.Comuna C ON C.IdComuna = L.IdComuna
+        ///   INNER JOIN dbo.Region R ON R.IdRegion = C.IdRegion
         ///  WHERE L.IdLugar = @IdLugar.
         /// </summary>
         internal static string GET_LUGAR_ID {
@@ -331,14 +333,16 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,L.Ubicacion
         ///      ,L.Numeracion
         ///      ,L.FechaCreacion
-        ///	  ,L.MapaReferencial
+        ///   ,L.MapaReferencial
         ///      ,L.Activo
-        ///	  ,C.IdComuna
-        ///	  ,C.IdRegion
-        ///	  ,C.NombreComuna
-        ///	  ,R.IdRegion
-        ///	  ,R.NombreRegion
-        ///	  ,R.Abreviatura
+        ///   ,C.IdComuna
+        ///   ,C.IdRegion
+        ///   ,C.NombreComuna
+        ///   ,C.Activo
+        ///   ,R.IdRegion
+        ///   ,R.NombreRegion
+        ///   ,R.Abreviatura
+        ///   ,R.Activo
         ///  FROM dbo.Lugar L
         ///  INNER JOIN dbo.Comuna C ON C.IdComuna = L.IdComuna
         ///  INNER JOIN dbo.Region R ON R.IdRegion = C.IdRegion.

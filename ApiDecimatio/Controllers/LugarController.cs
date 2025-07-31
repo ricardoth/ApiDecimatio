@@ -25,8 +25,7 @@
             if (result == null)
                 return BadRequest();
 
-            var lugaresDtos = _mapper.Map<IEnumerable<LugarDto>>(result);
-            var response = new ApiResponse<IEnumerable<LugarDto>>(lugaresDtos);
+            var response = new ApiResponse<IEnumerable<LugarDto>>(result);
             return Ok(response);
         }
 
@@ -39,8 +38,7 @@
             if (result == null)
                 return BadRequest();
 
-            var lugarDto = _mapper.Map<LugarDto>(result);
-            var response = new ApiResponse<LugarDto>(lugarDto);
+            var response = new ApiResponse<LugarDto>(result);
             return Ok(response);
         }
 

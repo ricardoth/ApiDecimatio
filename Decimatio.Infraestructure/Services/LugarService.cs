@@ -15,7 +15,7 @@
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Lugar>> GetAllLugares()
+        public async Task<IEnumerable<LugarDto>> GetAllLugares()
         {
             var result = await _lugarRepository.GetAllLugares();
             var tasks = result.Select(async lugar =>
@@ -25,10 +25,12 @@
                 return lugar;
             });
 
-            return await Task.WhenAll(tasks);
+            var lugares = await Task.WhenAll(tasks);
+            var mappedLugares = _mapper.Map<IEnumerable<LugarDto>>(lugares);
+            return mappedLugares;
         }
 
-        public async Task<Lugar> GetById(int idLugar)
+        public async Task<LugarDto> GetById(int idLugar)
         {
             var result = await _lugarRepository.GetById(idLugar);
             if (result is null)
@@ -36,7 +38,8 @@
 
             string imageNamePath = _containerConfig.ReferencialMapName + result.MapaReferencial;
             result.UrlImagenMapaReferencial = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
-            return result;
+            var mappedLugar = _mapper.Map<LugarDto>(result);
+            return mappedLugar;
         }
 
         public async Task AddLugar(Lugar lugar)
@@ -59,7 +62,7 @@
                 await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }
 
-            var lugarBd = await this.GetById(updateLugarDto.IdLugar);
+            var lugarBd = await _lugarRepository.GetById(updateLugarDto.IdLugar);
             var lugar = _mapper.Map(updateLugarDto, lugarBd);
             
             return await _lugarRepository.UpdateLugar(lugar);

@@ -19,6 +19,9 @@
             CreateMap<UpdateLugarDto, Lugar>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
+            CreateMap<CreateLugarDto, Lugar>()
+                .ReverseMap();
+
             CreateMap<Lugar, LugarDto>().ReverseMap();
 
 

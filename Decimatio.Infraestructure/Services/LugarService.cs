@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace Decimatio.Infraestructure.Services
 {
     internal sealed class LugarService : ILugarService
     {
@@ -6,13 +8,19 @@
         private readonly IBlobFilesService _blobFilesService;
         private readonly BlobContainerConfig _containerConfig;
         private readonly IMapper _mapper;
+        private readonly IValidator<CreateLugarDto> _createLugarDtoValidator;
 
-        public LugarService(ILugarRepository lugarRepository, IBlobFilesService blobFilesService, BlobContainerConfig containerConfig, IMapper mapper)
+        public LugarService(ILugarRepository lugarRepository, 
+            IBlobFilesService blobFilesService, 
+            BlobContainerConfig containerConfig, 
+            IMapper mapper,
+            IValidator<CreateLugarDto> createLugarDtoValidator)
         {
             _lugarRepository = lugarRepository;
             _blobFilesService = blobFilesService;
             _containerConfig = containerConfig;
             _mapper = mapper;
+            _createLugarDtoValidator = createLugarDtoValidator;
         }
 
         public async Task<IEnumerable<LugarDto>> GetAllLugares()
@@ -42,14 +50,21 @@
             return mappedLugar;
         }
 
-        public async Task AddLugar(Lugar lugar)
+        public async Task AddLugar(CreateLugarDto createLugarDto)
         {
-            if (!string.IsNullOrEmpty(lugar.Base64ImagenMapaReferencial))
+            var validations = _createLugarDtoValidator.Validate(createLugarDto);
+            if (!validations.IsValid) {
+                var errores = validations.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").ToList();
+                throw new ValidationResultException(errores);
+            }
+                
+            if (!string.IsNullOrEmpty(createLugarDto.Base64ImagenMapaReferencial))
             {
-                string imageNamePath = _containerConfig.ReferencialMapName + lugar.NombreMapaReferencial;
-                var flyerContent = Convert.FromBase64String(lugar.Base64ImagenMapaReferencial);
+                string imageNamePath = _containerConfig.ReferencialMapName + createLugarDto.MapaReferencial;
+                var flyerContent = Convert.FromBase64String(createLugarDto.Base64ImagenMapaReferencial);
                 await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }
+            var lugar = _mapper.Map<Lugar>(createLugarDto);
             await _lugarRepository.AddLugar(lugar);
         }
 

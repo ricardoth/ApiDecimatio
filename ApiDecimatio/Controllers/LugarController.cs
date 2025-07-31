@@ -1,15 +1,15 @@
 ﻿namespace Decimatio.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LugarController : ControllerBase
     {
         private readonly ILugarService _lugarService;
         private readonly IMapper _mapper;
-        private readonly IValidator<Lugar> _validator;
+        private readonly IValidator<CreateLugarDto> _validator;
 
-        public LugarController(ILugarService lugarService, IMapper mapper, IValidator<Lugar> validator)
+        public LugarController(ILugarService lugarService, IMapper mapper, IValidator<CreateLugarDto> validator)
         {
             _lugarService = lugarService;
             _mapper = mapper;
@@ -45,16 +45,10 @@
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] LugarDto lugarDto)
+        public async Task<IActionResult> Post([FromBody] CreateLugarDto createLugarDto)
         {
-            var lugar = _mapper.Map<Lugar>(lugarDto);
-            var validationResult = _validator.Validate(lugar);
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
-            await _lugarService.AddLugar(lugar);
-
-            var response = new ApiResponse<LugarDto>(lugarDto);
+            await _lugarService.AddLugar(createLugarDto);
+            var response = new ApiResponse<CreateLugarDto>(createLugarDto);
             return Ok(response);
         }
 

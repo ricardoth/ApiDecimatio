@@ -6,7 +6,7 @@ namespace Decimatio.Domain.Interfaces
     {
         Task<IEnumerable<LugarDto>> GetAllLugares();
         Task<LugarDto> GetById(int idLugar);
-        Task AddLugar(Lugar lugar);
+        Task AddLugar(CreateLugarDto createLugarDto);
         Task<bool> UpdateLugar(UpdateLugarDto updateLugarDto);
         Task<bool> DeleteLugar(int idLugar);
     }

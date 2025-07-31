@@ -52,7 +52,7 @@
 
         public async Task<bool> UpdateLugar(UpdateLugarDto updateLugarDto)
         {
-            if (!string.IsNullOrEmpty(lugar.Base64ImagenMapaReferencial))
+            if (!string.IsNullOrEmpty(updateLugarDto.Base64ImagenMapaReferencial))
             {
                 string imageNamePath = _containerConfig.ReferencialMapName + updateLugarDto.NombreMapaReferencial;
                 var flyerContent = Convert.FromBase64String(updateLugarDto.Base64ImagenMapaReferencial);

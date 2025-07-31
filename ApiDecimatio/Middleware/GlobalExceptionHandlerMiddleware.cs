@@ -1,5 +1,4 @@
 ﻿using Decimatio.Domain.Exceptions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Decimatio.WebApi.Middleware
 {
@@ -50,6 +49,11 @@ namespace Decimatio.WebApi.Middleware
                 case ValidationResultException validationResultException:
                     errorResponse.Message = validationResultException.Message;
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    break;
+
+                case NoContentException noContentException:
+                    errorResponse.Message = noContentException.Message;
+                    context.Response.StatusCode = (int)HttpStatusCode.NoContent;
                     break;
 
                 default:

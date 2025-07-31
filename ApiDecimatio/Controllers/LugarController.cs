@@ -1,6 +1,8 @@
-﻿namespace Decimatio.WebApi.Controllers
+﻿using FluentValidation;
+
+namespace Decimatio.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LugarController : ControllerBase
@@ -64,19 +66,13 @@
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Put(int id, LugarDto lugarDto)
+        public async Task<IActionResult> Put(int id, UpdateLugarDto updateLugarDto)
         {
             if (id <= 0)
                 return NotFound();
 
-            var lugar = _mapper.Map<Lugar>(lugarDto);
-            lugar.IdLugar = id;
-
-            var validation = _validator.Validate(lugar);
-            if (!validation.IsValid)
-                return BadRequest(validation.Errors);
-
-            var result = await _lugarService.UpdateLugar(lugar);
+            updateLugarDto.IdLugar = id;
+            var result = await _lugarService.UpdateLugar(updateLugarDto);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }

@@ -15,7 +15,13 @@
             CreateMap<Evento, EventoPostDto>().ReverseMap();
             CreateMap<Sector, SectorDto>().ReverseMap();
             CreateMap<MedioPago, MedioPagoDto>().ReverseMap();
+
+            CreateMap<UpdateLugarDto, Lugar>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
             CreateMap<Lugar, LugarDto>().ReverseMap();
+
+
             CreateMap<Domain.Entities.Region, RegionDto>().ReverseMap();
             CreateMap<Comuna, ComunaDto>().ReverseMap();
             CreateMap<AccesoEvento, AccesoEventoDto>().ReverseMap();

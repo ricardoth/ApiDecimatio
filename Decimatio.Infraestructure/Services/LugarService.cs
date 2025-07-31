@@ -5,12 +5,14 @@
         private readonly ILugarRepository _lugarRepository;
         private readonly IBlobFilesService _blobFilesService;
         private readonly BlobContainerConfig _containerConfig;
+        private readonly IMapper _mapper;
 
-        public LugarService(ILugarRepository lugarRepository, IBlobFilesService blobFilesService, BlobContainerConfig containerConfig)
+        public LugarService(ILugarRepository lugarRepository, IBlobFilesService blobFilesService, BlobContainerConfig containerConfig, IMapper mapper)
         {
             _lugarRepository = lugarRepository;
             _blobFilesService = blobFilesService;
             _containerConfig = containerConfig;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Lugar>> GetAllLugares()
@@ -18,9 +20,8 @@
             var result = await _lugarRepository.GetAllLugares();
             var tasks = result.Select(async lugar =>
             {
-                lugar.NombreMapaReferencial = lugar.MapaReferencial;
                 string imageNamePath = _containerConfig.ReferencialMapName + lugar.MapaReferencial;
-                lugar.MapaReferencial = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                lugar.UrlImagenMapaReferencial = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
                 return lugar;
             });
 
@@ -29,42 +30,38 @@
 
         public async Task<Lugar> GetById(int idLugar)
         {
-            try
-            {
-                var result = await _lugarRepository.GetById(idLugar);
+            var result = await _lugarRepository.GetById(idLugar);
+            if (result is null)
+                throw new NoContentException("No se encontró el Lugar solicitado");
 
-                result.NombreMapaReferencial = result.MapaReferencial;
-                string imageNamePath = _containerConfig.ReferencialMapName + result.MapaReferencial;
-                result.MapaReferencial = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new BadRequestException($"No se pudo obtener el lugar {ex.Message}");
-            }
+            string imageNamePath = _containerConfig.ReferencialMapName + result.MapaReferencial;
+            result.UrlImagenMapaReferencial = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+            return result;
         }
 
         public async Task AddLugar(Lugar lugar)
         {
-            if (lugar.MapaReferencial is not null || lugar.MapaReferencial != "")
+            if (!string.IsNullOrEmpty(lugar.Base64ImagenMapaReferencial))
             {
                 string imageNamePath = _containerConfig.ReferencialMapName + lugar.NombreMapaReferencial;
-                var flyerContent = Convert.FromBase64String(lugar.MapaReferencial);
+                var flyerContent = Convert.FromBase64String(lugar.Base64ImagenMapaReferencial);
                 await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }
-            lugar.MapaReferencial = lugar.NombreMapaReferencial;
             await _lugarRepository.AddLugar(lugar);
         }
 
-        public async Task<bool> UpdateLugar(Lugar lugar)
+        public async Task<bool> UpdateLugar(UpdateLugarDto updateLugarDto)
         {
-            if (lugar.MapaReferencial is not null || lugar.MapaReferencial != "")
+            if (!string.IsNullOrEmpty(lugar.Base64ImagenMapaReferencial))
             {
-                string imageNamePath = _containerConfig.ReferencialMapName + lugar.NombreMapaReferencial;
-                var flyerContent = Convert.FromBase64String(lugar.MapaReferencial);
+                string imageNamePath = _containerConfig.ReferencialMapName + updateLugarDto.NombreMapaReferencial;
+                var flyerContent = Convert.FromBase64String(updateLugarDto.Base64ImagenMapaReferencial);
                 await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }
-            lugar.MapaReferencial = lugar.NombreMapaReferencial;
+
+            var lugarBd = await this.GetById(updateLugarDto.IdLugar);
+            var lugar = _mapper.Map(updateLugarDto, lugarBd);
+            
             return await _lugarRepository.UpdateLugar(lugar);
         }
 

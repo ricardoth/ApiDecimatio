@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.Entities
+﻿namespace Decimatio.Domain.DTOs
 {
-    public class Lugar
+    public class UpdateLugarDto
     {
         public int IdLugar { get; set; }
         public int? IdComuna { get; set; }
@@ -13,6 +13,5 @@
         public string? UrlImagenMapaReferencial { get; set; }
         public string? Base64ImagenMapaReferencial { get; set; }
         public bool? Activo { get; set; }
-        public Comuna Comuna { get; set; }  
     }
 }

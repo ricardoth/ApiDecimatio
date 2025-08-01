@@ -15,7 +15,7 @@
                 MinimumLength(3).MaximumLength(500)
                 .When(x => !string.IsNullOrEmpty(x.Ubicacion));
             RuleFor(x => x.Numeracion).
-                MinimumLength(3).MaximumLength(20)
+                MinimumLength(2).MaximumLength(20)
                 .When(x => !string.IsNullOrEmpty(x.Numeracion));
             RuleFor(x => x.MapaReferencial).
                 MinimumLength(3).MaximumLength(200)

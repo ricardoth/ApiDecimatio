@@ -72,7 +72,7 @@ namespace Decimatio.Infraestructure.Services
         {
             if (!string.IsNullOrEmpty(updateLugarDto.Base64ImagenMapaReferencial))
             {
-                string imageNamePath = _containerConfig.ReferencialMapName + updateLugarDto.NombreMapaReferencial;
+                string imageNamePath = _containerConfig.ReferencialMapName + updateLugarDto.MapaReferencial;
                 var flyerContent = Convert.FromBase64String(updateLugarDto.Base64ImagenMapaReferencial);
                 await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }

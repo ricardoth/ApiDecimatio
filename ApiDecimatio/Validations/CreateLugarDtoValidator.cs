@@ -9,6 +9,8 @@
             RuleFor(x => x.NombreLugar).NotEmpty().WithMessage("NombreLugar es obligatorio.");
             RuleFor(x => x.Ubicacion).NotEmpty().WithMessage("Ubicacion es obligatorio.");
             RuleFor(x => x.Numeracion).NotEmpty().WithMessage("Numeracion es obligatorio.");
+            RuleFor(x => x.MapaReferencial).NotEmpty().WithMessage("MapaReferencial es obligatorio.");
+            RuleFor(x => x.Base64ImagenMapaReferencial).NotEmpty().WithMessage("La Imagen es obligatoria.");
         }
     }
 }

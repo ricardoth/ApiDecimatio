@@ -6,13 +6,16 @@
         {
             CreateMap<Ticket, TicketDto>().ReverseMap();
             CreateMap<Ticket, TicketBodyQRDto>().ReverseMap();
-            CreateMap<TicketQR, TicketQRDto>().ReverseMap();    
-            CreateMap<MerchantOrder, MerchantOrderDto>().ReverseMap();  
+            CreateMap<TicketQR, TicketQRDto>().ReverseMap();
+            CreateMap<MerchantOrder, MerchantOrderDto>().ReverseMap();
             CreateMap<Usuario, UsuarioDto>().ReverseMap();
             CreateMap<Usuario, UsuarioLoginDto>().ReverseMap();
             CreateMap<UsuarioPass, UsuarioPassDto>().ReverseMap();
             CreateMap<Evento, EventoDto>().ReverseMap();
-            CreateMap<Evento, EventoPostDto>().ReverseMap();
+            CreateMap<Evento, CreateEventoDto>().ReverseMap();
+
+            CreateMap<UpdateEventoDto, Evento>()
+               .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             CreateMap<Sector, SectorDto>().ReverseMap();
             CreateMap<MedioPago, MedioPagoDto>().ReverseMap();
 

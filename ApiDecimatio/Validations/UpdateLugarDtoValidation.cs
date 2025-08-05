@@ -23,6 +23,9 @@
             RuleFor(x => x.Base64ImagenMapaReferencial).
                 MinimumLength(3)
                 .When(x => !string.IsNullOrEmpty(x.Base64ImagenMapaReferencial));
+            RuleFor(x => x.Activo)
+                .NotNull()
+                .When(x => x.Activo.HasValue);
 
         }
     }

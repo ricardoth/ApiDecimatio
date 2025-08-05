@@ -93,16 +93,10 @@
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] EventoPostDto eventoDto)
+        public async Task<IActionResult> Post([FromBody] CreateEventoDto createEventoDto)
         {
-            var evento = _mapper.Map<Evento>(eventoDto);
-            var validationResult = _validator.Validate(evento);
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
-            await _eventoService.AddEvento(evento);
-
-            var response = new ApiResponse<EventoPostDto>(eventoDto);
+            await _eventoService.AddEvento(createEventoDto);
+            var response = new ApiResponse<CreateEventoDto>(createEventoDto);
             return Ok(response);
         }
 
@@ -110,19 +104,13 @@
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Put(int id, EventoPostDto eventoDto)
+        public async Task<IActionResult> Put(int id, UpdateEventoDto eventoDto)
         { 
             if(id == 0) 
                 return NotFound();
 
-            var evento = _mapper.Map<Evento>(eventoDto);
-            evento.IdEvento = id;
-
-            var validationResult = _validator.Validate(evento);
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
-            var result = await _eventoService.UpdateEvento(evento);
+            eventoDto.IdEvento = id;
+            var result = await _eventoService.UpdateEvento(eventoDto);
             var response = new ApiResponse<bool>(result);
             return Ok(response); 
         }

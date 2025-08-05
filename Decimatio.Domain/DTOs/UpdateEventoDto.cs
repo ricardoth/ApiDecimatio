@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.Entities
+﻿namespace Decimatio.Domain.DTOs
 {
-    public class Evento
+    public class UpdateEventoDto
     {
         public long? IdEvento { get; set; }
         public int? IdLugar { get; set; }
@@ -14,6 +14,5 @@
         public bool? Banner { get; set; }
         public string? ContenidoBanner { get; set; }
         public bool? Activo { get; set; }
-        public Lugar? Lugar { get; set; }
     }
 }

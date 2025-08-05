@@ -214,14 +214,12 @@ ORDER BY AE.IdAccesoEvento DESC</value>
       ,E.IdLugar
       ,E.NombreEvento
       ,E.Descripcion
-      ,E.Direccion
       ,E.Fecha
       ,E.Flyer
-      ,E.ContenidoFlyer
       ,E.Observacion
       ,E.ProductoraResponsable
-	  ,E.Banner
-	  ,E.ContenidoBanner
+   ,E.Banner
+   ,E.ContenidoBanner
       ,E.Activo
       ,L.IdLugar
       ,L.NombreLugar
@@ -229,7 +227,7 @@ ORDER BY AE.IdAccesoEvento DESC</value>
       ,L.Numeracion
       ,L.MapaReferencial
   FROM dbo.Evento E
-	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar</value>
+ INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar</value>
     <comment>Get All Eventos</comment>
   </data>
   <data name="GET_EVENTOS_FILTRO" xml:space="preserve">
@@ -237,45 +235,41 @@ ORDER BY AE.IdAccesoEvento DESC</value>
       ,E.[IdLugar]
       ,E.[NombreEvento]
       ,E.[Descripcion]
-      ,E.[Direccion]
       ,E.[Fecha]
       ,E.[Flyer]
-      ,E.[ContenidoFlyer]
       ,E.[Observacion]
       ,E.[ProductoraResponsable]
       ,E.[Banner]
       ,E.[ContenidoBanner]
       ,E.[Activo]
-	  ,L.IdLugar
-	  ,L.NombreLugar
+   ,L.IdLugar
+   ,L.NombreLugar
   FROM [dbo].[Evento] E
-	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
+ INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
   WHERE (E.NombreEvento LIKE '%'+@Filtro+'%'
-	OR L.NombreLugar LIKE '%'+ @Filtro+'%')
-	AND E.Activo = 1</value>
+ OR L.NombreLugar LIKE '%'+ @Filtro+'%')
+ AND E.Activo = 1</value>
     <comment>Get Eventos por nombre evento o nombre lugar</comment>
   </data>
   <data name="GET_EVENTO_ID" xml:space="preserve">
     <value>SELECT 
-	   E.IdEvento
+    E.IdEvento
       ,E.IdLugar
       ,E.NombreEvento
-	  ,E.Descripcion
-      ,E.Direccion
+   ,E.Descripcion
       ,E.Fecha
-	  ,E.Flyer
-	  ,E.ContenidoFlyer
-	  ,E.Observacion
-	  ,E.ProductoraResponsable
-	    ,E.Banner
-	  ,E.ContenidoBanner
+   ,E.Flyer
+   ,E.Observacion
+   ,E.ProductoraResponsable
+   ,E.Banner
+   ,E.ContenidoBanner
       ,E.Activo
-	  ,L.NombreLugar
-	  ,L.Ubicacion
-	  ,L.Numeracion
-	  ,L.MapaReferencial
+   ,L.NombreLugar
+   ,L.Ubicacion
+   ,L.Numeracion
+   ,L.MapaReferencial
   FROM [dbo].[Evento] E
-	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
+ INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
   WHERE IdEvento = @IdEvento</value>
     <comment>Get Evento By Id</comment>
   </data>
@@ -722,33 +716,29 @@ WHERE IdAccesoEvento = @IdAccesoEvento</value>
   </data>
   <data name="INSERT_EVENTO" xml:space="preserve">
     <value>INSERT INTO dbo.Evento(
-	IdLugar,
-	NombreEvento,
-	Descripcion,
-	Direccion,
-	Fecha,
-	Flyer,
-	ContenidoFlyer,
-	Observacion,
-	ProductoraResponsable,
-	Banner,
-	ContenidoBanner,
-	Activo
+ IdLugar,
+ NombreEvento,
+ Descripcion,
+ Fecha,
+ Flyer,
+ Observacion,
+ ProductoraResponsable,
+ Banner,
+ ContenidoBanner,
+ Activo
 )
 
 VALUES (
-	@IdLugar,
-	@NombreEvento,
-	@Descripcion,
-	@Direccion,
-	@Fecha,
-	@Flyer,
-	@ContenidoFlyer,
-	@Observacion,
-	@ProductoraResponsable,
-	@Banner,
-	@ContenidoBanner,
-	@Activo
+ @IdLugar,
+ @NombreEvento,
+ @Descripcion,
+ @Fecha,
+ @Flyer,
+ @Observacion,
+ @ProductoraResponsable,
+ @Banner,
+ @ContenidoBanner,
+ @Activo
 )</value>
     <comment>Insert Evento</comment>
   </data>
@@ -916,17 +906,15 @@ INSERT INTO [dbo].[Ticket]
   <data name="UPDATE_EVENTO" xml:space="preserve">
     <value>UPDATE dbo.Evento
 SET IdLugar = @IdLugar,
-	NombreEvento = @NombreEvento,
-	Descripcion = @Descripcion,
-	Direccion = @Direccion,
-	Fecha = @Fecha,
-	Flyer = @Flyer,
-	ContenidoFlyer = @ContenidoFlyer,
-	Observacion = @Observacion,
-	ProductoraResponsable = @ProductoraResponsable,
-	Banner = @Banner,
-	ContenidoBanner = @ContenidoBanner,
-	Activo = @Activo
+ NombreEvento = @NombreEvento,
+ Descripcion = @Descripcion,
+ Fecha = @Fecha,
+ Flyer = @Flyer,
+ Observacion = @Observacion,
+ ProductoraResponsable = @ProductoraResponsable,
+ Banner = @Banner,
+ ContenidoBanner = @ContenidoBanner,
+ Activo = @Activo
 WHERE IdEvento = @IdEvento
 
 

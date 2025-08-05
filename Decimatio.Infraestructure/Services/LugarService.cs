@@ -1,4 +1,5 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using Decimatio.Domain.DTOs;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Decimatio.Infraestructure.Services
 {
@@ -9,18 +10,21 @@ namespace Decimatio.Infraestructure.Services
         private readonly BlobContainerConfig _containerConfig;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateLugarDto> _createLugarDtoValidator;
+        private readonly IValidator<UpdateLugarDto> _updateLugarDtoValidtor;
 
         public LugarService(ILugarRepository lugarRepository, 
             IBlobFilesService blobFilesService, 
             BlobContainerConfig containerConfig, 
             IMapper mapper,
-            IValidator<CreateLugarDto> createLugarDtoValidator)
+            IValidator<CreateLugarDto> createLugarDtoValidator,
+            IValidator<UpdateLugarDto> updateLugarDtoValidator)
         {
             _lugarRepository = lugarRepository;
             _blobFilesService = blobFilesService;
             _containerConfig = containerConfig;
             _mapper = mapper;
             _createLugarDtoValidator = createLugarDtoValidator;
+            _updateLugarDtoValidtor = updateLugarDtoValidator;
         }
 
         public async Task<IEnumerable<LugarDto>> GetAllLugares()
@@ -70,6 +74,12 @@ namespace Decimatio.Infraestructure.Services
 
         public async Task<bool> UpdateLugar(UpdateLugarDto updateLugarDto)
         {
+            var validations = _updateLugarDtoValidtor.Validate(updateLugarDto);
+            if (!validations.IsValid)
+            {
+                var errores = validations.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").ToList();
+                throw new ValidationResultException(errores);
+            }
             if (!string.IsNullOrEmpty(updateLugarDto.Base64ImagenMapaReferencial))
             {
                 string imageNamePath = _containerConfig.ReferencialMapName + updateLugarDto.MapaReferencial;

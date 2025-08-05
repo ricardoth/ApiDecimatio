@@ -57,7 +57,6 @@
                 { "@IdLugar", evento.IdLugar },
                 { "@NombreEvento", evento.NombreEvento },
                 { "@Descripcion", evento.Descripcion },
-                { "@Direccion", evento.Direccion },
                 { "@Fecha", evento.Fecha },
                 { "@Flyer", evento.Flyer },
                 { "@ContenidoFlyer", evento.ContenidoFlyer },

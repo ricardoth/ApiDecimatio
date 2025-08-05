@@ -196,25 +196,23 @@ namespace Decimatio.Infraestructure.Repositories {
         
         /// <summary>
         ///   Busca una cadena traducida similar a SELECT 
-        ///	   E.IdEvento
+        ///    E.IdEvento
         ///      ,E.IdLugar
         ///      ,E.NombreEvento
-        ///	  ,E.Descripcion
-        ///      ,E.Direccion
+        ///   ,E.Descripcion
         ///      ,E.Fecha
-        ///	  ,E.Flyer
-        ///	  ,E.ContenidoFlyer
-        ///	  ,E.Observacion
-        ///	  ,E.ProductoraResponsable
-        ///	    ,E.Banner
-        ///	  ,E.ContenidoBanner
+        ///   ,E.Flyer
+        ///   ,E.Observacion
+        ///   ,E.ProductoraResponsable
+        ///   ,E.Banner
+        ///   ,E.ContenidoBanner
         ///      ,E.Activo
-        ///	  ,L.NombreLugar
-        ///	  ,L.Ubicacion
-        ///	  ,L.Numeracion
-        ///	  ,L.MapaReferencial
+        ///   ,L.NombreLugar
+        ///   ,L.Ubicacion
+        ///   ,L.Numeracion
+        ///   ,L.MapaReferencial
         ///  FROM [dbo].[Evento] E
-        ///	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
+        /// INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
         ///  WHERE IdEvento = @IdEvento.
         /// </summary>
         internal static string GET_EVENTO_ID {
@@ -228,14 +226,12 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,E.IdLugar
         ///      ,E.NombreEvento
         ///      ,E.Descripcion
-        ///      ,E.Direccion
         ///      ,E.Fecha
         ///      ,E.Flyer
-        ///      ,E.ContenidoFlyer
         ///      ,E.Observacion
         ///      ,E.ProductoraResponsable
-        ///	  ,E.Banner
-        ///	  ,E.ContenidoBanner
+        ///   ,E.Banner
+        ///   ,E.ContenidoBanner
         ///      ,E.Activo
         ///      ,L.IdLugar
         ///      ,L.NombreLugar
@@ -243,7 +239,7 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,L.Numeracion
         ///      ,L.MapaReferencial
         ///  FROM dbo.Evento E
-        ///	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar.
+        /// INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar.
         /// </summary>
         internal static string GET_EVENTOS {
             get {
@@ -256,22 +252,20 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,E.[IdLugar]
         ///      ,E.[NombreEvento]
         ///      ,E.[Descripcion]
-        ///      ,E.[Direccion]
         ///      ,E.[Fecha]
         ///      ,E.[Flyer]
-        ///      ,E.[ContenidoFlyer]
         ///      ,E.[Observacion]
         ///      ,E.[ProductoraResponsable]
         ///      ,E.[Banner]
         ///      ,E.[ContenidoBanner]
         ///      ,E.[Activo]
-        ///	  ,L.IdLugar
-        ///	  ,L.NombreLugar
+        ///   ,L.IdLugar
+        ///   ,L.NombreLugar
         ///  FROM [dbo].[Evento] E
-        ///	INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
+        /// INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar
         ///  WHERE (E.NombreEvento LIKE &apos;%&apos;+@Filtro+&apos;%&apos;
-        ///	OR L.NombreLugar LIKE &apos;%&apos;+ @Filtro+&apos;%&apos;)
-        ///	AND E.Activo =  [resto de la cadena truncado]&quot;;.
+        /// OR L.NombreLugar LIKE &apos;%&apos;+ @Filtro+&apos;%&apos;)
+        /// AND E.Activo = 1.
         /// </summary>
         internal static string GET_EVENTOS_FILTRO {
             get {
@@ -782,33 +776,29 @@ namespace Decimatio.Infraestructure.Repositories {
         
         /// <summary>
         ///   Busca una cadena traducida similar a INSERT INTO dbo.Evento(
-        ///	IdLugar,
-        ///	NombreEvento,
-        ///	Descripcion,
-        ///	Direccion,
-        ///	Fecha,
-        ///	Flyer,
-        ///	ContenidoFlyer,
-        ///	Observacion,
-        ///	ProductoraResponsable,
-        ///	Banner,
-        ///	ContenidoBanner,
-        ///	Activo
+        /// IdLugar,
+        /// NombreEvento,
+        /// Descripcion,
+        /// Fecha,
+        /// Flyer,
+        /// Observacion,
+        /// ProductoraResponsable,
+        /// Banner,
+        /// ContenidoBanner,
+        /// Activo
         ///)
         ///
         ///VALUES (
-        ///	@IdLugar,
-        ///	@NombreEvento,
-        ///	@Descripcion,
-        ///	@Direccion,
-        ///	@Fecha,
-        ///	@Flyer,
-        ///	@ContenidoFlyer,
-        ///	@Observacion,
-        ///	@ProductoraResponsable,
-        ///	@Banner,
-        ///	@ContenidoBanner,
-        ///	@Activo
+        /// @IdLugar,
+        /// @NombreEvento,
+        /// @Descripcion,
+        /// @Fecha,
+        /// @Flyer,
+        /// @Observacion,
+        /// @ProductoraResponsable,
+        /// @Banner,
+        /// @ContenidoBanner,
+        /// @Activo
         ///).
         /// </summary>
         internal static string INSERT_EVENTO {
@@ -1036,17 +1026,15 @@ namespace Decimatio.Infraestructure.Repositories {
         /// <summary>
         ///   Busca una cadena traducida similar a UPDATE dbo.Evento
         ///SET IdLugar = @IdLugar,
-        ///	NombreEvento = @NombreEvento,
-        ///	Descripcion = @Descripcion,
-        ///	Direccion = @Direccion,
-        ///	Fecha = @Fecha,
-        ///	Flyer = @Flyer,
-        ///	ContenidoFlyer = @ContenidoFlyer,
-        ///	Observacion = @Observacion,
-        ///	ProductoraResponsable = @ProductoraResponsable,
-        ///	Banner = @Banner,
-        ///	ContenidoBanner = @ContenidoBanner,
-        ///	Activo = @Activo
+        /// NombreEvento = @NombreEvento,
+        /// Descripcion = @Descripcion,
+        /// Fecha = @Fecha,
+        /// Flyer = @Flyer,
+        /// Observacion = @Observacion,
+        /// ProductoraResponsable = @ProductoraResponsable,
+        /// Banner = @Banner,
+        /// ContenidoBanner = @ContenidoBanner,
+        /// Activo = @Activo
         ///WHERE IdEvento = @IdEvento
         ///
         ///

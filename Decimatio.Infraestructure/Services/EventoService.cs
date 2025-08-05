@@ -1,4 +1,7 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using Decimatio.Domain.DTOs;
+using FluentValidation;
+
+namespace Decimatio.Infraestructure.Services
 {
     internal sealed class EventoService : IEventoService
     {
@@ -6,16 +9,25 @@
         private readonly IBlobFilesService _blobFilesService;
         private readonly BlobContainerConfig _containerConfig;
         private readonly PaginationOptions _paginationOptions;
+        private readonly IValidator<CreateEventoDto> _createEventoValidator;
+        private readonly IValidator<UpdateEventoDto> _updateEventoValidator;
+        private readonly IMapper _mapper;
 
-        public EventoService(IEventoRepository eventoRepository, 
-            IBlobFilesService blobFilesService, 
+        public EventoService(IEventoRepository eventoRepository,
+            IBlobFilesService blobFilesService,
             BlobContainerConfig containerConfig,
-            IOptions<PaginationOptions> paginationOptions)
+            IOptions<PaginationOptions> paginationOptions,
+            IValidator<CreateEventoDto> createEventoValidator,
+            IValidator<UpdateEventoDto> updateEventoValidator,
+            IMapper mapper)
         {
             _eventoRepository = eventoRepository;
             _blobFilesService = blobFilesService;
             _containerConfig = containerConfig;
             _paginationOptions = paginationOptions.Value;
+            _createEventoValidator = createEventoValidator;
+            _updateEventoValidator = updateEventoValidator; 
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Evento>> GetAllEventos()
@@ -45,27 +57,43 @@
             return result;
         }
 
-        public async Task AddEvento(Evento evento)
+        public async Task AddEvento(CreateEventoDto createEventoDto)
         {
-            if (evento.Flyer != null || evento.Flyer != "") 
+            var validations = _createEventoValidator.Validate(createEventoDto);
+            if (!validations.IsValid)
             {
-                string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
-                var flyerContent = Convert.FromBase64String(evento.ContenidoFlyer);
+                var errores = validations.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").ToList();
+                throw new ValidationResultException(errores);
+            }
+
+            if (createEventoDto.Flyer != null || createEventoDto.Flyer != "") 
+            {
+                string imageNamePath = _containerConfig.FolderFlyerName + createEventoDto.Flyer;
+                var flyerContent = Convert.FromBase64String(createEventoDto.ContenidoFlyer);
                 await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }
-            evento.ContenidoFlyer = "";
+
+            var evento = _mapper.Map<Evento>(createEventoDto);
             await _eventoRepository.AddEvento(evento);
         }
 
-        public async Task<bool> UpdateEvento(Evento evento)
+        public async Task<bool> UpdateEvento(UpdateEventoDto updateEventoDto)
         {
-            if (evento.Flyer != null || evento.Flyer != "")
+            var validations = _updateEventoValidator.Validate(updateEventoDto);
+            if (!validations.IsValid)
             {
-                string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
-                var flyerContent = Convert.FromBase64String(evento.ContenidoFlyer);
+                var errores = validations.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").ToList();
+                throw new ValidationResultException(errores);
+            }
+
+            if (updateEventoDto.Flyer != null || updateEventoDto.Flyer != "")
+            {
+                string imageNamePath = _containerConfig.FolderFlyerName + updateEventoDto.Flyer;
+                var flyerContent = Convert.FromBase64String(updateEventoDto.ContenidoFlyer);
                 await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }
-            evento.ContenidoFlyer = "";
+
+            var evento = _mapper.Map<Evento>(updateEventoDto);
             return await _eventoRepository.UpdateEvento(evento);
         }
 

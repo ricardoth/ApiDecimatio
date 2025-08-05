@@ -21,7 +21,7 @@
                 )).ToList();
         }
 
-        public async Task<Evento> GetById(int idEvento)
+        public async Task<Evento> GetById(long idEvento)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
             var result = (await conn.QueryAsync<Evento, Lugar, Evento>(

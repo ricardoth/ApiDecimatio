@@ -1,4 +1,5 @@
 ﻿using Decimatio.Domain.DTOs;
+using Decimatio.Domain.Entities;
 using FluentValidation;
 
 namespace Decimatio.Infraestructure.Services
@@ -66,7 +67,7 @@ namespace Decimatio.Infraestructure.Services
                 throw new ValidationResultException(errores);
             }
 
-            if (createEventoDto.Flyer != null || createEventoDto.Flyer != "") 
+            if (!string.IsNullOrEmpty(createEventoDto.Base64ImagenFlyer)) 
             {
                 string imageNamePath = _containerConfig.FolderFlyerName + createEventoDto.Flyer;
                 var flyerContent = Convert.FromBase64String(createEventoDto.Base64ImagenFlyer);
@@ -86,14 +87,15 @@ namespace Decimatio.Infraestructure.Services
                 throw new ValidationResultException(errores);
             }
 
-            if (updateEventoDto.Flyer != null || updateEventoDto.Flyer != "")
+            if (!string.IsNullOrEmpty(updateEventoDto.Base64ImagenFlyer))
             {
                 string imageNamePath = _containerConfig.FolderFlyerName + updateEventoDto.Flyer;
                 var flyerContent = Convert.FromBase64String(updateEventoDto.Base64ImagenFlyer);
                 await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }
 
-            var evento = _mapper.Map<Evento>(updateEventoDto);
+            var eventoBd = await _eventoRepository.GetById((long)updateEventoDto.IdEvento);
+            var evento = _mapper.Map(updateEventoDto, eventoBd);
             return await _eventoRepository.UpdateEvento(evento);
         }
 

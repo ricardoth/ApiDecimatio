@@ -17,6 +17,11 @@
             CreateMap<UpdateEventoDto, Evento>()
                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             CreateMap<Sector, SectorDto>().ReverseMap();
+            CreateMap<Sector, CreateSectorDto>().ReverseMap();
+            CreateMap<UpdateSectorDto, Sector>()
+               .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+
             CreateMap<MedioPago, MedioPagoDto>().ReverseMap();
 
             CreateMap<UpdateLugarDto, Lugar>()

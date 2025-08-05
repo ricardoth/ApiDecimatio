@@ -34,7 +34,7 @@
                 splitOn: "IdEvento")).ToList();
         }
 
-        public async Task<Sector> GetById(int idSector)
+        public async Task<Sector> GetById(long idSector)
         {
             var dictionary = new Dictionary<string, object>
             {

@@ -3,37 +3,73 @@
     internal sealed class SectorService : ISectorService
     {
 		private readonly ISectorRepository _sectorRepository;
+        private readonly IValidator<CreateSectorDto> _createSectorValidator;
+        private readonly IValidator<UpdateSectorDto> _updateSectorValidator;
+        private readonly IMapper _mapper;
 
-        public SectorService(ISectorRepository sectorRepository)
+        public SectorService(ISectorRepository sectorRepository,
+            IValidator<CreateSectorDto> createSectorValidator,
+            IValidator<UpdateSectorDto> updateSectorValidator,
+            IMapper mapper)
         {
             _sectorRepository = sectorRepository;
+            _createSectorValidator = createSectorValidator;
+            _updateSectorValidator = updateSectorValidator;
+            _mapper = mapper;
+
         }
 
-        public async Task<IEnumerable<Sector>> GetAllSectores()
+        public async Task<IEnumerable<SectorDto>> GetAllSectores()
         {
             var result = await _sectorRepository.GetAllSectores();
-            return result;
+            var sectores = _mapper.Map<IEnumerable<SectorDto>>(result);
+            return sectores;
         }
 
-        public async Task<Sector> GetById(int idSector)
+        public async Task<SectorDto> GetById(long idSector)
         {
             var result = await _sectorRepository.GetById(idSector);
-            return result;  
+            if (result is null)
+                throw new NotFoundException($"No se encontró el sector indicado");
+
+            var sector = _mapper.Map<SectorDto>(result);
+            return sector;  
         }
 
-        public async Task<IEnumerable<Sector>> GetSectoresByEvento(int idEvento)
+        public async Task<IEnumerable<SectorDto>> GetSectoresByEvento(int idEvento)
         {
             var result = await _sectorRepository.GetSectoresByEvento(idEvento);
-            return result;
+            if (!result.Any())
+                throw new NotFoundException($"No se encontraron sectores del evento solicitado");
+
+            var sectores = _mapper.Map<IEnumerable<SectorDto>>(result);
+            return sectores;
         }
 
-        public async Task AddSector(Sector sector)
+        public async Task AddSector(CreateSectorDto createSectorDto)
         {
+            var validationResult = _createSectorValidator.Validate(createSectorDto);
+            if (!validationResult.IsValid)
+            {
+                var errores = validationResult.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").ToList();
+                throw new ValidationResultException(errores);
+            }
+
+            var sector = _mapper.Map<Sector>(createSectorDto);
             await _sectorRepository.AddSector(sector);
         }
 
-        public async Task<bool> UpdateSector(Sector sector)
+        public async Task<bool> UpdateSector(UpdateSectorDto updateSectorDto)
         {
+            var validationResult = _updateSectorValidator.Validate(updateSectorDto);
+            if (!validationResult.IsValid)
+            {
+                var errores = validationResult.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").ToList();
+                throw new ValidationResultException(errores);
+            }
+
+            var sectorBd = await _sectorRepository.GetById((long)updateSectorDto.IdSector);
+            var sector = _mapper.Map(updateSectorDto, sectorBd);
             var result = await _sectorRepository.UpdateSector(sector);
             return result;
         }

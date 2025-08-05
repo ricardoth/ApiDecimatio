@@ -4,7 +4,7 @@
     {
         Task<IEnumerable<Sector>> GetAllSectores();
         Task<IEnumerable<Sector>> GetSectoresByEvento(int idEvento);
-        Task<Sector> GetById(int idSector);
+        Task<Sector> GetById(long idSector);
         Task<int> AddSector(Sector sector);
         Task<bool> UpdateSector(Sector sector);
         Task<bool> DeleteSector(int idSector);

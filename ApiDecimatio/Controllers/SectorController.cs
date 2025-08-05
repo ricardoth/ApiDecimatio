@@ -62,16 +62,10 @@
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] SectorDto sectorDto)
+        public async Task<IActionResult> Post([FromBody] CreateSectorDto createSectorDto)
         {
-            var sector = _mapper.Map<Sector>(sectorDto);
-            var validationResult = _validator.Validate(sector);
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
-            await _sectorService.AddSector(sector);
-
-            var response = new ApiResponse<SectorDto>(sectorDto);
+            await _sectorService.AddSector(createSectorDto);
+            var response = new ApiResponse<CreateSectorDto>(createSectorDto);
             return Ok(response);
         }
 
@@ -79,19 +73,12 @@
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Put(int id, SectorDto sectorDto) 
+        public async Task<IActionResult> Put(int id, UpdateSectorDto updateSectorDto) 
         {
             if (id <= 0)
                 return NotFound();
 
-            var sector = _mapper.Map<Sector>(sectorDto);
-            sector.IdSector = id;
-
-            var validation = _validator.Validate(sector);
-            if (!validation.IsValid)
-                return BadRequest(validation.Errors);
-
-            var result = await _sectorService.UpdateSector(sector);
+            var result = await _sectorService.UpdateSector(updateSectorDto);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }

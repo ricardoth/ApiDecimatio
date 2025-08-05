@@ -1,18 +1,16 @@
 ﻿namespace Decimatio.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EventoController : ControllerBase
     {
         private readonly IEventoService _eventoService;
-        private readonly IValidator<Evento> _validator;
         private readonly IMapper _mapper;
 
-        public EventoController(IEventoService eventoService, IValidator<Evento> validator, IMapper mapper)
+        public EventoController(IEventoService eventoService, IMapper mapper)
         {
             _eventoService = eventoService;
-            _validator = validator;
             _mapper = mapper;
         }
 

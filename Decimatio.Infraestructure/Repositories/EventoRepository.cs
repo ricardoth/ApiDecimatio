@@ -59,7 +59,6 @@
                 { "@Descripcion", evento.Descripcion },
                 { "@Fecha", evento.Fecha },
                 { "@Flyer", evento.Flyer },
-                { "@ContenidoFlyer", evento.ContenidoFlyer },
                 { "@Observacion", evento.Observacion },
                 { "@ProductoraResponsable", evento.ProductoraResponsable },
                 { "@Banner", evento.Banner },

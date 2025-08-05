@@ -40,7 +40,7 @@ namespace Decimatio.Infraestructure.Services
             var tasks = result.Select(async evento =>
             {
                 string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
-                evento.ContenidoFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                evento.UrlImagenFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
                 return evento;
             });
 
@@ -53,7 +53,7 @@ namespace Decimatio.Infraestructure.Services
 				throw new Exception("Ha ocurrido un error al obtener el evento desde el Repositorio");
 
 			string imageNamePath = _containerConfig.FolderFlyerName + result.Flyer;
-            result.ContenidoFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+            result.UrlImagenFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
             return result;
         }
 
@@ -69,7 +69,7 @@ namespace Decimatio.Infraestructure.Services
             if (createEventoDto.Flyer != null || createEventoDto.Flyer != "") 
             {
                 string imageNamePath = _containerConfig.FolderFlyerName + createEventoDto.Flyer;
-                var flyerContent = Convert.FromBase64String(createEventoDto.ContenidoFlyer);
+                var flyerContent = Convert.FromBase64String(createEventoDto.Base64ImagenFlyer);
                 await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }
 
@@ -89,7 +89,7 @@ namespace Decimatio.Infraestructure.Services
             if (updateEventoDto.Flyer != null || updateEventoDto.Flyer != "")
             {
                 string imageNamePath = _containerConfig.FolderFlyerName + updateEventoDto.Flyer;
-                var flyerContent = Convert.FromBase64String(updateEventoDto.ContenidoFlyer);
+                var flyerContent = Convert.FromBase64String(updateEventoDto.Base64ImagenFlyer);
                 await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
             }
 
@@ -108,7 +108,7 @@ namespace Decimatio.Infraestructure.Services
             var tasks = result.Select(async evento =>
             {
                 string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
-                evento.ContenidoFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                evento.UrlImagenFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
                 return evento;
             });
 
@@ -137,7 +137,7 @@ namespace Decimatio.Infraestructure.Services
             foreach (var evento in pagedList)
             {
                 string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
-                evento.ContenidoFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                evento.UrlImagenFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
             }
             return pagedList;
         }

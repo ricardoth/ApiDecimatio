@@ -9,7 +9,6 @@
         public string? Numeracion { get; set; }
         public DateTime? FechaCreacion { get; set; }
         public string? MapaReferencial { get; set; }
-        public string? NombreMapaReferencial { get; set; }
         public string? UrlImagenMapaReferencial { get; set; }
         public string? Base64ImagenMapaReferencial { get; set; }
         public bool? Activo { get; set; }

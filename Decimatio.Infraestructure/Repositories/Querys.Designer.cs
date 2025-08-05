@@ -230,14 +230,15 @@ namespace Decimatio.Infraestructure.Repositories {
         ///      ,E.Flyer
         ///      ,E.Observacion
         ///      ,E.ProductoraResponsable
-        ///   ,E.Banner
-        ///   ,E.ContenidoBanner
+        ///      ,E.Banner
+        ///      ,E.ContenidoBanner
         ///      ,E.Activo
         ///      ,L.IdLugar
         ///      ,L.NombreLugar
         ///      ,L.Ubicacion
         ///      ,L.Numeracion
         ///      ,L.MapaReferencial
+        ///      ,L.Activo
         ///  FROM dbo.Evento E
         /// INNER JOIN dbo.Lugar L ON L.IdLugar = E.IdLugar.
         /// </summary>

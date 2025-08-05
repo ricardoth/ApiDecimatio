@@ -1,8 +1,8 @@
 ﻿namespace Decimatio.WebApi.Validations
 {
-    public class UpdateLugarDtoValidation : AbstractValidator<UpdateLugarDto>
+    public class UpdateLugarDtoValidator : AbstractValidator<UpdateLugarDto>
     {
-        public UpdateLugarDtoValidation()
+        public UpdateLugarDtoValidator()
         {
             RuleFor(x => x.IdComuna)
                 .GreaterThan(0).WithMessage("IdComuna debe ser un número positivo.")

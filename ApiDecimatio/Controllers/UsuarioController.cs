@@ -81,14 +81,13 @@
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] UsuarioDto usuarioDto)
+        public async Task<IActionResult> Post([FromBody] CreateUsuarioDto createUsuarioDto)
         {
-            if (usuarioDto.Contrasena is not null) 
-                usuarioDto.Contrasena = _passwordService.Hash(usuarioDto.Contrasena);
+            if (createUsuarioDto.Contrasena is not null)
+                createUsuarioDto.Contrasena = _passwordService.Hash(createUsuarioDto.Contrasena);
 
-            var usuario = _mapper.Map<Usuario>(usuarioDto);
-            await _usuarioService.AddUsuario(usuario);
-            var response = new ApiResponse<UsuarioDto>(usuarioDto);
+            await _usuarioService.AddUsuario(createUsuarioDto);
+            var response = new ApiResponse<CreateUsuarioDto>(createUsuarioDto);
             return Ok(response);
         }
 

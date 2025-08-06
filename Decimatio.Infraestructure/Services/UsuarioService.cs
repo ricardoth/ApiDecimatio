@@ -4,18 +4,21 @@
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly PaginationOptions _paginationOptions;
-        private readonly IValidator<Usuario> _validator;
+        private readonly IValidator<CreateUsuarioDto> _createUsuarioValidator;
         private readonly IPasswordService _passwordService;
+        private readonly IMapper _mapper;
 
         public UsuarioService(IUsuarioRepository usuarioRepository, 
-            IOptions<PaginationOptions> paginationOptions, 
-            IValidator<Usuario> validator,
-            IPasswordService passwordService) 
+            IOptions<PaginationOptions> paginationOptions,
+            IValidator<CreateUsuarioDto> createUsuarioValidator,
+            IPasswordService passwordService,
+            IMapper mapper) 
         {
             _usuarioRepository = usuarioRepository;
             _paginationOptions = paginationOptions.Value;
-            _validator = validator;
+            _createUsuarioValidator = createUsuarioValidator;
             _passwordService = passwordService;
+            _mapper = mapper;
         }
 
         public async Task<PagedList<Usuario>> GetAllUsers(UsuarioQueryFilter filtros)
@@ -51,18 +54,19 @@
             return result;
         }
 
-        public async Task AddUsuario(Usuario usuario)
+        public async Task AddUsuario(CreateUsuarioDto createUsuarioDto)
         {
-            var validationResult = _validator.Validate(usuario);
+            var validationResult = _createUsuarioValidator.Validate(createUsuarioDto);
             if (!validationResult.IsValid) {
                 var errores = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
                 throw new ValidationResultException(errores);
             }
 
-            var rutDv = usuario.Rut + usuario.DV;
-            Usuario? user = null; 
+            var rutDv = createUsuarioDto.Rut + createUsuarioDto.DV;
+            Usuario? user = null;
+            var usuario = _mapper.Map<Usuario>(createUsuarioDto);
 
-            if (!(bool)usuario.EsExtranjero)
+            if (!(bool)createUsuarioDto.EsExtranjero)
                 user = await _usuarioRepository.GetByRutDv(rutDv);
             else 
                 user = await _usuarioRepository.GetByCorreo(usuario);

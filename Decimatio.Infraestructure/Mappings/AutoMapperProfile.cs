@@ -9,6 +9,8 @@
             CreateMap<TicketQR, TicketQRDto>().ReverseMap();
             CreateMap<MerchantOrder, MerchantOrderDto>().ReverseMap();
             CreateMap<Usuario, UsuarioDto>().ReverseMap();
+            CreateMap<Usuario, CreateUsuarioDto>().ReverseMap();
+
             CreateMap<Usuario, UsuarioLoginDto>().ReverseMap();
             CreateMap<UsuarioPass, UsuarioPassDto>().ReverseMap();
             CreateMap<Evento, EventoDto>().ReverseMap();

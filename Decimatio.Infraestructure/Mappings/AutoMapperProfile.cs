@@ -11,6 +11,9 @@
             CreateMap<Usuario, UsuarioDto>().ReverseMap();
             CreateMap<Usuario, CreateUsuarioDto>().ReverseMap();
 
+            CreateMap<UpdateUsuarioDto, Usuario>()
+               .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
             CreateMap<Usuario, UsuarioLoginDto>().ReverseMap();
             CreateMap<UsuarioPass, UsuarioPassDto>().ReverseMap();
             CreateMap<Evento, EventoDto>().ReverseMap();

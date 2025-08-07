@@ -8,7 +8,7 @@ namespace Decimatio.Domain.Interfaces
         Task<IEnumerable<Usuario>> GetAllUsersFilter(string filtro);
         Task<Usuario> GetById(long idUsuario);
         Task AddUsuario(CreateUsuarioDto createUsuarioDto);
-        Task<bool> UpdateUsuario(Usuario usuario);
+        Task<bool> UpdateUsuario(UpdateUsuarioDto updateUsuarioDto);
         Task<bool> DeleteUsuario(long idUsuario);
         Task<Usuario> Login(Usuario usuario);
         Task<bool> ChangePassword(UsuarioPass usuarioDto);

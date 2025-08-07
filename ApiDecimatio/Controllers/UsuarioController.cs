@@ -95,26 +95,26 @@
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Put(int id, UsuarioDto usuarioDto)
+        public async Task<IActionResult> Put(int id, UpdateUsuarioDto updateUsuarioDto)
         {
             if (id <= 0)
                 return NotFound("No se encuentra el elemento");
 
-            if (usuarioDto.Contrasena is not null)
-                usuarioDto.Contrasena = _passwordService.Hash(usuarioDto.Contrasena);
+            if (updateUsuarioDto.Contrasena is not null)
+                updateUsuarioDto.Contrasena = _passwordService.Hash(updateUsuarioDto.Contrasena);
 
-            var usuario = _mapper.Map<Usuario>(usuarioDto);
-            usuario.IdUsuario = id;
+            //var usuario = _mapper.Map<Usuario>(updateUsuarioDto);
+            //usuario.IdUsuario = id;
 
-            var validationResult = _validator.Validate(usuario);
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
+            //var validationResult = _validator.Validate(usuario);
+            //if (!validationResult.IsValid)
+            //    return BadRequest(validationResult.Errors);
 
-            var userBd = await _usuarioService.GetById(usuario.IdUsuario);
-            if (userBd == null)
-                return BadRequest("El Usuario no existe en la BD");
+            //var userBd = await _usuarioService.GetById(usuario.IdUsuario);
+            //if (userBd == null)
+            //    return BadRequest("El Usuario no existe en la BD");
 
-            var result = await _usuarioService.UpdateUsuario(usuario);
+            var result = await _usuarioService.UpdateUsuario(updateUsuarioDto);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }

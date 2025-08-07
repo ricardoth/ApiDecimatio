@@ -48,8 +48,9 @@
             return result;  
         }
 
-        public async Task<bool> UpdateUsuario(Usuario usuario)
+        public async Task<bool> UpdateUsuario(UpdateUsuarioDto updateUsuarioDto)
         {
+            var usuario = _mapper.Map<Usuario>(updateUsuarioDto);
             var result = await _usuarioRepository.UpdateUsuario(usuario);
             return result;
         }

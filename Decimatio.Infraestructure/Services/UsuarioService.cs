@@ -106,8 +106,9 @@
             return result;
         }
 
-        public async Task<Usuario> Login(Usuario usuario)
+        public async Task<Usuario> Login(UsuarioLoginDto usuarioLoginDto)
         {
+            var usuario = _mapper.Map<Usuario>(usuarioLoginDto);
             var result = await _usuarioRepository.Login(usuario);
             if (result is null)
                 throw new BadRequestException("El Usuario no existe en nuestros registros, por favor registrese");

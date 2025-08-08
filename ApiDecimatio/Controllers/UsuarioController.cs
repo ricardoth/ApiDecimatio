@@ -121,8 +121,7 @@
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Login([FromBody] UsuarioLoginDto login)
         { 
-            var usuario = _mapper.Map<Usuario>(login);
-            var result = await _usuarioService.Login(usuario);
+            var result = await _usuarioService.Login(login);
             var usuarioDto = _mapper.Map<UsuarioDto>(result);
             var response = new ApiResponse<UsuarioDto>(usuarioDto);
             return Ok(response);

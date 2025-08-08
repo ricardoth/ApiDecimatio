@@ -3,7 +3,7 @@
     public class Usuario
     {
         public long IdUsuario { get; set; }
-        public short IdTipoUsuario { get; set; }
+        public int? IdTipoUsuario { get; set; }
         public int? Rut { get; set; }
         public string? DV { get; set; }
         public string? Nombres { get; set; }

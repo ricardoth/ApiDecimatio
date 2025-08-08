@@ -7,16 +7,11 @@
     {
         private readonly IUsuarioService _usuarioService;
         private readonly IMapper _mapper;
-        private readonly IValidator<Usuario> _validator;
-        private readonly IPasswordService _passwordService;
 
-        public UsuarioController(IUsuarioService usuarioService, IMapper mapper, 
-            IValidator<Usuario> validator, IPasswordService passwordService)
+        public UsuarioController(IUsuarioService usuarioService, IMapper mapper)
         {
             _usuarioService = usuarioService;
             _mapper = mapper;
-            _validator = validator;
-            _passwordService = passwordService;
         }
 
         [HttpGet]
@@ -83,9 +78,6 @@
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post([FromBody] CreateUsuarioDto createUsuarioDto)
         {
-            if (createUsuarioDto.Contrasena is not null)
-                createUsuarioDto.Contrasena = _passwordService.Hash(createUsuarioDto.Contrasena);
-
             await _usuarioService.AddUsuario(createUsuarioDto);
             var response = new ApiResponse<CreateUsuarioDto>(createUsuarioDto);
             return Ok(response);
@@ -100,20 +92,7 @@
             if (id <= 0)
                 return NotFound("No se encuentra el elemento");
 
-            if (updateUsuarioDto.Contrasena is not null)
-                updateUsuarioDto.Contrasena = _passwordService.Hash(updateUsuarioDto.Contrasena);
-
-            //var usuario = _mapper.Map<Usuario>(updateUsuarioDto);
-            //usuario.IdUsuario = id;
-
-            //var validationResult = _validator.Validate(usuario);
-            //if (!validationResult.IsValid)
-            //    return BadRequest(validationResult.Errors);
-
-            //var userBd = await _usuarioService.GetById(usuario.IdUsuario);
-            //if (userBd == null)
-            //    return BadRequest("El Usuario no existe en la BD");
-
+            updateUsuarioDto.IdUsuario = id;
             var result = await _usuarioService.UpdateUsuario(updateUsuarioDto);
             var response = new ApiResponse<bool>(result);
             return Ok(response);

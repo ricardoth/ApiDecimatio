@@ -5,18 +5,21 @@
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly PaginationOptions _paginationOptions;
         private readonly IValidator<CreateUsuarioDto> _createUsuarioValidator;
+        private readonly IValidator<UpdateUsuarioDto> _updateUsuarioValidator;
         private readonly IPasswordService _passwordService;
         private readonly IMapper _mapper;
 
         public UsuarioService(IUsuarioRepository usuarioRepository, 
             IOptions<PaginationOptions> paginationOptions,
             IValidator<CreateUsuarioDto> createUsuarioValidator,
+            IValidator<UpdateUsuarioDto> updateUsuarioValidator,
             IPasswordService passwordService,
             IMapper mapper) 
         {
             _usuarioRepository = usuarioRepository;
             _paginationOptions = paginationOptions.Value;
             _createUsuarioValidator = createUsuarioValidator;
+            _updateUsuarioValidator = updateUsuarioValidator;   
             _passwordService = passwordService;
             _mapper = mapper;
         }
@@ -45,12 +48,25 @@
         public async Task<Usuario> GetById(long idUsuario)
         {
             var result = await _usuarioRepository.GetById(idUsuario);
+            if (result is null)
+                throw new NotFoundException($"No se encontró el usuario solicidato");
             return result;  
         }
 
         public async Task<bool> UpdateUsuario(UpdateUsuarioDto updateUsuarioDto)
         {
-            var usuario = _mapper.Map<Usuario>(updateUsuarioDto);
+            var validationResult = _updateUsuarioValidator.Validate(updateUsuarioDto);
+            if (!validationResult.IsValid)
+            {
+                var errores = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                throw new ValidationResultException(errores);
+            }
+
+            if (updateUsuarioDto.Contrasena is not null)
+                updateUsuarioDto.Contrasena = _passwordService.Hash(updateUsuarioDto.Contrasena);
+
+            var usuarioBD = await _usuarioRepository.GetById(updateUsuarioDto.IdUsuario);
+            var usuario = _mapper.Map(updateUsuarioDto, usuarioBD);
             var result = await _usuarioRepository.UpdateUsuario(usuario);
             return result;
         }
@@ -62,6 +78,9 @@
                 var errores = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
                 throw new ValidationResultException(errores);
             }
+
+            if (createUsuarioDto.Contrasena is not null)
+                createUsuarioDto.Contrasena = _passwordService.Hash(createUsuarioDto.Contrasena);
 
             var rutDv = createUsuarioDto.Rut + createUsuarioDto.DV;
             Usuario? user = null;

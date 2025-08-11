@@ -3,6 +3,7 @@
     internal sealed class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IRepository _genericRepository;
         private readonly PaginationOptions _paginationOptions;
         private readonly IValidator<CreateUsuarioDto> _createUsuarioValidator;
         private readonly IValidator<UpdateUsuarioDto> _updateUsuarioValidator;
@@ -10,6 +11,7 @@
         private readonly IMapper _mapper;
 
         public UsuarioService(IUsuarioRepository usuarioRepository, 
+            IRepository genericRepository,
             IOptions<PaginationOptions> paginationOptions,
             IValidator<CreateUsuarioDto> createUsuarioValidator,
             IValidator<UpdateUsuarioDto> updateUsuarioValidator,
@@ -17,6 +19,7 @@
             IMapper mapper) 
         {
             _usuarioRepository = usuarioRepository;
+            _genericRepository = genericRepository;
             _paginationOptions = paginationOptions.Value;
             _createUsuarioValidator = createUsuarioValidator;
             _updateUsuarioValidator = updateUsuarioValidator;   
@@ -29,12 +32,9 @@
             filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
 
-            var usuarios = await _usuarioRepository.GetAllUsers();
-
-            if (filtros.IdUsuario > 0)
-                usuarios = usuarios.Where(x => x.IdUsuario == filtros.IdUsuario);
-
-            var pagedUsuarios = PagedList<Usuario>.Create(usuarios, filtros.PageNumber, filtros.PageSize);
+            var usuarios = await _usuarioRepository.GetAllUsers(filtros);
+            var totalCount = await _genericRepository.GetTotalCount("Usuario");
+            var pagedUsuarios = PagedList<Usuario>.CreatePaginationFromDb(usuarios, totalCount, filtros.PageNumber, filtros.PageSize);
             return pagedUsuarios;
             
         }

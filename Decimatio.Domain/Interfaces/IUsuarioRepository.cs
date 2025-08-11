@@ -2,7 +2,7 @@
 {
     public interface IUsuarioRepository
     {
-        Task<IEnumerable<Usuario>> GetAllUsers();
+        Task<IEnumerable<Usuario>> GetAllUsers(UsuarioQueryFilter filtros);
         Task<IEnumerable<Usuario>> GetAllUsersFilter(string filtro);
         Task<Usuario> GetById(long idUsuario);
         Task<Usuario> GetByRutDv(string rutDv);

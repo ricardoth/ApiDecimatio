@@ -616,6 +616,19 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a DECLARE @sql NVARCHAR(MAX);
+        ///
+        ///SET @sql = N&apos;SELECT COUNT(*) AS TotalCount FROM &apos; + QUOTENAME(@Tabla)
+        ///
+        ///EXEC sp_executesql @sql.
+        /// </summary>
+        internal static string GET_TOTAL_COUNT_TABLE {
+            get {
+                return ResourceManager.GetString("GET_TOTAL_COUNT_TABLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT TOP 1 [IdUsuario]
         ///      ,[IdTipoUsuario]
         ///      ,[Rut]
@@ -690,31 +703,6 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT U.[IdUsuario]
-        ///      ,U.[IdTipoUsuario]
-        ///      ,U.[Rut]
-        ///      ,U.[DV]
-        ///      ,U.[Nombres]
-        ///      ,U.[ApellidoP]
-        ///      ,U.[ApellidoM]
-        ///      ,U.[Direccion]
-        ///      ,U.[Telefono]
-        ///      ,U.[Correo]
-        ///      ,U.[Activo]
-        ///      ,U.EsExtranjero
-        ///      ,U.[FechaCreacion]
-        ///	  ,TU.IdTipoUsuario
-        ///	  ,TU.NombreTipoUsuario
-        ///  FROM [dbo].[Usuario] U
-        ///	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario.
-        /// </summary>
-        internal static string GET_USUARIOS {
-            get {
-                return ResourceManager.GetString("GET_USUARIOS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a SELECT [IdUsuario]
         ///      ,U.[IdTipoUsuario]
         ///	  ,NombreTipoUsuario
@@ -739,6 +727,34 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string GET_USUARIOS_FILTRO {
             get {
                 return ResourceManager.GetString("GET_USUARIOS_FILTRO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT U.[IdUsuario]
+        ///      ,U.[IdTipoUsuario]
+        ///      ,U.[Rut]
+        ///      ,U.[DV]
+        ///      ,U.[Nombres]
+        ///      ,U.[ApellidoP]
+        ///      ,U.[ApellidoM]
+        ///      ,U.[Direccion]
+        ///      ,U.[Telefono]
+        ///      ,U.[Correo]
+        ///      ,U.[Activo]
+        ///      ,U.EsExtranjero
+        ///      ,U.[FechaCreacion]
+        ///   ,TU.IdTipoUsuario
+        ///   ,TU.NombreTipoUsuario
+        ///      ,TU.Activo
+        ///  FROM [dbo].[Usuario] U
+        /// INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario
+        ///  WHERE 
+        ///    (@Query IS NULL OR CAST(U.Rut AS VARCHAR(20)) IS NOT NULL AND C [resto de la cadena truncado]&quot;;.
+        /// </summary>
+        internal static string GET_USUARIOS_PAGINATED {
+            get {
+                return ResourceManager.GetString("GET_USUARIOS_PAGINATED", resourceCulture);
             }
         }
         

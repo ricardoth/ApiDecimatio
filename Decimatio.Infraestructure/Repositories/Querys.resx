@@ -563,7 +563,7 @@ WHERE T.IdTicket = @IdTicket</value>
   FROM [dbo].[TipoUsuario]</value>
     <comment>Get All TipoUsuario</comment>
   </data>
-  <data name="GET_USUARIOS" xml:space="preserve">
+  <data name="GET_USUARIOS_PAGINATED" xml:space="preserve">
     <value>SELECT U.[IdUsuario]
       ,U.[IdTipoUsuario]
       ,U.[Rut]
@@ -577,11 +577,22 @@ WHERE T.IdTicket = @IdTicket</value>
       ,U.[Activo]
       ,U.EsExtranjero
       ,U.[FechaCreacion]
-	  ,TU.IdTipoUsuario
-	  ,TU.NombreTipoUsuario
+   ,TU.IdTipoUsuario
+   ,TU.NombreTipoUsuario
+      ,TU.Activo
   FROM [dbo].[Usuario] U
-	INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario</value>
-    <comment>Get All Users</comment>
+ INNER JOIN dbo.TipoUsuario TU ON TU.IdTipoUsuario = U.IdTipoUsuario
+  WHERE 
+    (@Query IS NULL OR CAST(U.Rut AS VARCHAR(20)) IS NOT NULL AND CAST(U.Rut AS VARCHAR(20)) LIKE '%'+ @Query +'%')
+    OR (@Query IS NULL OR U.Nombres IS NOT NULL AND U.Nombres LIKE '%'+ @Query +'%')
+    OR (@Query IS NULL OR U.ApellidoP IS NOT NULL AND U.ApellidoP LIKE '%'+ @Query +'%')
+    OR (@Query IS NULL OR U.ApellidoM IS NOT NULL AND U.ApellidoM LIKE '%'+ @Query +'%')
+    OR (@Query IS NULL OR U.Correo IS NOT NULL AND U.Correo LIKE '%'+ @Query +'%')
+    OR (@Query IS NULL OR U.Direccion IS NOT NULL AND U.Direccion LIKE '%'+ @Query +'%')
+  ORDER BY U.IdUsuario ASC
+  OFFSET (@PageNumber - 1) * @PageSize ROWS
+  FETCH NEXT @PageSize ROWS ONLY;</value>
+    <comment>Get All Users Paginated from bd</comment>
   </data>
   <data name="GET_USUARIOS_FILTRO" xml:space="preserve">
     <value>SELECT [IdUsuario]
@@ -1025,5 +1036,13 @@ ELSE
 		SELECT 1
 	END</value>
     <comment>Cambia el estado de descargados si el cliente ya ha generado sus tickets después de la compra</comment>
+  </data>
+  <data name="GET_TOTAL_COUNT_TABLE" xml:space="preserve">
+    <value>DECLARE @sql NVARCHAR(MAX);
+
+SET @sql = N'SELECT COUNT(*) AS TotalCount FROM ' + QUOTENAME(@Tabla)
+
+EXEC sp_executesql @sql</value>
+    <comment>Obtiene el total de registros de una tabla</comment>
   </data>
 </root>

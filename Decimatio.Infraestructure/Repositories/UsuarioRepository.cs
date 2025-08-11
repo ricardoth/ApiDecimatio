@@ -9,17 +9,25 @@
             _connection = connection;
         }
 
-        public async Task<IEnumerable<Usuario>> GetAllUsers()
+        public async Task<IEnumerable<Usuario>> GetAllUsers(UsuarioQueryFilter filtros)
         {
-            using var conn = new SqlConnection(_connection.ConnectionString);
+            var dictionary = new Dictionary<string, object>
+            {
+                { "@Query", filtros.Query },
+                { "@PageNumber", filtros.PageNumber },
+                { "@PageSize", filtros.PageSize },
+            };
+            var dynamicParam = new DynamicParameters(dictionary);
 
+            using var conn = new SqlConnection(_connection.ConnectionString);
             var result = (await conn.QueryAsync<Usuario, TipoUsuario, Usuario>(
-                Querys.GET_USUARIOS,
+                Querys.GET_USUARIOS_PAGINATED,
                 (user, tipo) => 
                 {
                     user.TipoUsuario = tipo;
                     return user;
                 },
+                dynamicParam,
                 splitOn: "IdTipoUsuario"
                 )).ToList();
 

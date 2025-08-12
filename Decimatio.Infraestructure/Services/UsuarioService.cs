@@ -61,16 +61,21 @@
 
         }
 
-        public async Task<Usuario> GetById(long idUsuario)
+        public async Task<UsuarioDto> GetById(long idUsuario)
         {
             var result = await _usuarioRepository.GetById(idUsuario);
             if (result is null)
-                throw new NotFoundException($"No se encontró el usuario solicidato");
-            return result;  
+                throw new NotFoundException($"No se encontró el usuario en la bd");
+
+            var usuario = _mapper.Map<UsuarioDto>(result);
+            return usuario;  
         }
 
         public async Task<bool> UpdateUsuario(UpdateUsuarioDto updateUsuarioDto)
         {
+            if (updateUsuarioDto.IdUsuario <= 0)
+                throw new NotFoundException($"Usuario inválido");
+
             var validationResult = _updateUsuarioValidator.Validate(updateUsuarioDto);
             if (!validationResult.IsValid)
             {
@@ -118,6 +123,10 @@
 
         public async Task<bool> DeleteUsuario(long idUsuario)
         {
+            if (idUsuario <= 0)
+                throw new NotFoundException("Usuario inválido");
+
+            var usuarioBd = await _usuarioRepository.GetById(idUsuario);
             var result = await _usuarioRepository.DeleteUsuario(idUsuario);
             return result;
         }

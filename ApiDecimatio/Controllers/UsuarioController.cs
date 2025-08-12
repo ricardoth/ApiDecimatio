@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController : ControllerBase
@@ -17,7 +17,7 @@
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Get([FromQuery] UsuarioQueryFilter filtros)
+        public async Task<ApiResponse<IEnumerable<UsuarioDto>>> Get([FromQuery] UsuarioQueryFilter filtros)
         {
             var usuarios = await _usuarioService.GetAllUsers(filtros);
 
@@ -39,57 +39,50 @@
             };
 
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
-            return Ok(response);
+            return response;
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ApiResponse<UsuarioDto>> Get(int id)
         {
             var result = await _usuarioService.GetById(id);
-            if (result == null)
-                return BadRequest("No se encuentra el elemento en la BD");
-
-            var usuarioDto = _mapper.Map<UsuarioDto>(result);
-            var response = new ApiResponse<UsuarioDto>(usuarioDto);
-            return Ok(response);
+            var response = new ApiResponse<UsuarioDto>(result);
+            return response;
         }
 
         [HttpGet("GetUsersFilter")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Get([FromQuery]string? filtro)
+        public async Task<ApiResponse<IEnumerable<UsuarioDto>>> Get([FromQuery]string? filtro)
         {
             var result = await _usuarioService.GetAllUsersFilter(filtro);
             var response = new ApiResponse<IEnumerable<UsuarioDto>>(result);
-            return Ok(response);
+            return response;
         }
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] CreateUsuarioDto createUsuarioDto)
+        public async Task<ApiResponse<CreateUsuarioDto>> Post([FromBody] CreateUsuarioDto createUsuarioDto)
         {
             await _usuarioService.AddUsuario(createUsuarioDto);
             var response = new ApiResponse<CreateUsuarioDto>(createUsuarioDto);
-            return Ok(response);
+            return response;
         }
 
         [HttpPut]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Put(int id, UpdateUsuarioDto updateUsuarioDto)
+        public async Task<ApiResponse<bool>> Put(int id, UpdateUsuarioDto updateUsuarioDto)
         {
-            if (id <= 0)
-                return NotFound("No se encuentra el elemento");
-
             updateUsuarioDto.IdUsuario = id;
             var result = await _usuarioService.UpdateUsuario(updateUsuarioDto);
             var response = new ApiResponse<bool>(result);
-            return Ok(response);
+            return response;
         }
 
         [HttpDelete("{id}")]
@@ -98,9 +91,6 @@
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0)
-                return NotFound("No se encuentra el elemento");
-
             var userBd = await _usuarioService.GetById(id);
             if (userBd == null)
                 return BadRequest("El Usuario no existe en la BD");

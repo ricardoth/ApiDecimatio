@@ -6,7 +6,7 @@ namespace Decimatio.Domain.Interfaces
     {
         Task<PagedList<UsuarioDto>> GetAllUsers(UsuarioQueryFilter filtros);
         Task<IEnumerable<UsuarioDto>> GetAllUsersFilter(string filtro);
-        Task<Usuario> GetById(long idUsuario);
+        Task<UsuarioDto> GetById(long idUsuario);
         Task AddUsuario(CreateUsuarioDto createUsuarioDto);
         Task<bool> UpdateUsuario(UpdateUsuarioDto updateUsuarioDto);
         Task<bool> DeleteUsuario(long idUsuario);

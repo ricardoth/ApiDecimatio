@@ -38,21 +38,25 @@ namespace Decimatio.WebApi.Middleware
             {
                 case NotFoundException notFoundException:
                     errorResponse.Message = notFoundException.Message;
+                    errorResponse.StatusCode = (int)HttpStatusCode.NotFound;
                     context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
 
                 case BadRequestException badRequestException:
                     errorResponse.Message = badRequestException.Message;
+                    errorResponse.StatusCode = (int)HttpStatusCode.BadRequest;
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
 
                 case ValidationResultException validationResultException:
                     errorResponse.Message = validationResultException.Message;
+                    errorResponse.StatusCode = (int)HttpStatusCode.BadRequest;
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
 
                 case NoContentException noContentException:
                     errorResponse.Message = noContentException.Message;
+                    errorResponse.StatusCode = (int)HttpStatusCode.NoContent;
                     context.Response.StatusCode = (int)HttpStatusCode.NoContent;
                     break;
 

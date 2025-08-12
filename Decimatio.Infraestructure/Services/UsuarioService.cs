@@ -27,14 +27,18 @@
             _mapper = mapper;
         }
 
-        public async Task<PagedList<Usuario>> GetAllUsers(UsuarioQueryFilter filtros)
+        public async Task<PagedList<UsuarioDto>> GetAllUsers(UsuarioQueryFilter filtros)
         {
             filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
 
-            var usuarios = await _usuarioRepository.GetAllUsers(filtros);
+            var usuariosPaginated = await _usuarioRepository.GetAllUsers(filtros);
+            if (!usuariosPaginated.Any())
+                throw new NoContentException();
+
+            var usuarios = _mapper.Map<IEnumerable<UsuarioDto>>(usuariosPaginated);
             var totalCount = await _genericRepository.GetTotalCount("Usuario");
-            var pagedUsuarios = PagedList<Usuario>.CreatePaginationFromDb(usuarios, totalCount, filtros.PageNumber, filtros.PageSize);
+            var pagedUsuarios = PagedList<UsuarioDto>.CreatePaginationFromDb(usuarios, totalCount, filtros.PageNumber, filtros.PageSize);
             return pagedUsuarios;
             
         }

@@ -4,7 +4,7 @@ namespace Decimatio.Domain.Interfaces
 {
     public interface IUsuarioService
     {
-        Task<PagedList<Usuario>> GetAllUsers(UsuarioQueryFilter filtros);
+        Task<PagedList<UsuarioDto>> GetAllUsers(UsuarioQueryFilter filtros);
         Task<IEnumerable<Usuario>> GetAllUsersFilter(string filtro);
         Task<Usuario> GetById(long idUsuario);
         Task AddUsuario(CreateUsuarioDto createUsuarioDto);

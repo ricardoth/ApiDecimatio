@@ -20,8 +20,6 @@
         public async Task<IActionResult> Get([FromQuery] UsuarioQueryFilter filtros)
         {
             var usuarios = await _usuarioService.GetAllUsers(filtros);
-            if (usuarios == null)
-                return BadRequest("No se encontraron registros");
 
             var metaData = new MetaData
             {
@@ -35,8 +33,7 @@
                 PreviousPageUrl = "",
             };
 
-            var usuariosDtos = _mapper.Map<IEnumerable<UsuarioDto>>(usuarios);
-            var response = new ApiResponse<IEnumerable<UsuarioDto>>(usuariosDtos)
+            var response = new ApiResponse<IEnumerable<UsuarioDto>>(usuarios)
             {
                 Meta = metaData
             };

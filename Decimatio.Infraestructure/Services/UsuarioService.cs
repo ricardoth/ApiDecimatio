@@ -131,7 +131,7 @@
             return result;
         }
 
-        public async Task<Usuario> Login(UsuarioLoginDto usuarioLoginDto)
+        public async Task<UsuarioDto> Login(UsuarioLoginDto usuarioLoginDto)
         {
             var usuario = _mapper.Map<Usuario>(usuarioLoginDto);
             var result = await _usuarioRepository.Login(usuario);
@@ -139,8 +139,9 @@
                 throw new BadRequestException("El Usuario no existe en nuestros registros, por favor registrese");
             else {
                 var isValid = _passwordService.Check(result.Contrasena, usuario.Contrasena);
+                var usuarioMapped = _mapper.Map<UsuarioDto>(result);
                 if (isValid)
-                    return result;
+                    return usuarioMapped;
                 else
                     throw new BadRequestException("La contraseña es incorrecta, por favor verifique");
             }

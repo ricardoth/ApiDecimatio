@@ -1,6 +1,6 @@
 ﻿namespace Decimatio.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController : ControllerBase
@@ -103,12 +103,11 @@
         [HttpPost("Login")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Login([FromBody] UsuarioLoginDto login)
+        public async Task<ApiResponse<UsuarioDto>> Login([FromBody] UsuarioLoginDto login)
         { 
             var result = await _usuarioService.Login(login);
-            var usuarioDto = _mapper.Map<UsuarioDto>(result);
-            var response = new ApiResponse<UsuarioDto>(usuarioDto);
-            return Ok(response);
+            var response = new ApiResponse<UsuarioDto>(result);
+            return response;
         }
 
         [HttpPost("ChangePassword")]

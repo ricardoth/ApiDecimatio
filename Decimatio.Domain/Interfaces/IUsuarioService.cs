@@ -10,7 +10,7 @@ namespace Decimatio.Domain.Interfaces
         Task AddUsuario(CreateUsuarioDto createUsuarioDto);
         Task<bool> UpdateUsuario(UpdateUsuarioDto updateUsuarioDto);
         Task<bool> DeleteUsuario(long idUsuario);
-        Task<Usuario> Login(UsuarioLoginDto usuarioLoginDto);
+        Task<UsuarioDto> Login(UsuarioLoginDto usuarioLoginDto);
         Task<bool> ChangePassword(UsuarioPass usuarioDto);
     }
 }

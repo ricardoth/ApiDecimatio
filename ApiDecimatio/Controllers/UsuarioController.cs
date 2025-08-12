@@ -63,10 +63,7 @@
         public async Task<IActionResult> Get([FromQuery]string? filtro)
         {
             var result = await _usuarioService.GetAllUsersFilter(filtro);
-            if (result == null) return BadRequest("No se encontró ningún usuario");
-
-            var usuariosDtos = _mapper.Map<IEnumerable<UsuarioDto>>(result);
-            var response = new ApiResponse<IEnumerable<UsuarioDto>>(usuariosDtos);
+            var response = new ApiResponse<IEnumerable<UsuarioDto>>(result);
             return Ok(response);
         }
 

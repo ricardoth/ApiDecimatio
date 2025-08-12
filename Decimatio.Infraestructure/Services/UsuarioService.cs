@@ -32,7 +32,7 @@
             filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
 
-            var usuariosPaginated = await _usuarioRepository.GetAllUsers(filtros);
+            var usuariosPaginated = await _usuarioRepository.GetAllUsersPaginated(filtros);
             if (!usuariosPaginated.Any())
                 throw new NoContentException();
 
@@ -43,10 +43,22 @@
             
         }
 
-        public async Task<IEnumerable<Usuario>> GetAllUsersFilter(string filtro)
+        public async Task<IEnumerable<UsuarioDto>> GetAllUsersFilter(string filtro)
         {
-            var result = await _usuarioRepository.GetAllUsersFilter(filtro);
-            return result;
+            UsuarioQueryFilter filters = new UsuarioQueryFilter()
+            {
+                PageNumber = 1,
+                PageSize = 100,
+                Query = filtro
+            };
+
+            var usuariosFiltered = await _usuarioRepository.GetAllUsersPaginated(filters);
+            if (!usuariosFiltered.Any())
+                throw new NoContentException();
+
+            var usuarios = _mapper.Map<IEnumerable<UsuarioDto>>(usuariosFiltered);
+            return usuarios;
+
         }
 
         public async Task<Usuario> GetById(long idUsuario)

@@ -9,7 +9,7 @@
             _connection = connection;
         }
 
-        public async Task<IEnumerable<Usuario>> GetAllUsers(UsuarioQueryFilter filtros)
+        public async Task<IEnumerable<Usuario>> GetAllUsersPaginated(UsuarioQueryFilter filtros)
         {
             var dictionary = new Dictionary<string, object>
             {
@@ -43,25 +43,6 @@
             var dynamicParam = new DynamicParameters(dictionary);
             using var conn = new SqlConnection(_connection.ConnectionString);
             return await conn.QueryFirstOrDefaultAsync<Usuario>(Querys.GET_USUARIO_ID, dynamicParam);
-        }
-
-        public async Task<IEnumerable<Usuario>> GetAllUsersFilter(string filtro)
-        {
-            var dictionary = new Dictionary<string, object>
-            {
-                { "@Filtro", filtro }
-            };
-
-            var dynamicParam = new DynamicParameters(dictionary);
-
-            using var conn = new SqlConnection(_connection.ConnectionString);
-
-            var result = (await conn.QueryAsync<Usuario>(
-                Querys.GET_USUARIOS_FILTRO,
-                dynamicParam
-                )).Distinct().ToList();
-
-            return result;
         }
 
         public async Task AddUsuario(Usuario usuario)

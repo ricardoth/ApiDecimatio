@@ -588,7 +588,6 @@ WHERE T.IdTicket = @IdTicket</value>
     OR (@Query IS NULL OR U.ApellidoP IS NOT NULL AND U.ApellidoP LIKE '%'+ @Query +'%')
     OR (@Query IS NULL OR U.ApellidoM IS NOT NULL AND U.ApellidoM LIKE '%'+ @Query +'%')
     OR (@Query IS NULL OR U.Correo IS NOT NULL AND U.Correo LIKE '%'+ @Query +'%')
-    OR (@Query IS NULL OR U.Direccion IS NOT NULL AND U.Direccion LIKE '%'+ @Query +'%')
   ORDER BY U.IdUsuario ASC
   OFFSET (@PageNumber - 1) * @PageSize ROWS
   FETCH NEXT @PageSize ROWS ONLY;</value>

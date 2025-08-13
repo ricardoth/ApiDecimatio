@@ -147,8 +147,10 @@
             }
         }
 
-        public async Task<bool> ChangePassword(UsuarioPass usuario)
+        public async Task<bool> ChangePassword(UsuarioPassDto usuarioPassDto)
         {
+            var usuario = _mapper.Map<UsuarioPass>(usuarioPassDto);
+
             if (usuario.Contrasena == null || usuario.Contrasena == "")
                 throw new BadRequestException("La contraseña no es válida");
 

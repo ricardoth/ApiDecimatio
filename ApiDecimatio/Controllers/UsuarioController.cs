@@ -113,12 +113,10 @@
         [HttpPost("ChangePassword")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> ChangePassword([FromBody] UsuarioPassDto usuarioDto)
+        public async Task<ApiResponse<bool>> ChangePassword([FromBody] UsuarioPassDto usuarioDto)
         {
-            var usuario = _mapper.Map<UsuarioPass>(usuarioDto);
-            var result = await _usuarioService.ChangePassword(usuario);
-            var response = new ApiResponse<bool>(result);   
-            return Ok(response);
+            var result = await _usuarioService.ChangePassword(usuarioDto);
+            return new ApiResponse<bool>(result);   
         }
     }
 }

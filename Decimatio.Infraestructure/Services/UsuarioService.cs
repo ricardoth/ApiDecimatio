@@ -65,7 +65,7 @@
         {
             var result = await _usuarioRepository.GetById(idUsuario);
             if (result is null)
-                throw new NotFoundException($"No se encontró el usuario en la bd");
+                throw new NoContentException($"No se encontró el usuario en la bd");
 
             var usuario = _mapper.Map<UsuarioDto>(result);
             return usuario;  
@@ -86,8 +86,8 @@
             if (updateUsuarioDto.Contrasena is not null)
                 updateUsuarioDto.Contrasena = _passwordService.Hash(updateUsuarioDto.Contrasena);
 
-            var usuarioBD = await _usuarioRepository.GetById(updateUsuarioDto.IdUsuario);
-            var usuario = _mapper.Map(updateUsuarioDto, usuarioBD);
+            var usuarioBd = await _usuarioRepository.GetById(updateUsuarioDto.IdUsuario);
+            var usuario = _mapper.Map(updateUsuarioDto, usuarioBd);
             var result = await _usuarioRepository.UpdateUsuario(usuario);
             return result;
         }
@@ -126,8 +126,8 @@
             if (idUsuario <= 0)
                 throw new NotFoundException("Usuario inválido");
 
-            var usuarioBd = await _usuarioRepository.GetById(idUsuario);
-            var result = await _usuarioRepository.DeleteUsuario(idUsuario);
+            var usuarioBd = await GetById(idUsuario);
+            var result = await _usuarioRepository.DeleteUsuario(usuarioBd.IdUsuario);
             return result;
         }
 

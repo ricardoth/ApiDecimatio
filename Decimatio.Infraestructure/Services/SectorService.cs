@@ -61,6 +61,9 @@
 
         public async Task<bool> UpdateSector(UpdateSectorDto updateSectorDto)
         {
+            if (updateSectorDto.IdSector <= 0)
+                throw new BadRequestException("El sector es inválido");
+
             var validationResult = _updateSectorValidator.Validate(updateSectorDto);
             if (!validationResult.IsValid)
             {
@@ -76,7 +79,11 @@
 
         public async Task<bool> DeleteSector(int idSector)
         {
-            return await _sectorRepository.DeleteSector(idSector);
+            if (idSector <= 0)
+                throw new BadRequestException("El sector es inválido");
+
+            var sector = await GetById(idSector);
+            return await _sectorRepository.DeleteSector(sector.IdSector);
         }
     }
 }

@@ -74,7 +74,7 @@
             return await conn.ExecuteScalarAsync<bool>(Querys.UPDATE_SECTOR, dynamicParam);
         }
 
-        public async Task<bool> DeleteSector(int idSector)
+        public async Task<bool> DeleteSector(long idSector)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
             return await conn.ExecuteScalarAsync<bool>(Querys.DELETE_SECTOR, new { IdSector = idSector });

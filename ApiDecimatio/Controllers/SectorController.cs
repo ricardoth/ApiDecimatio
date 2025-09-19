@@ -75,9 +75,6 @@
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Put(int id, UpdateSectorDto updateSectorDto) 
         {
-            if (id <= 0)
-                return NotFound();
-
             var result = await _sectorService.UpdateSector(updateSectorDto);
             var response = new ApiResponse<bool>(result);
             return Ok(response);

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Decimatio.Domain\Decimatio.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

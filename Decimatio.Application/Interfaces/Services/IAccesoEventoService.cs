@@ -1,4 +1,8 @@
-﻿namespace Decimatio.Domain.Interfaces
+﻿using Decimatio.Domain.CustomEntities;
+using Decimatio.Domain.Entities;
+using Decimatio.Domain.QueryFilters;
+
+namespace Decimatio.Application.Interfaces.Services
 {
     public interface IAccesoEventoService
     {

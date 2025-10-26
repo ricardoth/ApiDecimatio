@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Mappings
+﻿using Decimatio.Application.DTOs;
+
+namespace Decimatio.Infraestructure.Mappings
 {
     public class AutoMapperProfile : Profile
     {

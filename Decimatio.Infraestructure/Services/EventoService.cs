@@ -1,6 +1,5 @@
-﻿using Decimatio.Domain.DTOs;
-using Decimatio.Domain.Entities;
-using FluentValidation;
+﻿using Decimatio.Application.DTOs;
+using Decimatio.Application.Interfaces.Services;
 
 namespace Decimatio.Infraestructure.Services
 {

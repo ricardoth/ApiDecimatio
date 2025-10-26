@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure
+﻿using Decimatio.Application.Interfaces.Services;
+
+namespace Decimatio.Infraestructure
 {
     public static class DependencyContainer
     {

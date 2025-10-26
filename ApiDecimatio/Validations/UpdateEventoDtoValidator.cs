@@ -1,4 +1,6 @@
-﻿namespace Decimatio.WebApi.Validations
+﻿using Decimatio.Application.DTOs;
+
+namespace Decimatio.WebApi.Validations
 {
     public class UpdateEventoDtoValidator : AbstractValidator<UpdateEventoDto>
     {

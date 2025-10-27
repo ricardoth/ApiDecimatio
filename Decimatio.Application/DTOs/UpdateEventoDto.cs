@@ -1,4 +1,4 @@
-﻿namespace Decimatio.Domain.DTOs
+﻿namespace Decimatio.Application.DTOs
 {
     public class UpdateEventoDto
     {

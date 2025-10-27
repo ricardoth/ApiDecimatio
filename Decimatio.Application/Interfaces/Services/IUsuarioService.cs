@@ -1,4 +1,6 @@
-﻿using Decimatio.Domain.DTOs;
+﻿using Decimatio.Domain.CustomEntities;
+using Decimatio.Domain.DTOs;
+using Decimatio.Domain.QueryFilters;
 
 namespace Decimatio.Domain.Interfaces
 {

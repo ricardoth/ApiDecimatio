@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using Decimatio.Application.Interfaces.Services;
+
+namespace Decimatio.Infraestructure.Services
 {
     internal sealed class ComunaService : IComunaService     
     {

@@ -1,6 +1,11 @@
-﻿using Decimatio.Application.Interfaces.Services;
+﻿using Decimatio.Application.Interfaces.Repositories;
+using Decimatio.Application.Interfaces.Services;
+using Decimatio.Domain.CustomEntities;
+using Decimatio.Domain.Entities;
+using Decimatio.Domain.QueryFilters;
+using Microsoft.Extensions.Options;
 
-namespace Decimatio.Infraestructure.Services
+namespace Decimatio.Application.Services
 {
     internal sealed class AccesoEventoService : IAccesoEventoService
     {
@@ -11,7 +16,7 @@ namespace Decimatio.Infraestructure.Services
         {
             _accesoEventoRepository = accesoEventoRepository;
             _paginationOptions = paginationOptions.Value;
-         }
+        }
 
         public async Task<PagedList<AccesoEventoTicket>> GetAccesosEventosTickets(AccesoEventoTicketQueryFilter filtros)
         {
@@ -19,7 +24,7 @@ namespace Decimatio.Infraestructure.Services
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
 
 
-            var result =  await _accesoEventoRepository.GetAllAccesoEventoTickets();
+            var result = await _accesoEventoRepository.GetAllAccesoEventoTickets();
             if (result == null)
                 throw new Exception("No se pudo obtener la lista de accesos al evento");
 
@@ -60,7 +65,7 @@ namespace Decimatio.Infraestructure.Services
             AccesoEventoStatus result = new();
             if (ticketAcceso.EsExtranjero)
                 result = await _accesoEventoRepository.ValidarAccesoTicketExtranjero(ticketAcceso);
-            else 
+            else
             {
                 if (ticketAcceso.IdEvento == 9)
                     result = await _accesoEventoRepository.ValidarAccesoTicketFullAccess(ticketAcceso);

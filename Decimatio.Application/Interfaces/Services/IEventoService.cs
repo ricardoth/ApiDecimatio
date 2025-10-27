@@ -1,6 +1,8 @@
-﻿using Decimatio.Domain.DTOs;
+﻿using Decimatio.Application.DTOs;
+using Decimatio.Domain.CustomEntities;
+using Decimatio.Domain.QueryFilters;
 
-namespace Decimatio.Domain.Interfaces
+namespace Decimatio.Application.Interfaces.Services
 {
     public interface IEventoService
     {

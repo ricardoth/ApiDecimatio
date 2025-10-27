@@ -1,4 +1,7 @@
-﻿namespace Decimatio.Domain.Interfaces
+﻿using Decimatio.Domain.CustomEntities;
+using Decimatio.Domain.QueryFilters;
+
+namespace Decimatio.Domain.Interfaces
 {
     public interface ITicketService
     {

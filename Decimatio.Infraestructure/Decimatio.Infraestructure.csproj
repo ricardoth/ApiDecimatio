@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Decimatio.Application\Decimatio.Application.csproj" />
     <ProjectReference Include="..\Decimatio.Common\Decimatio.Common.csproj" />
     <ProjectReference Include="..\Decimatio.Domain\Decimatio.Domain.csproj" />
   </ItemGroup>

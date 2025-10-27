@@ -1,4 +1,4 @@
-﻿namespace Decimatio.Domain.Interfaces
+﻿namespace Decimatio.Application.Interfaces.Services
 {
     public interface IComunaService
     {

@@ -1,4 +1,5 @@
-﻿using Decimatio.Application.Interfaces.Services;
+﻿using Decimatio.Application.DTOs;
+using Decimatio.Application.Interfaces.Services;
 
 namespace ApiDecimatio.Controllers
 {

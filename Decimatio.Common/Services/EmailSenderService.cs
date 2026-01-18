@@ -1,4 +1,5 @@
-﻿using Flurl.Http;
+﻿using Decimatio.Application.DTOs;
+using Flurl.Http;
 
 namespace Decimatio.Common.Services
 {

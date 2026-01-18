@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.DTOs
+﻿namespace Decimatio.Application.DTOs
 {
-    public class UsuarioLoginDto
+    public record UsuarioLoginDto
     {
         public string? Correo { get; set; }
         public string? Contrasena { get; set; }

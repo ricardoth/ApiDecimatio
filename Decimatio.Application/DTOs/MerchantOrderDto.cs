@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.DTOs
+﻿namespace Decimatio.Application.DTOs
 {
-    public class MerchantOrderDto
+    public record MerchantOrderDto
     {
         public long IdMerchantOrder { get; set; }
         public long? Id { get; set; }

@@ -1,4 +1,5 @@
-﻿using Decimatio.Domain.Entities;
+﻿using Decimatio.Application.Interfaces.Services;
+using Decimatio.Domain.Entities;
 
 namespace Decimatio.Infraestructure.Services
 {

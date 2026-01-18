@@ -1,4 +1,5 @@
-﻿using QuestPDF.Infrastructure;
+﻿using Decimatio.Application.DTOs;
+using QuestPDF.Infrastructure;
 
 namespace Decimatio.Common.Interfaces
 {

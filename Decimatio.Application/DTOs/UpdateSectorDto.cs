@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.DTOs
+﻿namespace Decimatio.Application.DTOs
 {
-    public class UpdateSectorDto
+    public record UpdateSectorDto
     {
         public long? IdSector { get; set; }
         public int? IdEvento { get; set; }

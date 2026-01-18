@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.DTOs
+﻿namespace Decimatio.Application.DTOs
 {
-    public class CreateUsuarioDto
+    public record CreateUsuarioDto
     {
         public short IdTipoUsuario { get; set; }
         public int? Rut { get; set; }

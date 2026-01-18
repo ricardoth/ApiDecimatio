@@ -1,5 +1,4 @@
-﻿using Decimatio.Domain.DTOs;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using Decimatio.Application.Interfaces.Services;
 
 namespace Decimatio.Infraestructure.Services
 {

@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Common.Interfaces
+﻿using Decimatio.Application.DTOs;
+
+namespace Decimatio.Common.Interfaces
 {
     public interface IEmailSenderService
     {

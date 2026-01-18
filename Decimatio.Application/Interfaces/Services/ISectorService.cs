@@ -1,6 +1,7 @@
-﻿using Decimatio.Domain.DTOs;
+﻿
+using Decimatio.Application.DTOs;
 
-namespace Decimatio.Domain.Interfaces
+namespace Decimatio.Application.Interfaces.Services
 {
     public interface ISectorService 
     {

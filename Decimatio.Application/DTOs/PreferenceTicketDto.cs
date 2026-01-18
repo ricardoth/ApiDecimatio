@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.DTOs
+﻿namespace Decimatio.Application.DTOs
 {
-    public class PreferenceTicketDto
+    public record PreferenceTicketDto
     {
         public long IdPreference { get; set; }
         public string PreferenceCode { get; set; }

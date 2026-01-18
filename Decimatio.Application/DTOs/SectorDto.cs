@@ -1,7 +1,8 @@
-﻿namespace Decimatio.Domain.DTOs
+﻿namespace Decimatio.Application.DTOs
 {
-    public class CreateSectorDto
+    public record SectorDto
     {
+        public long IdSector { get; set; }
         public int IdEvento { get; set; }
         public string? NombreSector { get; set; }
         public int CapacidadDisponible { get; set; }
@@ -12,5 +13,6 @@
         public decimal? Total { get; set; }
         public string? ColorHexa { get; set; }
         public bool Activo { get; set; }
+        public EventoDto? Evento { get; set; }
     }
 }

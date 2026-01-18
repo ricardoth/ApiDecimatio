@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.DTOs
+﻿namespace Decimatio.Application.DTOs
 {
-    public class MedioPagoDto
+    public record MedioPagoDto
     {
         public long IdMedioPago { get; set; }
         public string NombreMedioPago { get; set; }

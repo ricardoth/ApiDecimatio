@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.DTOs
+﻿namespace Decimatio.Application.DTOs
 {
-    public class EmailTicketDto
+    public record EmailTicketDto
     {
         public string To { get; set; }
         public string Subject { get; set; }

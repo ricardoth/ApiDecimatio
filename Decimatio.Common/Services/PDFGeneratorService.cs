@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Common.Services
+﻿using Decimatio.Application.DTOs;
+
+namespace Decimatio.Common.Services
 {
     internal sealed class PDFGeneratorService : IPDFGeneratorService
     {

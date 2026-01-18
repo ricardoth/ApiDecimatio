@@ -1,6 +1,4 @@
-﻿using Decimatio.Application.Interfaces.Services;
-
-namespace Decimatio.Infraestructure.Services
+﻿namespace Decimatio.Infraestructure.Services
 {
     internal sealed class AccesoEventoService : IAccesoEventoService
     {

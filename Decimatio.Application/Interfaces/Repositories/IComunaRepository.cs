@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.Entities;
-
-namespace Decimatio.Application.Interfaces.Repositories
+﻿namespace Decimatio.Application.Interfaces.Repositories
 {
     public interface IComunaRepository
     {

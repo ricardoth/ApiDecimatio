@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Infraestructure.Models
+﻿using Decimatio.Application.DTOs;
+
+namespace Decimatio.Infraestructure.Models
 {
     public class PreferenceData
     {

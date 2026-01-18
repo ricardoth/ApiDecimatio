@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.DTOs
+﻿namespace Decimatio.Application.DTOs
 {
-    public class TicketQRDto
+    public record TicketQRDto
     {
         public long IdTicketQR { get; set; }
         public long IdTicket { get; set; }

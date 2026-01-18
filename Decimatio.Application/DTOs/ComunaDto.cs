@@ -1,6 +1,6 @@
-﻿namespace Decimatio.Domain.DTOs
+﻿namespace Decimatio.Application.DTOs
 {
-    public class ComunaDto
+    public record ComunaDto
     {
         public int IdComuna { get; set; }
         public int IdRegion { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace Decimatio.Domain.Interfaces
+﻿namespace Decimatio.Application.Interfaces.Repositories
 {
     public interface ITicketRepository
     {

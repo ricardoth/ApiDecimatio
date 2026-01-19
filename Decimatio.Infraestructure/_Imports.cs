@@ -9,7 +9,6 @@ global using Decimatio.Application.Interfaces.Repositories;
 global using Decimatio.Domain.Entities;
 global using Decimatio.Domain.Exceptions;
 global using Decimatio.Domain.IntegrationEntities;
-global using Decimatio.Domain.Interfaces;
 global using Decimatio.Domain.QueryFilters;
 global using Decimatio.Infraestructure.Connection;
 global using Decimatio.Infraestructure.Contracts;

@@ -1,4 +1,4 @@
-﻿namespace Decimatio.Common.Options
+﻿namespace Decimatio.Domain.ValueObjects
 {
     public class EmailSenderOptions
     {

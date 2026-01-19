@@ -1,4 +1,4 @@
-﻿namespace Decimatio.Infraestructure.Models
+﻿namespace Decimatio.Application.DTOs.PaymentsDtos
 {
     public class LinkResponse
     {

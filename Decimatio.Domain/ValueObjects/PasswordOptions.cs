@@ -1,4 +1,4 @@
-﻿namespace Decimatio.Infraestructure.Options
+﻿namespace Decimatio.Domain.ValueObjects
 {
     public class PasswordOptions
     {

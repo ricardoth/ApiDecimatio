@@ -1,9 +1,10 @@
 ﻿global using AutoMapper;
+global using Decimatio.Application.DTOs;
+global using Decimatio.Application.Interfaces.Services;
 global using Decimatio.Domain.CustomEntities;
 global using Decimatio.Domain.Entities;
 global using Decimatio.Domain.QueryFilters;
 global using Decimatio.Infraestructure;
-global using Decimatio.Infraestructure.Contracts;
 global using Decimatio.WebApi.Authentication;
 global using Decimatio.WebApi.Configuration;
 global using Decimatio.WebApi.Models;
@@ -20,5 +21,4 @@ global using System.Reflection;
 global using System.Security.Claims;
 global using System.Text;
 global using System.Text.Encodings.Web;
-global using Decimatio.Application.Interfaces.Services;
-global using Decimatio.Application.DTOs;
+global using Decimatio.Domain.IntegrationEntities;

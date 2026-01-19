@@ -1,4 +1,5 @@
-﻿using MercadoPago.Resource.Preference;
+﻿using Decimatio.Application.DTOs;
+using MercadoPago.Resource.Preference;
 
 namespace Decimatio.Infraestructure.Models
 {

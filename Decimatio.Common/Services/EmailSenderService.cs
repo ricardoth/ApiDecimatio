@@ -1,4 +1,5 @@
-﻿using Decimatio.Application.DTOs;
+﻿using Decimatio.Common.DTOs;
+using Decimatio.Domain.ValueObjects;
 using Flurl.Http;
 
 namespace Decimatio.Common.Services
@@ -22,7 +23,7 @@ namespace Decimatio.Common.Services
             }
         }
 
-        public async Task<string> SendEmailTicket(EmailTicketDto emailTicketDto)
+        public async Task<string> SendEmailTicket(RequestEmailTicketDto emailTicketDto)
         {
             try
             {

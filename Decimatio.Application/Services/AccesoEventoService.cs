@@ -1,8 +1,6 @@
 ﻿using Decimatio.Application.Interfaces.Repositories;
 using Decimatio.Application.Interfaces.Services;
 using Decimatio.Domain.CustomEntities;
-using Decimatio.Domain.Entities;
-using Decimatio.Domain.QueryFilters;
 using Microsoft.Extensions.Options;
 
 namespace Decimatio.Application.Services

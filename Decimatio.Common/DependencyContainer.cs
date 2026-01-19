@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Decimatio.Domain.ValueObjects;
+using Microsoft.Extensions.Configuration;
 
 namespace Decimatio.Common
 {

@@ -6,14 +6,10 @@
     public class LugarController : ControllerBase
     {
         private readonly ILugarService _lugarService;
-        private readonly IMapper _mapper;
-        private readonly IValidator<CreateLugarDto> _validator;
 
-        public LugarController(ILugarService lugarService, IMapper mapper, IValidator<CreateLugarDto> validator)
+        public LugarController(ILugarService lugarService)
         {
             _lugarService = lugarService;
-            _mapper = mapper;
-            _validator = validator;
         }
 
         [HttpGet]

@@ -1,8 +1,9 @@
-﻿using Decimatio.Application.DTOs;
+﻿
+using Decimatio.Common.DTOs;
 
 namespace Decimatio.Common.Services
 {
-    internal sealed class PDFGeneratorService : IPDFGeneratorService
+    public class PDFGeneratorService : IPDFGeneratorService
     {
         private readonly string currentDirectory = Directory.GetCurrentDirectory() + "\\Template";
 
@@ -11,7 +12,7 @@ namespace Decimatio.Common.Services
 
         }
 
-        public byte[] GeneratePDFVoucher(string base64Pdf, TicketBodyQRDto ticket)
+        public byte[] GeneratePDFVoucher(string base64Pdf, RequestTicketBodyQRDto ticket)
         {
             try
             {
@@ -82,7 +83,7 @@ namespace Decimatio.Common.Services
             return ms;
         }
 
-        private void ComposeHeader(IContainer container, TicketBodyQRDto ticket)
+        private void ComposeHeader(IContainer container, RequestTicketBodyQRDto ticket)
         {
             string logoImage = Path.Combine(currentDirectory, "logoMors2.png");
 
@@ -93,7 +94,7 @@ namespace Decimatio.Common.Services
                     .PaddingTop(10)
                     .Column(col =>
                 {
-                    col.Item().Text($"{ticket.Evento.ProductoraResponsable} Presenta").FontSize(13).FontColor(Colors.White).SemiBold();
+                    col.Item().Text($"{ticket.ProductoraResponsable} Presenta").FontSize(13).FontColor(Colors.White).SemiBold();
                 });
 
                 row.RelativeItem()
@@ -111,14 +112,14 @@ namespace Decimatio.Common.Services
             });
         }
 
-        private void ComposeContent(IContainer container, TicketBodyQRDto ticket, string base64Pdf)
+        private void ComposeContent(IContainer container, RequestTicketBodyQRDto ticket, string base64Pdf)
         {
             string warningIconImage = Path.Combine(currentDirectory, "attention.png");
             string logoImage = Path.Combine(currentDirectory, "fondoMorsVicitOmnia.png");
-            string formatDay = ticket.Evento.Fecha.ToString("dddd", new CultureInfo("es-ES"));
-            string anio = ticket.Evento.Fecha.ToString("yyyy", new CultureInfo("es-ES"));
-            string formatDate = ticket.Evento.Fecha.ToString("d' de 'MMMM", new CultureInfo("es-ES"));
-            string formatHora = ticket.Evento.Fecha.ToString("HH:mm");
+            string formatDay = ticket.FechaEvento.ToString("dddd", new CultureInfo("es-ES"));
+            string anio = ticket.FechaEvento.ToString("yyyy", new CultureInfo("es-ES"));
+            string formatDate = ticket.FechaEvento.ToString("d' de 'MMMM", new CultureInfo("es-ES"));
+            string formatHora = ticket.FechaEvento.ToString("HH:mm");
             long montoTotalFormat = (long)ticket.MontoTotal;
             string pais = "Chile";
 
@@ -135,18 +136,18 @@ namespace Decimatio.Common.Services
                             .Padding(25)
                             .Column(innerCol =>
                             {
-                                innerCol.Item().Text($"{ticket?.Evento?.NombreEvento}").FontSize(15).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+                                innerCol.Item().Text($"{ticket?.NombreEvento}").FontSize(15).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
                                 innerCol.Item().Text($"Fecha: {formatDay.ToUpper()}, {formatDate} {anio}").FontSize(12).FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
                                 innerCol.Item().Text($"Hora: {formatHora}").FontSize(12).FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
 
                                 innerCol.Spacing(5);
 
-                                innerCol.Item().Text($"{ticket?.Evento?.Lugar?.NombreLugar} #{ticket?.Evento?.Lugar?.Numeracion}").FontSize(14).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
-                                innerCol.Item().Text($"{ticket?.Evento?.Lugar?.Comuna?.NombreComuna}, {pais}").FontSize(12).FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+                                innerCol.Item().Text($"{ticket?.NombreLugar} #{ticket?.Numeracion}").FontSize(14).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+                                innerCol.Item().Text($"{ticket?.NombreComuna}, {pais}").FontSize(12).FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
 
                                 innerCol.Spacing(5);
 
-                                innerCol.Item().Text($"Sector: {ticket?.Sector?.NombreSector}").FontSize(14).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+                                innerCol.Item().Text($"Sector: {ticket?.NombreSector}").FontSize(14).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
                                 innerCol.Item().Text($"Valor: ${montoTotalFormat}").FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
 
                             });

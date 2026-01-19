@@ -2,9 +2,7 @@
 global using System.Drawing;
 global using System.Text.Json;
 global using Decimatio.Common.Interfaces;
-global using Decimatio.Common.Options;
 global using Azure.Storage.Blobs;
-global using Decimatio.Application.DTOs;
 global using System.Security.Cryptography;
 global using System.Text;
 global using Azure.Storage.Blobs.Models;

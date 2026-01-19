@@ -1,4 +1,9 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿using Decimatio.Common.DTOs;
+using Decimatio.Common.Interfaces;
+using System.Drawing;
+using System.Drawing.Imaging;
+
+namespace Decimatio.Application.Services
 {
     internal sealed class TicketService : ITicketService
     {
@@ -109,7 +114,7 @@
             string base64HtmlTicket = await SaveTicketImageToBlobStorage(base64QRImage, ticketDto, fileName);
             string emailToName =$"{ticketDto.Evento.NombreEvento} - {ticketDto.IdTicket}";
 
-            var emailDto = new EmailTicketDto()
+            var emailDto = new RequestEmailTicketDto()
             {
                 To = json.Correo,
                 Subject = emailToName,
@@ -171,7 +176,21 @@
         #region Creación QR y Generación del PDF
         public async Task<byte[]> EscribirPlantilla(string base64Image, TicketBodyQRDto ticket)
         {
-            var htmlPdfQuest = _pdfGeneratorService.GeneratePDFVoucher(base64Image, ticket);
+            var requestTicketBody = new RequestTicketBodyQRDto()
+            {
+                IdTicket = ticket.IdTicket,
+                FechaEvento = ticket.Evento.Fecha,
+                MontoPago = ticket.MontoPago,
+                MontoTotal = ticket.MontoTotal,
+                FechaTicket = ticket.FechaTicket,
+                NombreComuna = ticket.Evento.Lugar.Comuna.NombreComuna,
+                NombreEvento = ticket.Evento.NombreEvento,
+                NombreLugar = ticket.Evento.Lugar.NombreLugar,
+                NombreSector = ticket.Sector.NombreSector,
+                Numeracion = ticket.Evento.Lugar.Numeracion,
+                ProductoraResponsable = ticket.Evento.ProductoraResponsable
+            };
+            var htmlPdfQuest = _pdfGeneratorService.GeneratePDFVoucher(base64Image, requestTicketBody);
             return htmlPdfQuest;
         }
 

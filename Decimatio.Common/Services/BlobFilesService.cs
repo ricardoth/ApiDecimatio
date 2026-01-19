@@ -1,6 +1,8 @@
-﻿namespace Decimatio.Common.Services
+﻿using Decimatio.Domain.ValueObjects;
+
+namespace Decimatio.Common.Services
 {
-    internal sealed class BlobFilesService : IBlobFilesService
+    public class BlobFilesService : IBlobFilesService
     {
         private readonly BlobContainerConfig _containerConfig;
         private readonly BlobServiceClient _blobServiceClient;

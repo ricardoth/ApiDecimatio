@@ -1,8 +1,4 @@
-﻿using Decimatio.Application.DTOs;
-using Decimatio.Domain.CustomEntities;
-using Decimatio.Domain.QueryFilters;
-
-namespace Decimatio.Application.Interfaces.Services
+﻿namespace Decimatio.Application.Interfaces.Services
 {
     public interface IUsuarioService
     {

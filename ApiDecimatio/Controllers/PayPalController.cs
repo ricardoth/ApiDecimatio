@@ -1,6 +1,4 @@
-﻿using Decimatio.Domain.IntegrationEntities;
-
-namespace Decimatio.WebApi.Controllers
+﻿namespace Decimatio.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

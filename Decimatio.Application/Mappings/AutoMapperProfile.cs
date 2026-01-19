@@ -1,6 +1,7 @@
-﻿using Decimatio.Application.DTOs;
+﻿using AutoMapper;
+using Decimatio.Application.DTOs;
 
-namespace Decimatio.Infraestructure.Mappings
+namespace Decimatio.Application.Mappings
 {
     public class AutoMapperProfile : Profile
     {
@@ -45,8 +46,8 @@ namespace Decimatio.Infraestructure.Mappings
             CreateMap<AccesoEvento, AccesoEventoDto>().ReverseMap();
             CreateMap<TicketAcceso, TicketAccesoDto>().ReverseMap();
             CreateMap<AccesoEventoTicket, AccesoEventoTicketDto>().ReverseMap();
-            CreateMap<TipoUsuario, TipoUsuarioDto>().ReverseMap();  
-            CreateMap<PreferenceTicket, PreferenceTicketDto>().ReverseMap();    
+            CreateMap<TipoUsuario, TipoUsuarioDto>().ReverseMap();
+            CreateMap<PreferenceTicket, PreferenceTicketDto>().ReverseMap();
         }
     }
 }

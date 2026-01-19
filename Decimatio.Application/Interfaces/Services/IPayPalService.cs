@@ -1,4 +1,4 @@
-﻿namespace Decimatio.Infraestructure.Contracts
+﻿namespace Decimatio.Application.Interfaces.Services
 {
     public interface IPayPalService
     {

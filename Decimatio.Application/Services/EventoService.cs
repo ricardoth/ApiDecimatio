@@ -1,7 +1,9 @@
-﻿using Decimatio.Application.DTOs;
-using Decimatio.Application.Interfaces.Services;
+﻿using Decimatio.Common.Interfaces;
+using Decimatio.Domain.CustomEntities;
+using Decimatio.Domain.ValueObjects;
+using Microsoft.Extensions.Options;
 
-namespace Decimatio.Infraestructure.Services
+namespace Decimatio.Application.Services
 {
     internal sealed class EventoService : IEventoService
     {

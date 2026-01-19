@@ -1,7 +1,4 @@
-﻿using Decimatio.Application.DTOs;
-using Decimatio.Application.Interfaces.Services;
-
-namespace ApiDecimatio.Controllers
+﻿namespace ApiDecimatio.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

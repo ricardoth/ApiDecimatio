@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace Decimatio.Infraestructure.Services
+namespace Decimatio.Application.Services
 {
     internal sealed class PayPalService : IPayPalService
     {

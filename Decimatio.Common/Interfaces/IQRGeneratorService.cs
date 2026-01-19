@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Common.Interfaces
+﻿using System.Drawing;
+
+namespace Decimatio.Common.Interfaces
 {
     public interface IQRGeneratorService
     {

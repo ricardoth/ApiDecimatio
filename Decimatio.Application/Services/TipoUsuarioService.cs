@@ -1,4 +1,4 @@
-﻿namespace Decimatio.Infraestructure.Services
+﻿namespace Decimatio.Application.Services
 {
     internal sealed class TipoUsuarioService : ITipoUsuarioService
     {

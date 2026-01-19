@@ -1,3 +1,14 @@
 ﻿global using Decimatio.Domain.Entities;
 global using Decimatio.Domain.QueryFilters;
- 
+global using Decimatio.Application.Interfaces.Repositories;
+global using Decimatio.Application.Interfaces.Services;
+global using AutoMapper;
+global using Decimatio.Application.DTOs;
+global using FluentValidation;
+global using Decimatio.Application.DTOs.PaymentsDtos;
+global using Decimatio.Domain.IntegrationEntities;
+global using Decimatio.Domain.Exceptions;
+global using Decimatio.Domain.CustomEntities;
+global using Microsoft.Extensions.Options;
+global using Decimatio.Domain.ValueObjects;
+global using System.Security.Cryptography;

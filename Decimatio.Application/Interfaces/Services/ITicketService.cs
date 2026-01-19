@@ -1,5 +1,4 @@
 ﻿using Decimatio.Domain.CustomEntities;
-using Decimatio.Domain.QueryFilters;
 
 namespace Decimatio.Application.Interfaces.Services
 {

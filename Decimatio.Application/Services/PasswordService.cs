@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace Decimatio.Infraestructure.Services
+﻿namespace Decimatio.Application.Services
 {
     internal sealed class PasswordService : IPasswordService
     {

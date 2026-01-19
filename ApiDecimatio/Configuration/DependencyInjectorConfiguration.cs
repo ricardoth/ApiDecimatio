@@ -1,5 +1,6 @@
-﻿using Decimatio.Common;
-using Decimatio.Infraestructure.Options;
+﻿using Decimatio.Application;
+using Decimatio.Common;
+using Decimatio.Domain.ValueObjects;
 
 namespace Decimatio.WebApi.Configuration
 {
@@ -28,6 +29,7 @@ namespace Decimatio.WebApi.Configuration
             service.Configure<BasicAuthCredentials>(configuration.GetSection("BasicAuthCredentials"));
             service.Configure<PasswordOptions>(configuration.GetSection("PasswordOptions"));
 
+            service.AddApplicationDependencies(configuration);
             service.AddRepositories(configuration);
             service.AddCommonDependencies(configuration);
             #endregion

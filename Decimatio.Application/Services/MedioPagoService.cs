@@ -1,7 +1,7 @@
-﻿using Decimatio.Application.Interfaces.Services;
-using Decimatio.Domain.Entities;
+﻿using Decimatio.Common.Interfaces;
+using Decimatio.Domain.ValueObjects;
 
-namespace Decimatio.Infraestructure.Services
+namespace Decimatio.Application.Services
 {
     internal sealed class MedioPagoService : IMedioPagoService
     {

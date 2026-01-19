@@ -7,13 +7,11 @@
     {
         private readonly ISectorService _sectorService;
         private readonly IMapper _mapper;
-        private readonly IValidator<Sector> _validator;
 
-        public SectorController(ISectorService sectorService, IMapper mapper, IValidator<Sector> validator)
+        public SectorController(ISectorService sectorService, IMapper mapper)
         {
             _sectorService = sectorService;
             _mapper = mapper;
-            _validator = validator;
 
         }
 

@@ -1,6 +1,4 @@
-﻿using Decimatio.Application.Interfaces.Services;
-using Decimatio.Application.Services;
-using Decimatio.Common.Services;
+﻿using Decimatio.Application.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +20,7 @@ namespace Decimatio.Application
             services.AddScoped<IComunaService, ComunaService>();
             services.AddSingleton<IPasswordService, PasswordService>();
             services.AddScoped<IPayPalService, PayPalService>();
+
 
         }
     }

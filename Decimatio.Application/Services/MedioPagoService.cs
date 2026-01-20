@@ -1,5 +1,4 @@
 ﻿using Decimatio.Common.Interfaces;
-using Decimatio.Domain.ValueObjects;
 
 namespace Decimatio.Application.Services
 {
@@ -8,19 +7,25 @@ namespace Decimatio.Application.Services
         private readonly IMedioPagoRepository _medioPagoRepository;
         private readonly IBlobFilesService _blobFilesService;
         private readonly BlobContainerConfig _containerConfig;
+        private readonly IMapper _mapper;
 
         public MedioPagoService(IMedioPagoRepository medioPagoRepository,
             IBlobFilesService blobFilesService,
-            BlobContainerConfig containerConfig)
+            BlobContainerConfig containerConfig,
+            IMapper mapper)
         {
             _medioPagoRepository = medioPagoRepository;
             _blobFilesService = blobFilesService;   
             _containerConfig = containerConfig;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<MedioPago>> GetMediosPagosAsync()
+        public async Task<IEnumerable<MedioPagoDto>> GetMediosPagosAsync()
         {
             var result = await _medioPagoRepository.GetMedioPagos();
+
+            if (result == null)
+                throw new NoContentException();
 
             var tasks = result.Select(async mPago =>
             {
@@ -28,22 +33,29 @@ namespace Decimatio.Application.Services
                 mPago.UrlImageBlob = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
                 return mPago;
             });
-            return await Task.WhenAll(tasks);
+
+            var mediosPagos = await Task.WhenAll(tasks);
+            var medioPagoDtos = _mapper.Map<IEnumerable<MedioPagoDto>>(mediosPagos);
+            return medioPagoDtos;
         }
 
-        public async Task<MedioPago> GetMedioPagoAsync(int id)
+        public async Task<MedioPagoDto> GetMedioPagoAsync(int id)
         {
             var result = await _medioPagoRepository.GetMedioPago(id);
             if (result == null)
-                throw new Exception("Ha ocurrido un error al obtener el evento desde el Repositorio");
+                throw new NoContentException("No existe el evento solicitado");
 
             string imageNamePath = _containerConfig.FolderMedioPago + result.UrlImageBlob;
             result.UrlImageBlob = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
-            return result;
+
+            var medioPagoDto = _mapper.Map<MedioPagoDto>(result);
+            return medioPagoDto;
         }
 
-        public async Task AddMedioPagoAsync(MedioPago medioPago)
+        public async Task AddMedioPagoAsync(MedioPagoDto medioPagoDto)
         {
+            var medioPago = _mapper.Map<MedioPago>(medioPagoDto);
+
             if (medioPago.UrlImageBlob is not null || medioPago.UrlImageBlob != "")
             {
                 string imageNamePath = _containerConfig.FolderMedioPago + medioPago.NombreMedioPago;
@@ -63,8 +75,9 @@ namespace Decimatio.Application.Services
             return result;
         }
 
-        public async Task<bool> UpdateMedioPagoAsync(MedioPago medioPago)
+        public async Task<bool> UpdateMedioPagoAsync(MedioPagoDto medioPagoDto)
         {
+            var medioPago = _mapper.Map<MedioPago>(medioPagoDto);
             if (medioPago.IdMedioPago <= 0)
                 throw new NotFoundException("El Medio de Pago debe ser válido");
 

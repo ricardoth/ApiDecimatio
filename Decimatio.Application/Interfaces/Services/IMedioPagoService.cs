@@ -2,10 +2,10 @@
 {
     public interface IMedioPagoService
     {
-        Task<IEnumerable<MedioPago>> GetMediosPagosAsync();
-        Task<MedioPago> GetMedioPagoAsync(int id);
-        Task AddMedioPagoAsync(MedioPago medioPago);
+        Task<IEnumerable<MedioPagoDto>> GetMediosPagosAsync();
+        Task<MedioPagoDto> GetMedioPagoAsync(int id);
+        Task AddMedioPagoAsync(MedioPagoDto medioPagoDto);
         Task<bool> DeleteMedioPagoAsync(int id);
-        Task<bool> UpdateMedioPagoAsync(MedioPago medioPago);
+        Task<bool> UpdateMedioPagoAsync(MedioPagoDto medioPagoDto);
     }
 }

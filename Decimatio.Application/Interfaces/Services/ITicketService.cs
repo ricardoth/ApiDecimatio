@@ -4,15 +4,15 @@ namespace Decimatio.Application.Interfaces.Services
 {
     public interface ITicketService
     {
-        Task<string> AddTicket(Ticket ticket);
-        Task<string> AddTickets(IEnumerable<Ticket> tickets);
-        Task<PagedList<Ticket>> GetAllTickets(TicketQueryFilter filtros);
-        Task<IEnumerable<Ticket>> GetAllTicketsExcel(TicketQueryFilter filtros);
-        Task<TicketQR> GetTicketQR(int idTicket);
-        Task<TicketQR> GetTicketVoucherPDF(int idTicket);
+        Task<string> AddTicket(TicketDto ticketDto);
+        Task<string> AddTickets(IEnumerable<TicketDto> ticketsDto);
+        Task<(IEnumerable<TicketDto>, MetaData)> GetAllTickets(TicketQueryFilter filtros);
+        Task<IEnumerable<TicketDto>> GetAllTicketsExcel(TicketQueryFilter filtros);
+        Task<TicketQRDto> GetTicketQR(int idTicket);
+        Task<TicketQRDto> GetTicketVoucherPDF(int idTicket);
         Task<bool> DeleteDownTicket(long idTicket, bool activo);
-        Task<IEnumerable<PreferenceTicket>> GetAllPreferenceTickets();
-        Task<IEnumerable<PreferenceTicket>> GetPreferenceTicketsByTransaction(string transactionId);
+        Task<IEnumerable<PreferenceTicketDto>> GetAllPreferenceTickets();
+        Task<IEnumerable<PreferenceTicketDto>> GetPreferenceTicketsByTransaction(string transactionId);
         Task<string> AddQueueTicket(string preferenceCode);
     }
 }

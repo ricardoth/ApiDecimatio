@@ -2,6 +2,7 @@
 using Decimatio.Common.Interfaces;
 using System.Drawing;
 using System.Drawing.Imaging;
+using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace Decimatio.Application.Services
 {
@@ -17,14 +18,14 @@ namespace Decimatio.Application.Services
         private readonly BlobContainerConfig _containerConfig;
         private readonly IPreferenceRepository _preferenceRepository;
 
-        public TicketService(ITicketRepository ticketRepository, 
-            IQRGeneratorService qRGeneratorService, 
+        public TicketService(ITicketRepository ticketRepository,
+            IQRGeneratorService qRGeneratorService,
             IPDFGeneratorService pdfGeneratorService,
-            IBlobFilesService blobFilesService, 
-            IMapper mapper, 
+            IBlobFilesService blobFilesService,
+            IMapper mapper,
             IEmailSenderService emailSenderService,
-            IOptions<PaginationOptions> paginationOptions, 
-            BlobContainerConfig containerConfig, 
+            IOptions<PaginationOptions> paginationOptions,
+            BlobContainerConfig containerConfig,
             IPreferenceRepository preferenceRepository)
         {
             _ticketRepository = ticketRepository;
@@ -40,7 +41,7 @@ namespace Decimatio.Application.Services
 
         #region Get All Tickets y QR
 
-        public async Task<PagedList<Ticket>> GetAllTickets(TicketQueryFilter filtros)
+        public async Task<(IEnumerable<TicketDto>, MetaData)> GetAllTickets(TicketQueryFilter filtros)
         {
             filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
@@ -48,17 +49,34 @@ namespace Decimatio.Application.Services
             var tickets = await _ticketRepository.GetAllTicket(filtros);
             var counters = await _ticketRepository.GetCounterTicket();
             var pagedTickets = PagedList<Ticket>.CreatePaginationFromDb(tickets, counters, filtros.PageNumber, filtros.PageSize);
-            return pagedTickets;
+
+            var metaData = new MetaData
+            {
+                TotalCount = pagedTickets.TotalCount,
+                PageSize = pagedTickets.PageSize,
+                CurrentPage = pagedTickets.CurrentPage,
+                TotalPages = pagedTickets.TotalPages,
+                HasNextPage = pagedTickets.HasNextPage,
+                HasPreviousPage = pagedTickets.HasPreviousPage,
+                NextPageUrl = "",// _uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString(),
+                PreviousPageUrl = "",//_uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString()
+            };
+            var ticketsDtos = _mapper.Map<IEnumerable<TicketDto>>(pagedTickets);
+            return (ticketsDtos, metaData);
            
         }
 
-        public async Task<TicketQR> GetTicketQR(int idTicket)
+        public async Task<TicketQRDto> GetTicketQR(int idTicket)
         {
             var ticket = await _ticketRepository.GetTicketQR(idTicket);
-            return ticket; 
+            if (ticket is null)
+                throw new NoContentException("No se encontró el ticket solicitado");
+
+            var ticketQRDto = _mapper.Map<TicketQRDto>(ticket);
+            return ticketQRDto; 
         }
 
-        public async Task<TicketQR> GetTicketVoucherPDF(int idTicket)
+        public async Task<TicketQRDto> GetTicketVoucherPDF(int idTicket)
         {
             var ticket = await _ticketRepository.GetInfoTicket(idTicket);
             var ticketDto = _mapper.Map<TicketBodyQRDto>(ticket);
@@ -69,33 +87,39 @@ namespace Decimatio.Application.Services
             var comprobante = await _blobFilesService.GetImageFromBlobStorage(fileName);
             ticketQR.NombreTicketComprobante = comprobante;
 
-            return ticketQR;
+            var ticketQRDto = _mapper.Map<TicketQRDto>(ticketQR);
+
+            if (ticketQRDto is null)
+                throw new NoContentException("No se encontró el ticket solicitado");
+
+            return ticketQRDto;
         }
         #endregion
 
 
         #region Agregar Ticket
-        public async Task<string> AddTicket(Ticket ticket)
+        public async Task<string> AddTicket(TicketDto ticketDto)
         {
+            var ticket = _mapper.Map<Ticket>(ticketDto);
             var result = await _ticketRepository.AddTicket(ticket);
             if (result == 0)
                 throw new Exception($"Ha ocurrido un error al guardar el ticket");
 
             Ticket ticketWithInfo = await _ticketRepository.GetInfoTicket(result);
-            var ticketDto = _mapper.Map<TicketBodyQRDto>(ticketWithInfo);
+            var ticketBodyQRDto = _mapper.Map<TicketBodyQRDto>(ticketWithInfo);
 
             var json = new TicketInfoDto()
             {
                 IdTicket = result,
-                FechaTicket = ticketDto.FechaTicket,
-                MontoTotal = ticketDto.MontoTotal,
-                RutUsuario = $"{ticketDto?.Usuario?.Rut}-{ticketDto?.Usuario?.DV}",
-                Nombres = ticketDto?.Usuario?.Nombres,
-                ApellidoP = ticketDto?.Usuario?.ApellidoP,
-                ApellidoM = ticketDto.Usuario.ApellidoM,
-                Correo = ticketDto.Usuario.Correo,
-                IdEvento = ticketDto.Evento?.IdEvento,
-                IdSector = ticketDto.Sector?.IdSector
+                FechaTicket = ticketBodyQRDto.FechaTicket,
+                MontoTotal = ticketBodyQRDto.MontoTotal,
+                RutUsuario = $"{ticketBodyQRDto?.Usuario?.Rut}-{ticketBodyQRDto?.Usuario?.DV}",
+                Nombres = ticketBodyQRDto?.Usuario?.Nombres,
+                ApellidoP = ticketBodyQRDto?.Usuario?.ApellidoP,
+                ApellidoM = ticketBodyQRDto.Usuario.ApellidoM,
+                Correo = ticketBodyQRDto.Usuario.Correo,
+                IdEvento = ticketBodyQRDto.Evento?.IdEvento,
+                IdSector = ticketBodyQRDto.Sector?.IdSector
             };
 
             string base64QRImage = GeneratoQRCodeBase64(json);
@@ -107,26 +131,26 @@ namespace Decimatio.Application.Services
                 Ticket = ticket,
             };
 
-            string fileName = GetTicketFileName(ticketDto);
+            string fileName = GetTicketFileName(ticketBodyQRDto);
 
             ticketQR.NombreTicketComprobante = fileName;
             await AddTicketQR(ticketQR);
-            string base64HtmlTicket = await SaveTicketImageToBlobStorage(base64QRImage, ticketDto, fileName);
-            string emailToName =$"{ticketDto.Evento.NombreEvento} - {ticketDto.IdTicket}";
+            string base64HtmlTicket = await SaveTicketImageToBlobStorage(base64QRImage, ticketBodyQRDto, fileName);
+            string emailToName =$"{ticketBodyQRDto.Evento.NombreEvento} - {ticketBodyQRDto.IdTicket}";
 
             var emailDto = new RequestEmailTicketDto()
             {
                 To = json.Correo,
                 Subject = emailToName,
                 Base64 = base64HtmlTicket,
-                IdTicket = ticketDto.IdTicket,
-                Nombres = ticketDto.Usuario.Nombres,
-                ApellidoPaterno = ticketDto.Usuario.ApellidoP,
-                ApellidoMaterno = ticketDto.Usuario.ApellidoM,
-                NombreEvento = ticketDto.Evento.NombreEvento,
-                NombreLugar = ticketDto.Evento.Lugar.NombreLugar,
-                NombreSector = ticketDto.Sector.NombreSector,
-                MontoTotal = (long)ticketDto.MontoTotal
+                IdTicket = ticketBodyQRDto.IdTicket,
+                Nombres = ticketBodyQRDto.Usuario.Nombres,
+                ApellidoPaterno = ticketBodyQRDto.Usuario.ApellidoP,
+                ApellidoMaterno = ticketBodyQRDto.Usuario.ApellidoM,
+                NombreEvento = ticketBodyQRDto.Evento.NombreEvento,
+                NombreLugar = ticketBodyQRDto.Evento.Lugar.NombreLugar,
+                NombreSector = ticketBodyQRDto.Sector.NombreSector,
+                MontoTotal = (long)ticketBodyQRDto.MontoTotal
             };
              
             var resultEmail = await _emailSenderService.SendEmailTicket(emailDto);
@@ -155,8 +179,9 @@ namespace Decimatio.Application.Services
         #endregion
 
         #region Agregar Más de un Ticket
-        public async Task<string> AddTickets(IEnumerable<Ticket> tickets)
+        public async Task<string> AddTickets(IEnumerable<TicketDto> ticketsDto)
         {
+            var tickets = _mapper.Map<IEnumerable<Ticket>>(ticketsDto);
             List<string> strList = new List<string>();
           
             if (!tickets.Any())
@@ -164,11 +189,15 @@ namespace Decimatio.Application.Services
 
             foreach (var ticket in tickets)
             {
-                var objTicket = await AddTicket(ticket);
+                var mappedTicket = _mapper.Map<TicketDto>(ticket);  
+                var objTicket = await AddTicket(mappedTicket);
                 strList.Add(objTicket.ToString());
             }
 
             string ticketsPdf64 = _pdfGeneratorService.CombinePdfFiles(strList);
+            if (ticketsPdf64 is null)
+                throw new BadRequestException("No se pudieron generar los tickets");
+
             return ticketsPdf64;
         }
         #endregion
@@ -227,7 +256,7 @@ namespace Decimatio.Application.Services
 
         #region Preference Tickets 
 
-        public async Task<IEnumerable<PreferenceTicket>> GetPreferenceTicketsByTransaction(string transactionId)
+        public async Task<IEnumerable<PreferenceTicketDto>> GetPreferenceTicketsByTransaction(string transactionId)
         {
             if (transactionId is null || transactionId == "")
                 throw new NotFoundException("El transactionId no es válido");
@@ -236,21 +265,24 @@ namespace Decimatio.Application.Services
             if (!result.Any())
                 throw new BadRequestException("No existen tickets asociados a la transacción");
 
-            return result;
+            var preferenceTicketsDto = _mapper.Map<IEnumerable<PreferenceTicketDto>>(result);
+
+            return preferenceTicketsDto;
         }
 
-        public async Task<IEnumerable<PreferenceTicket>> GetAllPreferenceTickets()
+        public async Task<IEnumerable<PreferenceTicketDto>> GetAllPreferenceTickets()
         {
             var results = await _preferenceRepository.GetAll();
             if (!results.Any())
                 throw new NotFoundException("No se encontraron registros");
 
-            return results;
+            var preferenceTicketsDtos = _mapper.Map<IEnumerable<PreferenceTicketDto>>(results);
+            return preferenceTicketsDtos;
         }
         #endregion
 
         #region Exportar Excel Historial Tickets
-        public async Task<IEnumerable<Ticket>> GetAllTicketsExcel(TicketQueryFilter filtros)
+        public async Task<IEnumerable<TicketDto>> GetAllTicketsExcel(TicketQueryFilter filtros)
         {
             var tickets = await _ticketRepository.GetAllTicketReport();
 
@@ -260,7 +292,12 @@ namespace Decimatio.Application.Services
             if (filtros.IdSector > 0)
                 tickets = tickets.Where(x => x.IdSector == filtros.IdSector);
 
-            return tickets.Where(x => x.Activo == true);
+            var ticketsDto = _mapper.Map<IEnumerable<TicketDto>>(tickets);
+            var result = ticketsDto.Where(x => x.Activo == true);
+            if (!result.Any())
+                throw new NoContentException("No se encuentran registros para exportar");
+
+            return result;
         }
         #endregion
 
@@ -287,7 +324,8 @@ namespace Decimatio.Application.Services
                 newTickets.Add(tkt);
             }
 
-            var result = await AddTickets(newTickets);
+            var ticketsDto = _mapper.Map<IEnumerable<TicketDto>>(newTickets);
+            var result = await AddTickets(ticketsDto);
             await _ticketRepository.UpdateTicketsDownload(tickets.FirstOrDefault().TransactionId);
             return result;
         }

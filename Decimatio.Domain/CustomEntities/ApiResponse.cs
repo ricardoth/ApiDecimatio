@@ -1,4 +1,4 @@
-﻿namespace Decimatio.WebApi.Models
+﻿namespace Decimatio.Domain.CustomEntities
 {
     public class ApiResponse<T>
     {

@@ -6,12 +6,10 @@
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;
-        private readonly IMapper _mapper;
 
         public TicketController(ITicketService ticketService, IMapper mapper)
         {
             _ticketService = ticketService;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -20,29 +18,13 @@
         public async Task<IActionResult> GetTickets([FromQuery] TicketQueryFilter filtros)
         {
             var tickets = await _ticketService.GetAllTickets(filtros);
-            if (!tickets.Any())
-                return BadRequest();
 
-            var metaData = new MetaData
+            var response = new ApiResponse<IEnumerable<TicketDto>>(tickets.Item1)
             {
-                TotalCount = tickets.TotalCount,
-                PageSize = tickets.PageSize,
-                CurrentPage = tickets.CurrentPage,
-                TotalPages = tickets.TotalPages,
-                HasNextPage = tickets.HasNextPage,
-                HasPreviousPage = tickets.HasPreviousPage,
-                NextPageUrl = "",// _uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString(),
-                PreviousPageUrl = "",//_uriService.GetMenuPaginationUri(filtros, Url.RouteUrl(nameof(Get))).ToString()
+                Meta = tickets.Item2
             };
 
-            var ticketsDtos = _mapper.Map<IEnumerable<TicketDto>>(tickets);
-
-            var response = new ApiResponse<IEnumerable<TicketDto>>(ticketsDtos)
-            {
-                Meta = metaData
-            };
-
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(tickets.Item2));
             return Ok(response);
         }
 
@@ -52,11 +34,7 @@
         public async Task<IActionResult> GetTicketQR([FromQuery] int idTicket)
         {
             var ticket = await _ticketService.GetTicketQR(idTicket);
-            if (ticket == null)
-                return BadRequest();
-
-            var ticketQRDto = _mapper.Map<TicketQRDto>(ticket);
-            var response = new ApiResponse<TicketQRDto>(ticketQRDto);
+            var response = new ApiResponse<TicketQRDto>(ticket);
             return Ok(response);
         }
 
@@ -70,11 +48,7 @@
                 return NotFound();
 
             var ticket = await _ticketService.GetTicketVoucherPDF(idTicket);
-            if (ticket == null)
-                return BadRequest();
-
-            var ticketQRDto = _mapper.Map<TicketQRDto>(ticket);
-            var response = new ApiResponse<TicketQRDto>(ticketQRDto);
+            var response = new ApiResponse<TicketQRDto>(ticket);
             return Ok(response);
 
         }
@@ -84,13 +58,7 @@
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GenerarTicket([FromBody]TicketDto ticketDto)
         {
-            var ticket = _mapper.Map<Ticket>(ticketDto);
-            //var validationResult = _ticketValidator.Validate(ticket);
-
-            //if (!validationResult.IsValid)
-            //    return BadRequest(validationResult.Errors);
-
-            var item = await _ticketService.AddTicket(ticket);
+            var item = await _ticketService.AddTicket(ticketDto);
             return Ok(item);
         }
 
@@ -99,11 +67,7 @@
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GenerarTickets([FromBody]IEnumerable<TicketDto> ticketsDto)
         {
-            var tickets = _mapper.Map<IEnumerable<Ticket>>(ticketsDto);
-            var result = await _ticketService.AddTickets(tickets);
-            if (result == null)
-                return BadRequest();
-
+            var result = await _ticketService.AddTickets(ticketsDto);
             return Ok(result);
         }
 
@@ -139,8 +103,7 @@
         public async Task<IActionResult> GetPreferenceTickets(string transactionId)
         {
             var result = await _ticketService.GetPreferenceTicketsByTransaction(transactionId);
-            var preferenceTicketsDto = _mapper.Map<IEnumerable<PreferenceTicketDto>>(result);
-            var response = new ApiResponse<IEnumerable<PreferenceTicketDto>>(preferenceTicketsDto);
+            var response = new ApiResponse<IEnumerable<PreferenceTicketDto>>(result);
             return Ok(response);
         }
 
@@ -151,11 +114,7 @@
         public async Task<IActionResult> GetTicketsExcel([FromQuery] TicketQueryFilter filtros)
         {
             var tickets = await _ticketService.GetAllTicketsExcel(filtros);
-            if (!tickets.Any())
-                return BadRequest();
-
-            var ticketsDto = _mapper.Map<IEnumerable<TicketDto>>(tickets);
-            var response = new ApiResponse<IEnumerable<TicketDto>>(ticketsDto);
+            var response = new ApiResponse<IEnumerable<TicketDto>>(tickets);
             return Ok(response);
         }
         #endregion
@@ -165,8 +124,7 @@
         public async Task<IActionResult> GetAll()
         {
             var result = await _ticketService.GetAllPreferenceTickets();
-            var preferenceTicketsDtos = _mapper.Map<IEnumerable<PreferenceTicketDto>>(result);
-            var response = new ApiResponse<IEnumerable<PreferenceTicketDto>>(preferenceTicketsDtos);
+            var response = new ApiResponse<IEnumerable<PreferenceTicketDto>>(result);
             return Ok(response);
         }
         #endregion

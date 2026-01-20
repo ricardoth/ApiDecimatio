@@ -63,7 +63,6 @@ namespace Decimatio.Application.Services
             };
             var ticketsDtos = _mapper.Map<IEnumerable<TicketDto>>(pagedTickets);
             return (ticketsDtos, metaData);
-           
         }
 
         public async Task<TicketQRDto> GetTicketQR(int idTicket)

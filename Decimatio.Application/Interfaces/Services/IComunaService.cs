@@ -2,6 +2,6 @@
 {
     public interface IComunaService
     {
-        Task<IEnumerable<Comuna>> GetComunasByRegion(int idRegion);
+        Task<IEnumerable<ComunaDto>> GetComunasByRegion(int idRegion);
     }
 }

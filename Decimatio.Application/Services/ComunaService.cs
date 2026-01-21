@@ -15,7 +15,8 @@
         {
             var result = await _comunaRepository.GetComunasByRegion(idRegion);
             if (!result.Any())
-                throw new NoContentException("No se encontraron comunas para la región solicitada");
+                throw new NotFoundException("No se encontraron comunas para la región solicitada");
+
             var comunasDtos = _mapper.Map<IEnumerable<ComunaDto>>(result);
             return comunasDtos;
         }

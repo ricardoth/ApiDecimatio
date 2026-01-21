@@ -22,6 +22,9 @@
         public async Task<IEnumerable<SectorDto>> GetAllSectores()
         {
             var result = await _sectorRepository.GetAllSectores();
+            if (!result.Any())
+                throw new NotFoundException("No se encontraron sectores"); 
+
             var sectores = _mapper.Map<IEnumerable<SectorDto>>(result);
             return sectores;
         }
@@ -80,7 +83,7 @@
         public async Task<bool> DeleteSector(int idSector)
         {
             if (idSector <= 0)
-                throw new BadRequestException("El sector es inválido");
+                throw new NotFoundException("El sector es inválido");
 
             var sector = await GetById(idSector);
             return await _sectorRepository.DeleteSector(sector.IdSector);

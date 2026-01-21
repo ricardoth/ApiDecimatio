@@ -37,7 +37,7 @@ namespace Decimatio.Application.Services
 		
 			var result = await _eventoRepository.GetAllEventos();
             if (result == null)
-                throw new BadRequestException("No se encuentran eventos en nuestros registros");
+                throw new NotFoundException("No se encuentran eventos en nuestros registros");
             
             var tasks = result.Select(async evento =>
             {
@@ -52,7 +52,7 @@ namespace Decimatio.Application.Services
         {
 			var result = await _eventoRepository.GetById(idEvento);
 			if (result == null)
-				throw new Exception("Ha ocurrido un error al obtener el evento desde el Repositorio");
+				throw new NotFoundException("No existe el evento solicitado");
 
 			string imageNamePath = _containerConfig.FolderFlyerName + result.Flyer;
             result.UrlImagenFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
@@ -116,7 +116,7 @@ namespace Decimatio.Application.Services
             });
 
             if (result is null)
-                throw new BadRequestException("No se pudo encontrar eventos indicados");
+                throw new NotFoundException("No se pudo encontrar los eventos indicados");
 
             return await Task.WhenAll(tasks);
         }
@@ -129,7 +129,7 @@ namespace Decimatio.Application.Services
             var eventos = await _eventoRepository.GetAllEventos();
 
             if (eventos is null)
-                throw new BadRequestException("No se encontraron eventos");
+                throw new NotFoundException("No se encontraron eventos");
 
             if (filtros.IdEvento > 0)
                 eventos = eventos.Where(x => x.IdEvento == filtros.IdEvento);
@@ -149,7 +149,7 @@ namespace Decimatio.Application.Services
         {
             var result = await _eventoRepository.GetAllEventos();
             if (result == null)
-                throw new BadRequestException("No se encuentran eventos en nuestros registros");
+                throw new NotFoundException("No se encuentran eventos en nuestros registros");
 
             return result;
         }

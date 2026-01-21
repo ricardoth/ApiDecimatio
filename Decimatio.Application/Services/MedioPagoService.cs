@@ -25,7 +25,7 @@ namespace Decimatio.Application.Services
             var result = await _medioPagoRepository.GetMedioPagos();
 
             if (result == null)
-                throw new NoContentException();
+                throw new NotFoundException("No se encuentran registros de medios de pago");
 
             var tasks = result.Select(async mPago =>
             {
@@ -43,7 +43,7 @@ namespace Decimatio.Application.Services
         {
             var result = await _medioPagoRepository.GetMedioPago(id);
             if (result == null)
-                throw new NoContentException("No existe el evento solicitado");
+                throw new NotFoundException("No existe el evento solicitado");
 
             string imageNamePath = _containerConfig.FolderMedioPago + result.UrlImageBlob;
             result.UrlImageBlob = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);

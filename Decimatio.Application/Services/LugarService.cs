@@ -46,7 +46,7 @@ namespace Decimatio.Application.Services
         {
             var result = await _lugarRepository.GetById(idLugar);
             if (result is null)
-                throw new NoContentException("No se encontró el Lugar solicitado");
+                throw new NotFoundException("No se encontró el Lugar solicitado");
 
             string imageNamePath = _containerConfig.ReferencialMapName + result.MapaReferencial;
             result.UrlImagenMapaReferencial = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);

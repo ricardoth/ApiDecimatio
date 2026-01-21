@@ -34,7 +34,7 @@
 
             var usuariosPaginated = await _usuarioRepository.GetAllUsersPaginated(filtros);
             if (!usuariosPaginated.Any())
-                throw new NoContentException();
+                throw new NotFoundException("No existen usuarios");
 
             var usuarios = _mapper.Map<IEnumerable<UsuarioDto>>(usuariosPaginated);
             var totalCount = await _genericRepository.GetTotalCount("Usuario");
@@ -54,7 +54,7 @@
 
             var usuariosFiltered = await _usuarioRepository.GetAllUsersPaginated(filters);
             if (!usuariosFiltered.Any())
-                throw new NoContentException();
+                throw new NotFoundException("No se econtraron usuarios");
 
             var usuarios = _mapper.Map<IEnumerable<UsuarioDto>>(usuariosFiltered);
             return usuarios;
@@ -65,7 +65,7 @@
         {
             var result = await _usuarioRepository.GetById(idUsuario);
             if (result is null)
-                throw new NoContentException($"No se encontró el usuario en la bd");
+                throw new NotFoundException($"No se encontró el usuario en la bd");
 
             var usuario = _mapper.Map<UsuarioDto>(result);
             return usuario;  

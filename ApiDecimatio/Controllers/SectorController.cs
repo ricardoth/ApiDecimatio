@@ -6,12 +6,11 @@
     public class SectorController : ControllerBase
     {
         private readonly ISectorService _sectorService;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
 
         public SectorController(ISectorService sectorService, IMapper mapper)
         {
             _sectorService = sectorService;
-            _mapper = mapper;
 
         }
 
@@ -21,11 +20,7 @@
         public async Task<IActionResult> Get()
         {
             var result = await _sectorService.GetAllSectores();
-            if (!result.Any()) 
-                return BadRequest();
-
-            var sectoresDtos = _mapper.Map<IEnumerable<SectorDto>>(result);
-            var response = new ApiResponse<IEnumerable<SectorDto>>(sectoresDtos);
+            var response = new ApiResponse<IEnumerable<SectorDto>>(result);
             return Ok(response);
         }
 
@@ -35,11 +30,7 @@
         public async Task<IActionResult> GetSectoresByEvento(int idEvento)
         {
             var result = await _sectorService.GetSectoresByEvento(idEvento);
-            if (result == null) 
-                return BadRequest();
-
-            var sectoresDto = _mapper.Map<IEnumerable<SectorDto>>(result);
-            var response = new ApiResponse<IEnumerable<SectorDto>>(sectoresDto);
+            var response = new ApiResponse<IEnumerable<SectorDto>>(result);
             return Ok(response);
         }
 

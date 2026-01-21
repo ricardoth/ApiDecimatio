@@ -24,7 +24,7 @@ namespace Decimatio.Application.Services
 
             var result = await _accesoEventoRepository.GetAllAccesoEventoTickets();
             if (result == null)
-                throw new Exception("No se pudo obtener la lista de accesos al evento");
+                throw new NotFoundException("No se pudo obtener la lista de accesos al evento");
 
 
             if (filtros.IdTicket > 0)

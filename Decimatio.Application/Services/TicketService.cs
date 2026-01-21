@@ -69,7 +69,7 @@ namespace Decimatio.Application.Services
         {
             var ticket = await _ticketRepository.GetTicketQR(idTicket);
             if (ticket is null)
-                throw new NoContentException("No se encontró el ticket solicitado");
+                throw new NotFoundException("No se encontró el ticket solicitado");
 
             var ticketQRDto = _mapper.Map<TicketQRDto>(ticket);
             return ticketQRDto; 
@@ -89,7 +89,7 @@ namespace Decimatio.Application.Services
             var ticketQRDto = _mapper.Map<TicketQRDto>(ticketQR);
 
             if (ticketQRDto is null)
-                throw new NoContentException("No se encontró el ticket solicitado");
+                throw new NotFoundException("No se encontró el ticket solicitado");
 
             return ticketQRDto;
         }
@@ -102,7 +102,7 @@ namespace Decimatio.Application.Services
             var ticket = _mapper.Map<Ticket>(ticketDto);
             var result = await _ticketRepository.AddTicket(ticket);
             if (result == 0)
-                throw new Exception($"Ha ocurrido un error al guardar el ticket");
+                throw new BadRequestException($"Ha ocurrido un error al guardar el ticket");
 
             Ticket ticketWithInfo = await _ticketRepository.GetInfoTicket(result);
             var ticketBodyQRDto = _mapper.Map<TicketBodyQRDto>(ticketWithInfo);
@@ -184,7 +184,7 @@ namespace Decimatio.Application.Services
             List<string> strList = new List<string>();
           
             if (!tickets.Any())
-                throw new Exception("No se encontraron tickets para generar");
+                throw new NotFoundException("No se encontraron tickets para generar");
 
             foreach (var ticket in tickets)
             {
@@ -262,7 +262,7 @@ namespace Decimatio.Application.Services
 
             var result = await _ticketRepository.GetPreferenceTicketsByTransaction(transactionId);
             if (!result.Any())
-                throw new BadRequestException("No existen tickets asociados a la transacción");
+                throw new NotFoundException("No existen tickets asociados a la transacción");
 
             var preferenceTicketsDto = _mapper.Map<IEnumerable<PreferenceTicketDto>>(result);
 
@@ -294,7 +294,7 @@ namespace Decimatio.Application.Services
             var ticketsDto = _mapper.Map<IEnumerable<TicketDto>>(tickets);
             var result = ticketsDto.Where(x => x.Activo == true);
             if (!result.Any())
-                throw new NoContentException("No se encuentran registros para exportar");
+                throw new NotFoundException("No se encuentran registros para exportar");
 
             return result;
         }

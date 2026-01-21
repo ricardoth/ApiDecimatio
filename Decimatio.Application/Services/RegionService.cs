@@ -15,7 +15,7 @@
         {
             var result = await _regionRepository.GetAllRegions();
             if (!result.Any())
-                throw new NoContentException("No se encontraron regiones");
+                throw new NotFoundException("No se encontraron regiones");
 
             var regionesDtos = _mapper.Map<IEnumerable<RegionDto>>(result);
             return regionesDtos;

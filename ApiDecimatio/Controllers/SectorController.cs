@@ -6,12 +6,10 @@
     public class SectorController : ControllerBase
     {
         private readonly ISectorService _sectorService;
-        //private readonly IMapper _mapper;
 
-        public SectorController(ISectorService sectorService, IMapper mapper)
+        public SectorController(ISectorService sectorService)
         {
             _sectorService = sectorService;
-
         }
 
         [HttpGet]
@@ -40,11 +38,7 @@
         public async Task<IActionResult> Get(int id)
         {
             var result = await _sectorService.GetById(id);  
-            if (result == null)
-                return BadRequest();
-
-            var sectorDto = _mapper.Map<SectorDto>(result);
-            var response = new ApiResponse<SectorDto>(sectorDto); 
+            var response = new ApiResponse<SectorDto>(result); 
             return Ok(response);        
         }
 
@@ -75,9 +69,6 @@
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0)
-                return NotFound();
-
             var result = await _sectorService.DeleteSector(id);
             var response = new ApiResponse<bool>(result);
             return Ok(response);

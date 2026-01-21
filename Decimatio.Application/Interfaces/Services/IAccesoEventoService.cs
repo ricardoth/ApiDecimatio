@@ -1,12 +1,9 @@
-﻿using Decimatio.Domain.CustomEntities;
-using Decimatio.Domain.QueryFilters;
-
-namespace Decimatio.Application.Interfaces.Services
+﻿namespace Decimatio.Application.Interfaces.Services
 {
     public interface IAccesoEventoService
     {
-        Task<AccesoEventoStatus> ValidarAccesoTicket(TicketAcceso ticketAcceso);
+        Task<AccesoEventoStatus> ValidarAccesoTicket(TicketAccesoDto ticketAcceso);
         Task<int> SalidaAccesoEvento(long idAccesoEvento);
-        Task<PagedList<AccesoEventoTicket>> GetAccesosEventosTickets(AccesoEventoTicketQueryFilter filtros);
+        Task<(IEnumerable<AccesoEventoTicketDto>, MetaData)> GetAccesosEventosTickets(AccesoEventoTicketQueryFilter filtros);
     }
 }

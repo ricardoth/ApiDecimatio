@@ -1,31 +1,28 @@
-﻿using Decimatio.Application.Interfaces.Repositories;
-using Decimatio.Application.Interfaces.Services;
-using Decimatio.Domain.CustomEntities;
-using Microsoft.Extensions.Options;
-
-namespace Decimatio.Application.Services
+﻿namespace Decimatio.Application.Services
 {
     internal sealed class AccesoEventoService : IAccesoEventoService
     {
         private readonly IAccesoEventoRepository _accesoEventoRepository;
         private readonly PaginationOptions _paginationOptions;
+        private readonly IMapper _mapper;
 
-        public AccesoEventoService(IAccesoEventoRepository accesoEventoRepository, IOptions<PaginationOptions> paginationOptions)
+        public AccesoEventoService(IAccesoEventoRepository accesoEventoRepository, 
+            IOptions<PaginationOptions> paginationOptions,
+            IMapper mapper)
         {
             _accesoEventoRepository = accesoEventoRepository;
             _paginationOptions = paginationOptions.Value;
+            _mapper = mapper;
         }
 
-        public async Task<PagedList<AccesoEventoTicket>> GetAccesosEventosTickets(AccesoEventoTicketQueryFilter filtros)
+        public async Task<(IEnumerable<AccesoEventoTicketDto>, MetaData)> GetAccesosEventosTickets(AccesoEventoTicketQueryFilter filtros)
         {
             filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
 
-
             var result = await _accesoEventoRepository.GetAllAccesoEventoTickets();
             if (result == null)
                 throw new NotFoundException("No se pudo obtener la lista de accesos al evento");
-
 
             if (filtros.IdTicket > 0)
                 result = result.Where(x => x.IdTicket == filtros.IdTicket);
@@ -49,7 +46,20 @@ namespace Decimatio.Application.Services
                 result = result.Where(x => x.FechaHoraSalida == filtros.FechaHoraSalida);
 
             var pagedList = PagedList<AccesoEventoTicket>.Create(result, filtros.PageNumber, filtros.PageSize);
-            return pagedList;
+
+            var metaData = new MetaData
+            {
+                TotalCount = pagedList.TotalCount,
+                PageSize = pagedList.PageSize,
+                CurrentPage = pagedList.CurrentPage,
+                TotalPages = pagedList.TotalPages,
+                HasNextPage = pagedList.HasNextPage,
+                HasPreviousPage = pagedList.HasPreviousPage,
+                NextPageUrl = "",
+                PreviousPageUrl = "",
+            };
+            var accesosEventosTicketsDto = _mapper.Map<IEnumerable<AccesoEventoTicketDto>>(pagedList);
+            return (accesosEventosTicketsDto, metaData);
         }
 
         public async Task<int> SalidaAccesoEvento(long idAccesoEvento)
@@ -58,8 +68,10 @@ namespace Decimatio.Application.Services
             return accesoEventoResult;
         }
 
-        public async Task<AccesoEventoStatus> ValidarAccesoTicket(TicketAcceso ticketAcceso)
+        public async Task<AccesoEventoStatus> ValidarAccesoTicket(TicketAccesoDto ticketAccesoDto)
         {
+            var ticketAcceso = _mapper.Map<TicketAcceso>(ticketAccesoDto);
+
             AccesoEventoStatus result = new();
             if (ticketAcceso.EsExtranjero)
                 result = await _accesoEventoRepository.ValidarAccesoTicketExtranjero(ticketAcceso);

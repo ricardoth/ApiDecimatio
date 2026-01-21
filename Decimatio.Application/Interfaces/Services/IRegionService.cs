@@ -2,6 +2,6 @@
 {
     public interface IRegionService
     {
-        Task<IEnumerable<Region>> GetAllRegions();
+        Task<IEnumerable<RegionDto>> GetAllRegions();
     }
 }

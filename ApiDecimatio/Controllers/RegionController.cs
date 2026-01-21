@@ -20,11 +20,7 @@
         public async Task<IActionResult> Get()
         {
             var result = await _regionService.GetAllRegions();
-            if (result is null)
-                return BadRequest("No se ha encontrado ningún registro");
-
-            var regionesDtos = _mapper.Map<IEnumerable<RegionDto>>(result);
-            var response = new ApiResponse<IEnumerable<RegionDto>>(regionesDtos);
+            var response = new ApiResponse<IEnumerable<RegionDto>>(result);
             return Ok(response);
         }
     }

@@ -8,16 +8,19 @@ namespace Decimatio.Application.Services
         private readonly IBlobFilesService _blobFilesService;
         private readonly BlobContainerConfig _containerConfig;
         private readonly IMapper _mapper;
+        private readonly IValidator<UpdateMedioPagoDto> _updateMedioPagoDtoValidator;
 
         public MedioPagoService(IMedioPagoRepository medioPagoRepository,
             IBlobFilesService blobFilesService,
             BlobContainerConfig containerConfig,
-            IMapper mapper)
+            IMapper mapper,
+            IValidator<UpdateMedioPagoDto> updateMedioPagoDtoValidator)
         {
             _medioPagoRepository = medioPagoRepository;
             _blobFilesService = blobFilesService;   
             _containerConfig = containerConfig;
             _mapper = mapper;
+            _updateMedioPagoDtoValidator = updateMedioPagoDtoValidator;
         }
 
         public async Task<IEnumerable<MedioPagoDto>> GetMediosPagosAsync()
@@ -75,21 +78,30 @@ namespace Decimatio.Application.Services
             return result;
         }
 
-        public async Task<bool> UpdateMedioPagoAsync(MedioPagoDto medioPagoDto)
+        public async Task<bool> UpdateMedioPagoAsync(UpdateMedioPagoDto updateMedioPagoDto)
         {
-            var medioPago = _mapper.Map<MedioPago>(medioPagoDto);
-            if (medioPago.IdMedioPago <= 0)
+            var validations = _updateMedioPagoDtoValidator.Validate(updateMedioPagoDto);
+            if (!validations.IsValid)
+            {
+                var errores = validations.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").ToList();
+                throw new ValidationResultException(errores);
+            }
+
+            if (updateMedioPagoDto.IdMedioPago <= 0)
                 throw new NotFoundException("El Medio de Pago debe ser válido");
 
-            if (medioPago.UrlImageBlob is not null || medioPago.UrlImageBlob != "")
+            if (updateMedioPagoDto.UrlImageBlob is not null)
             {
-                string imageNamePath = _containerConfig.FolderMedioPago + medioPago.NombreMedioPago;
-                var flyerContent = Convert.FromBase64String(medioPago.UrlImageBlob);
+                string imageNamePath = _containerConfig.FolderMedioPago + updateMedioPagoDto.NombreMedioPago;
+                var flyerContent = Convert.FromBase64String(updateMedioPagoDto.UrlImageBlob);
                 await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
+                updateMedioPagoDto.UrlImageBlob = updateMedioPagoDto.NombreMedioPago;
             }
-            medioPago.UrlImageBlob = medioPago.NombreMedioPago;
-            var result = await _medioPagoRepository.UpdateMedioPago(medioPago);
-            return result;
+
+            var medioPagoBd = await _medioPagoRepository.GetMedioPago((int)updateMedioPagoDto.IdMedioPago);
+            var medioPago = _mapper.Map(updateMedioPagoDto, medioPagoBd);
+
+            return await _medioPagoRepository.UpdateMedioPago(medioPago);
         }
     }
 }

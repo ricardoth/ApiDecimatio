@@ -6,6 +6,6 @@
         Task<MedioPagoDto> GetMedioPagoAsync(int id);
         Task AddMedioPagoAsync(MedioPagoDto medioPagoDto);
         Task<bool> DeleteMedioPagoAsync(int id);
-        Task<bool> UpdateMedioPagoAsync(MedioPagoDto medioPagoDto);
+        Task<bool> UpdateMedioPagoAsync(UpdateMedioPagoDto medioPagoDto);
     }
 }

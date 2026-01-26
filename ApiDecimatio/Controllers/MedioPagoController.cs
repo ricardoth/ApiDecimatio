@@ -48,10 +48,10 @@
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Put(int id, MedioPagoDto medioPagoDto)
+        public async Task<IActionResult> Put(int id, UpdateMedioPagoDto updateMedioPagoDto)
         {
-            medioPagoDto.IdMedioPago = id;
-            var result = await _medioPagoService.UpdateMedioPagoAsync(medioPagoDto);
+            updateMedioPagoDto.IdMedioPago = id;
+            var result = await _medioPagoService.UpdateMedioPagoAsync(updateMedioPagoDto);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }

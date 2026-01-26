@@ -1,7 +1,6 @@
 ﻿using Decimatio.Application;
 using Decimatio.Common;
 using Decimatio.Domain.ValueObjects;
-using PdfSharp.Charting;
 
 namespace Decimatio.WebApi.Configuration
 {

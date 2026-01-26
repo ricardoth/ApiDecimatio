@@ -31,6 +31,9 @@ namespace Decimatio.Application.Mappings
 
 
             CreateMap<MedioPago, MedioPagoDto>().ReverseMap();
+            CreateMap<MedioPago, CreateMedioPagoDto>().ReverseMap();
+            CreateMap<UpdateMedioPagoDto, MedioPago>()
+               .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
             CreateMap<UpdateLugarDto, Lugar>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));

@@ -37,10 +37,10 @@
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] MedioPagoDto medioPagoDto)
+        public async Task<IActionResult> Post([FromBody] CreateMedioPagoDto createMedioPagoDto)
         {
-            await _medioPagoService.AddMedioPagoAsync(medioPagoDto);
-            var response = new ApiResponse<MedioPagoDto>(medioPagoDto);
+            await _medioPagoService.AddMedioPagoAsync(createMedioPagoDto);
+            var response = new ApiResponse<CreateMedioPagoDto>(createMedioPagoDto);
             return Ok(response);
         }
 

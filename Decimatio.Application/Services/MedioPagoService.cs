@@ -9,18 +9,21 @@ namespace Decimatio.Application.Services
         private readonly BlobContainerConfig _containerConfig;
         private readonly IMapper _mapper;
         private readonly IValidator<UpdateMedioPagoDto> _updateMedioPagoDtoValidator;
+        private readonly IValidator<CreateMedioPagoDto> _createMedioPagoDtoValidator;
 
         public MedioPagoService(IMedioPagoRepository medioPagoRepository,
             IBlobFilesService blobFilesService,
             BlobContainerConfig containerConfig,
             IMapper mapper,
-            IValidator<UpdateMedioPagoDto> updateMedioPagoDtoValidator)
+            IValidator<UpdateMedioPagoDto> updateMedioPagoDtoValidator,
+            IValidator<CreateMedioPagoDto> createMedioPagoDtoValidator)
         {
             _medioPagoRepository = medioPagoRepository;
             _blobFilesService = blobFilesService;   
             _containerConfig = containerConfig;
             _mapper = mapper;
             _updateMedioPagoDtoValidator = updateMedioPagoDtoValidator;
+            _createMedioPagoDtoValidator = createMedioPagoDtoValidator;
         }
 
         public async Task<IEnumerable<MedioPagoDto>> GetMediosPagosAsync()
@@ -55,9 +58,16 @@ namespace Decimatio.Application.Services
             return medioPagoDto;
         }
 
-        public async Task AddMedioPagoAsync(MedioPagoDto medioPagoDto)
+        public async Task AddMedioPagoAsync(CreateMedioPagoDto createMedioPagoDto)
         {
-            var medioPago = _mapper.Map<MedioPago>(medioPagoDto);
+            var validations = _createMedioPagoDtoValidator.Validate(createMedioPagoDto);
+            if (!validations.IsValid)
+            {
+                var errores = validations.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").ToList();
+                throw new ValidationResultException(errores);
+            }
+
+            var medioPago = _mapper.Map<MedioPago>(createMedioPagoDto);
 
             if (medioPago.UrlImageBlob is not null || medioPago.UrlImageBlob != "")
             {

@@ -4,7 +4,7 @@
     {
         Task<IEnumerable<MedioPagoDto>> GetMediosPagosAsync();
         Task<MedioPagoDto> GetMedioPagoAsync(int id);
-        Task AddMedioPagoAsync(MedioPagoDto medioPagoDto);
+        Task AddMedioPagoAsync(CreateMedioPagoDto createMedioPagoDto);
         Task<bool> DeleteMedioPagoAsync(int id);
         Task<bool> UpdateMedioPagoAsync(UpdateMedioPagoDto medioPagoDto);
     }

@@ -54,7 +54,7 @@
         }
 
         [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GenerarTicket([FromBody]TicketDto ticketDto)
         {
@@ -63,7 +63,7 @@
         }
 
         [HttpPost("GenerarTickets")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GenerarTickets([FromBody]IEnumerable<TicketDto> ticketsDto)
         {
@@ -72,6 +72,8 @@
         }
 
         [HttpPost("TicketQueue")]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GenerarTicketQueue([FromBody] PreferenceRequest preferenceRequest)
         {
             var result = await _ticketService.AddQueueTicket(preferenceRequest.PreferenceCode);

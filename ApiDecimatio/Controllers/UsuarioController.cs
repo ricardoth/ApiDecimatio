@@ -62,7 +62,7 @@
         }
 
         [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<ApiResponse<CreateUsuarioDto>> Post([FromBody] CreateUsuarioDto createUsuarioDto)
         {

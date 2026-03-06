@@ -2,7 +2,6 @@
 using Decimatio.Common.Interfaces;
 using System.Drawing;
 using System.Drawing.Imaging;
-using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace Decimatio.Application.Services
 {

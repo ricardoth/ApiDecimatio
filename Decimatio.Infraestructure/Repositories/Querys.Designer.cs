@@ -195,6 +195,15 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a SELECT COUNT(*) AS Contador FROM [dbo].[Evento].
+        /// </summary>
+        internal static string GET_EVENTO_COUNTER {
+            get {
+                return ResourceManager.GetString("GET_EVENTO_COUNTER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT 
         ///    E.IdEvento
         ///      ,E.IdLugar
@@ -271,6 +280,39 @@ namespace Decimatio.Infraestructure.Repositories {
         internal static string GET_EVENTOS_FILTRO {
             get {
                 return ResourceManager.GetString("GET_EVENTOS_FILTRO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT
+        /// E.IdEvento,
+        /// E.IdLugar,
+        /// E.NombreEvento,
+        /// E.Descripcion,
+        /// E.Fecha,
+        /// E.Flyer,
+        /// E.Observacion,
+        /// E.ProductoraResponsable,
+        /// E.Banner,
+        /// E.ContenidoBanner,
+        /// E.Activo,
+        /// L.IdLugar,
+        /// L.IdComuna,
+        /// L.NombreLugar,
+        /// L.Ubicacion,
+        /// L.Numeracion,
+        /// L.MapaReferencial,
+        /// L.FechaCreacion,
+        /// L.Activo
+        ///  FROM [dbo].[Evento] E
+        /// INNER JOIN [dbo].[Lugar] L ON L.IdLugar = E.IdLugar
+        ///  ORDER BY E.IdEvento ASC
+        ///  OFFSET (@PageNumber - 1) * @PageSize ROWS
+        ///  FETCH NEXT @PageSize ROWS ONLY;.
+        /// </summary>
+        internal static string GET_EVENTOS_PAGINATED {
+            get {
+                return ResourceManager.GetString("GET_EVENTOS_PAGINATED", resourceCulture);
             }
         }
         

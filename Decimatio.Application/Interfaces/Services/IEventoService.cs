@@ -1,18 +1,14 @@
-﻿using Decimatio.Application.DTOs;
-using Decimatio.Domain.CustomEntities;
-using Decimatio.Domain.QueryFilters;
-
-namespace Decimatio.Application.Interfaces.Services
+﻿namespace Decimatio.Application.Interfaces.Services
 {
     public interface IEventoService
     {
-        Task<IEnumerable<Evento>> GetAllEventos();
-        Task<IEnumerable<Evento>> GetAllEventosCombobox();
-        Task<PagedList<Evento>> GetAllEventosPaginated(EventoQueryFilter filtros);
-        Task<Evento> GetById(int idEvento);
+        Task<IEnumerable<EventoDto>> GetAllEventos();
+        Task<IEnumerable<EventoDto>> GetAllEventosCombobox();
+        Task<(IEnumerable<EventoDto>, MetaData)> GetAllEventosPaginated(EventoQueryFilter filtros);
+        Task<EventoDto> GetById(int idEvento);
         Task AddEvento(CreateEventoDto createEventoDto);
         Task<bool> UpdateEvento(UpdateEventoDto updateEventoDto);
         Task<bool> DeleteEvento(int idEvento);
-        Task<IEnumerable<Evento>> GetEventosFilter(string filtro);
+        Task<IEnumerable<EventoDto>> GetEventosFilter(string filtro);
     }
 }

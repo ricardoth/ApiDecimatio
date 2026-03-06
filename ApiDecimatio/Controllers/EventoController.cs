@@ -1,17 +1,15 @@
 ﻿namespace Decimatio.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EventoController : ControllerBase
     {
         private readonly IEventoService _eventoService;
-        private readonly IMapper _mapper;
 
-        public EventoController(IEventoService eventoService, IMapper mapper)
+        public EventoController(IEventoService eventoService)
         {
             _eventoService = eventoService;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -22,8 +20,7 @@
             var result = await _eventoService.GetAllEventos();
             if (result == null) return BadRequest();
 
-            var eventosDtos = _mapper.Map<IEnumerable<EventoDto>>(result);
-            var response = new ApiResponse<IEnumerable<EventoDto>>(eventosDtos);
+            var response = new ApiResponse<IEnumerable<EventoDto>>(result);
             return Ok(response);
         }
 
@@ -35,8 +32,7 @@
             var result = await _eventoService.GetAllEventosCombobox();
             if (result == null) return BadRequest();
 
-            var eventosDtos = _mapper.Map<IEnumerable<EventoDto>>(result);
-            var response = new ApiResponse<IEnumerable<EventoDto>>(eventosDtos);
+            var response = new ApiResponse<IEnumerable<EventoDto>>(result);
             return Ok(response);
         }
 
@@ -48,25 +44,12 @@
         {
             var eventos = await _eventoService.GetAllEventosPaginated(filtros);
 
-            var metaData = new MetaData
+            var response = new ApiResponse<IEnumerable<EventoDto>>(eventos.Item1)
             {
-                TotalCount = eventos.TotalCount,
-                PageSize = eventos.PageSize,
-                CurrentPage = eventos.CurrentPage,
-                TotalPages = eventos.TotalPages,
-                HasNextPage = eventos.HasNextPage,
-                HasPreviousPage = eventos.HasPreviousPage,
-                NextPageUrl = "",
-                PreviousPageUrl = "",
+                Meta = eventos.Item2
             };
 
-            var eventosDtos = _mapper.Map<IEnumerable<EventoDto>>(eventos);
-            var response = new ApiResponse<IEnumerable<EventoDto>>(eventosDtos)
-            {
-                Meta = metaData
-            };
-
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(eventos.Item2));
             return Ok(response);
         }
 
@@ -76,15 +59,8 @@
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Get(int id)
         {
-            if (id <= 0)
-                return NotFound();
-
             var result = await _eventoService.GetById(id);
-            if (result == null)
-                return BadRequest();
-
-            var eventoDto = _mapper.Map<EventoDto>(result);
-            var response = new ApiResponse<EventoDto>(eventoDto);
+            var response = new ApiResponse<EventoDto>(result);
             return Ok(response);
         }
 
@@ -131,11 +107,10 @@
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Get([FromQuery] string? filtro)
+        public async Task<IActionResult> GetEventosFilter([FromQuery] string? filtro)
         {
             var result = await _eventoService.GetEventosFilter(filtro);
-            var eventosDtos = _mapper.Map<IEnumerable<EventoDto>>(result);
-            var response = new ApiResponse<IEnumerable<EventoDto>>(eventosDtos);
+            var response = new ApiResponse<IEnumerable<EventoDto>>(result);
             return Ok(response);
         }
     }

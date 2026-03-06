@@ -1,7 +1,4 @@
 ﻿using Decimatio.Common.Interfaces;
-using Decimatio.Domain.CustomEntities;
-using Decimatio.Domain.ValueObjects;
-using Microsoft.Extensions.Options;
 
 namespace Decimatio.Application.Services
 {
@@ -32,31 +29,30 @@ namespace Decimatio.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Evento>> GetAllEventos()
+        public async Task<IEnumerable<EventoDto>> GetAllEventos()
         {
-		
-			var result = await _eventoRepository.GetAllEventos();
-            if (result == null)
+			var eventos = await _eventoRepository.GetAllEventos();
+            if (eventos == null)
                 throw new NotFoundException("No se encuentran eventos en nuestros registros");
-            
-            var tasks = result.Select(async evento =>
-            {
-                string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
-                evento.UrlImagenFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
-                return evento;
-            });
 
-            return await Task.WhenAll(tasks);
+            await LoadEventImage(eventos);
+            return _mapper.Map<IEnumerable<EventoDto>>(eventos);
         }
-        public async Task<Evento> GetById(int idEvento)
+
+        public async Task<EventoDto> GetById(int idEvento)
         {
-			var result = await _eventoRepository.GetById(idEvento);
+            if(idEvento <= 0)
+                throw new NotFoundException("Debe ingresar un evento válido");
+
+            var result = await _eventoRepository.GetById(idEvento);
 			if (result == null)
 				throw new NotFoundException("No existe el evento solicitado");
 
 			string imageNamePath = _containerConfig.FolderFlyerName + result.Flyer;
             result.UrlImagenFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
-            return result;
+
+            var mappedResult = _mapper.Map<EventoDto>(result);
+            return mappedResult;
         }
 
         public async Task AddEvento(CreateEventoDto createEventoDto)
@@ -105,7 +101,7 @@ namespace Decimatio.Application.Services
             return await _eventoRepository.DeleteEvento(idEvento);
         }
 
-        public async Task<IEnumerable<Evento>> GetEventosFilter(string filtro)
+        public async Task<IEnumerable<EventoDto>> GetEventosFilter(string filtro)
         {
             var result = await _eventoRepository.GetEventosFilter(filtro);
             var tasks = result.Select(async evento =>
@@ -118,40 +114,58 @@ namespace Decimatio.Application.Services
             if (result is null)
                 throw new NotFoundException("No se pudo encontrar los eventos indicados");
 
-            return await Task.WhenAll(tasks);
+            var eventos = await Task.WhenAll(tasks);
+            var eventosDtos = _mapper.Map<IEnumerable<EventoDto>>(eventos);
+            return eventosDtos;
         }
 
-        public async Task<PagedList<Evento>> GetAllEventosPaginated(EventoQueryFilter filtros)
+        public async Task<(IEnumerable<EventoDto>, MetaData)> GetAllEventosPaginated(EventoQueryFilter filtros)
         {
-            filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
-            filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
+            NormalizePagination(filtros);
 
-            var eventos = await _eventoRepository.GetAllEventos();
+            var eventos = await _eventoRepository.GetAllEventosPaginated(filtros);
+            var counter = await _eventoRepository.GetCounterEvento();
 
             if (eventos is null)
                 throw new NotFoundException("No se encontraron eventos");
 
-            if (filtros.IdEvento > 0)
-                eventos = eventos.Where(x => x.IdEvento == filtros.IdEvento);
-
             eventos = eventos.Where(x => x.Activo == true);
 
-            var pagedList = PagedList<Evento>.Create(eventos, filtros.PageNumber, filtros.PageSize);
-            foreach (var evento in pagedList)
-            {
-                string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
-                evento.UrlImagenFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
-            }
-            return pagedList;
+            var pagedList = PagedList<Evento>.CreatePaginationFromDb(eventos, counter, filtros.PageNumber, filtros.PageSize);
+
+            await LoadEventImage(pagedList);
+
+            var metaData = PagedListExtensions.ToMetaData(pagedList);
+            var eventosDtos = _mapper.Map<IEnumerable<EventoDto>>(pagedList);
+            return (eventosDtos, metaData);
         }
 
-        public async Task<IEnumerable<Evento>> GetAllEventosCombobox()
+        public async Task<IEnumerable<EventoDto>> GetAllEventosCombobox()
         {
             var result = await _eventoRepository.GetAllEventos();
             if (result == null)
                 throw new NotFoundException("No se encuentran eventos en nuestros registros");
 
-            return result;
+            var mappedResult = _mapper.Map<IEnumerable<EventoDto>>(result);
+            return mappedResult;
+        }
+
+        private void NormalizePagination(EventoQueryFilter filtros)
+        {
+            filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
+            filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
+        }
+
+        private async Task LoadEventImage(IEnumerable<Evento> eventos)
+        { 
+            var tasks = eventos.Select(async evento =>
+            {
+                string imageNamePath = _containerConfig.FolderFlyerName + evento.Flyer;
+                evento.UrlImagenFlyer = await _blobFilesService.GetURLImageFromBlobStorage(imageNamePath);
+                return evento;
+            });
+
+            await Task.WhenAll(tasks);
         }
     }
 }

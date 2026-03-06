@@ -21,6 +21,28 @@
                 )).ToList();
         }
 
+        public async Task<IEnumerable<Evento>> GetAllEventosPaginated(EventoQueryFilter filtros)
+        {
+            var eventoDictionary = new Dictionary<long, Evento>();
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            var result = (await conn.QueryAsync<Evento, Lugar, Evento>(
+                Querys.GET_EVENTOS_PAGINATED,
+                (evento, lugar) =>
+                {
+                    if (!eventoDictionary.TryGetValue(evento.IdEvento.Value, out var existingEvento))
+                    {
+                        existingEvento = evento;
+                        existingEvento.Lugar = lugar;
+                        eventoDictionary.Add(existingEvento.IdEvento.Value, existingEvento);
+                    }
+                    return existingEvento;
+                },
+                new { PageSize = filtros.PageSize, PageNumber = filtros.PageNumber },
+                splitOn: "IdLugar"
+                )).ToList();
+            return result;
+        }
+
         public async Task<Evento> GetById(long idEvento)
         {
             using var conn = new SqlConnection(_connection.ConnectionString);
@@ -95,5 +117,12 @@
 
             return result;
         }
+
+        public async Task<int> GetCounterEvento()
+        {
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryFirstOrDefaultAsync<int>(Querys.GET_EVENTO_COUNTER);
+        }
+
     }
 }

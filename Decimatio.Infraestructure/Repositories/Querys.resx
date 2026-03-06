@@ -1044,4 +1044,36 @@ SET @sql = N'SELECT COUNT(*) AS TotalCount FROM ' + QUOTENAME(@Tabla)
 EXEC sp_executesql @sql</value>
     <comment>Obtiene el total de registros de una tabla</comment>
   </data>
+  <data name="GET_EVENTOS_PAGINATED" xml:space="preserve">
+    <value>SELECT
+ E.IdEvento,
+ E.IdLugar,
+ E.NombreEvento,
+ E.Descripcion,
+ E.Fecha,
+ E.Flyer,
+ E.Observacion,
+ E.ProductoraResponsable,
+ E.Banner,
+ E.ContenidoBanner,
+ E.Activo,
+ L.IdLugar,
+ L.IdComuna,
+ L.NombreLugar,
+ L.Ubicacion,
+ L.Numeracion,
+ L.MapaReferencial,
+ L.FechaCreacion,
+ L.Activo
+  FROM [dbo].[Evento] E
+ INNER JOIN [dbo].[Lugar] L ON L.IdLugar = E.IdLugar
+  ORDER BY E.IdEvento ASC
+  OFFSET (@PageNumber - 1) * @PageSize ROWS
+  FETCH NEXT @PageSize ROWS ONLY;</value>
+    <comment>Obtiene los eventos paginados</comment>
+  </data>
+  <data name="GET_EVENTO_COUNTER" xml:space="preserve">
+    <value>SELECT COUNT(*) AS Contador FROM [dbo].[Evento]</value>
+    <comment>Obtiene el conteo total de eventos</comment>
+  </data>
 </root>

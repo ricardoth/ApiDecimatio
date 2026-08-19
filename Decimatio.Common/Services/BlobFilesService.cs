@@ -84,7 +84,7 @@ namespace Decimatio.Common.Services
             var blobClient = containerClient.GetBlobClient(imageNamePath);
 
             if (!blobClient.Exists())
-                throw new Exception($"La imagen no existe en el contenedor {imageNamePath}");
+                return null;
 
             return blobClient.Uri.ToString();
         }

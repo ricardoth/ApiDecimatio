@@ -27,6 +27,7 @@ namespace Decimatio.Common.Services
         {
             try
             {
+                string json = System.Text.Json.JsonSerializer.Serialize(emailTicketDto);
                 var request = await Url.AppendPathSegments("Email", "generateTicket")
                     .AllowHttpStatus()
                     .PostJsonAsync(emailTicketDto);

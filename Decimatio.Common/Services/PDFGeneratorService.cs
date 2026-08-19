@@ -85,16 +85,16 @@ namespace Decimatio.Common.Services
 
         private void ComposeHeader(IContainer container, RequestTicketBodyQRDto ticket)
         {
-            string logoImage = Path.Combine(currentDirectory, "logoMors2.png");
+            //string logoImage = Path.Combine(currentDirectory, "logoMors2.png");
 
-            container.Background(Colors.Black).Row(row =>
+            container.Row(row =>
             {
                 row.RelativeItem()
                     .PaddingLeft(10)
                     .PaddingTop(10)
                     .Column(col =>
                 {
-                    col.Item().Text($"{ticket.ProductoraResponsable} Presenta").FontSize(13).FontColor(Colors.White).SemiBold();
+                    col.Item().Text($"{ticket.ProductoraResponsable} Presenta").FontSize(13).FontColor(Colors.Black).SemiBold();
                 });
 
                 row.RelativeItem()
@@ -102,20 +102,20 @@ namespace Decimatio.Common.Services
                     .PaddingRight(25)
                     .Column(col =>
                 {
-                    col.Item().Text($"Ticket N°{ticket.IdTicket}").FontSize(11).FontColor(Colors.White);
+                    col.Item().Text($"Ticket N°{ticket.IdTicket}").FontSize(11).FontColor(Colors.Black);
                 });
 
-                row.ConstantItem(45).Padding(5).Column(col =>
-                {
-                    col.Item().Image(logoImage);
-                });
+                //row.ConstantItem(45).Padding(5).Column(col =>
+                //{
+                //    col.Item().Image(logoImage);
+                //});
             });
         }
 
         private void ComposeContent(IContainer container, RequestTicketBodyQRDto ticket, string base64Pdf)
         {
             string warningIconImage = Path.Combine(currentDirectory, "attention.png");
-            string logoImage = Path.Combine(currentDirectory, "fondoMorsVicitOmnia.png");
+            //string logoImage = Path.Combine(currentDirectory, "fondoMorsVicitOmnia.png");
             string formatDay = ticket.FechaEvento.ToString("dddd", new CultureInfo("es-ES"));
             string anio = ticket.FechaEvento.ToString("yyyy", new CultureInfo("es-ES"));
             string formatDate = ticket.FechaEvento.ToString("d' de 'MMMM", new CultureInfo("es-ES"));
@@ -125,30 +125,30 @@ namespace Decimatio.Common.Services
 
             container.Column(col =>
             {
-                col.Item().Element(innerContainer =>
-                {
-                    innerContainer.Image(logoImage);
-                });
+                //col.Item().Element(innerContainer =>
+                //{
+                //    innerContainer.Image(logoImage);
+                //});
 
-                col.Item().PaddingTop(-370).Row(row =>
+                col.Item().Row(row =>
                     {
                         row.RelativeItem()
                             .Padding(25)
                             .Column(innerCol =>
                             {
-                                innerCol.Item().Text($"{ticket?.NombreEvento}").FontSize(15).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
-                                innerCol.Item().Text($"Fecha: {formatDay.ToUpper()}, {formatDate} {anio}").FontSize(12).FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
-                                innerCol.Item().Text($"Hora: {formatHora}").FontSize(12).FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+                                innerCol.Item().Text($"{ticket?.NombreEvento}").FontSize(15).SemiBold().FontColor(Colors.Black);
+                                innerCol.Item().Text($"Fecha: {formatDay.ToUpper()}, {formatDate} {anio}").FontSize(12).FontColor(Colors.Black);
+                                innerCol.Item().Text($"Hora: {formatHora}").FontSize(12).FontColor(Colors.Black);
 
                                 innerCol.Spacing(5);
 
-                                innerCol.Item().Text($"{ticket?.NombreLugar} #{ticket?.Numeracion}").FontSize(14).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
-                                innerCol.Item().Text($"{ticket?.NombreComuna}, {pais}").FontSize(12).FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+                                innerCol.Item().Text($"{ticket?.NombreLugar} #{ticket?.Numeracion}").FontSize(14).SemiBold().FontColor(Colors.Black);
+                                innerCol.Item().Text($"{ticket?.NombreComuna}, {pais}").FontSize(12).FontColor(Colors.Black);
 
                                 innerCol.Spacing(5);
 
-                                innerCol.Item().Text($"Sector: {ticket?.NombreSector}").FontSize(14).SemiBold().FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
-                                innerCol.Item().Text($"Valor: ${montoTotalFormat}").FontColor(Colors.Black).BackgroundColor(Colors.Grey.Darken1);
+                                innerCol.Item().Text($"Sector: {ticket?.NombreSector}").FontSize(14).SemiBold().FontColor(Colors.Black);
+                                innerCol.Item().Text($"Valor: ${montoTotalFormat}").FontColor(Colors.Black);
 
                             });
 
@@ -167,11 +167,10 @@ namespace Decimatio.Common.Services
                 {
                     row.RelativeItem()
                         .Height(100)
-                        .Background(Colors.Black)
                         .Padding(25)
                         .Text(text =>
                         {
-                            text.Span("Este es un ticket electrónico. Por favor, muestra este ticket para ingresar al evento.").FontColor(Colors.White);
+                            text.Span("Este es un ticket electrónico. Por favor, muestra este ticket para ingresar al evento.").FontColor(Colors.Black);
                         });
                 });
 
@@ -179,20 +178,19 @@ namespace Decimatio.Common.Services
                 col.Item().Row(row =>
                 {
                     row.RelativeItem()
-                        .Background(Colors.Grey.Lighten3)
                         .Padding(10)
                         .Column(col =>
                         {
-                            col.Item().Text("NO HAGAS COPIAS DE ESTA ENTRADA, SOLAMENTE EL PRIMERO EN PASAR POR LOS LECTORES TENDRÁ ACCESO AL EVENTO.").FontSize(10).SemiBold();
+                            col.Item().Text("NO HAGAS COPIAS DE ESTA ENTRADA, SOLAMENTE EL PRIMERO EN PASAR POR LOS LECTORES TENDRÁ ACCESO AL EVENTO.").FontSize(10).SemiBold().FontColor(Colors.Black);
                             col.Item().PaddingVertical(5).LineHorizontal(1).LineColor(Colors.Grey.Medium);
                             col.Item().Text("Este ticket es tu entrada al evento, posee un código único e intransferible y es la garantía de acceso. Si tienes algún problema sobre el acceso del ticket, por favor comunicate con nosotros para ayudarte.")
-                                .FontSize(9);
+                                .FontSize(9).FontColor(Colors.Black);
                             col.Item().PaddingVertical(5).LineHorizontal(1).LineColor(Colors.Grey.Medium);
-                            col.Item().Text("Para ingresar al evento deberás presentar este ticket con el QR legible y el documento de identidad asociado a esta entrada").FontSize(9);
+                            col.Item().Text("Para ingresar al evento deberás presentar este ticket con el QR legible y el documento de identidad asociado a esta entrada").FontSize(9).FontColor(Colors.Black);
                             col.Item().PaddingVertical(5).LineHorizontal(1).LineColor(Colors.Grey.Medium);
                         });
 
-                    row.ConstantItem(45).Background(Colors.Grey.Lighten3).Padding(5).Column(col =>
+                    row.ConstantItem(45).Padding(5).Column(col =>
                     {
                         col.Item().Image(warningIconImage);
                     });

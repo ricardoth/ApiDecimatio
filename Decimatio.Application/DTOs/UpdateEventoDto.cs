@@ -1,4 +1,6 @@
-﻿namespace Decimatio.Application.DTOs
+﻿using System.Text.Json.Serialization;
+
+namespace Decimatio.Application.DTOs
 {
     public record UpdateEventoDto
     {
@@ -8,6 +10,7 @@
         public string? Descripcion { get; set; }
         public DateTime? Fecha { get; set; }
         public string? Flyer { get; set; }
+        [JsonPropertyName("contenidoFlyer")]
         public string? Base64ImagenFlyer { get; set; }
         public string? Observacion { get; set; }
         public string? ProductoraResponsable { get; set; }

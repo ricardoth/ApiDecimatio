@@ -1,4 +1,5 @@
 ﻿using Decimatio.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Decimatio.Application.Services
 {
@@ -11,6 +12,7 @@ namespace Decimatio.Application.Services
         private readonly IValidator<CreateEventoDto> _createEventoValidator;
         private readonly IValidator<UpdateEventoDto> _updateEventoValidator;
         private readonly IMapper _mapper;
+        private readonly ILogger<EventoService> _logger;
 
         public EventoService(IEventoRepository eventoRepository,
             IBlobFilesService blobFilesService,
@@ -18,15 +20,17 @@ namespace Decimatio.Application.Services
             IOptions<PaginationOptions> paginationOptions,
             IValidator<CreateEventoDto> createEventoValidator,
             IValidator<UpdateEventoDto> updateEventoValidator,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<EventoService> logger)
         {
             _eventoRepository = eventoRepository;
             _blobFilesService = blobFilesService;
             _containerConfig = containerConfig;
             _paginationOptions = paginationOptions.Value;
             _createEventoValidator = createEventoValidator;
-            _updateEventoValidator = updateEventoValidator; 
+            _updateEventoValidator = updateEventoValidator;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<EventoDto>> GetAllEventos()
@@ -64,12 +68,7 @@ namespace Decimatio.Application.Services
                 throw new ValidationResultException(errores);
             }
 
-            if (!string.IsNullOrEmpty(createEventoDto.Base64ImagenFlyer)) 
-            {
-                string imageNamePath = _containerConfig.FolderFlyerName + createEventoDto.Flyer;
-                var flyerContent = Convert.FromBase64String(createEventoDto.Base64ImagenFlyer);
-                await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
-            }
+            await SaveFlyerToBlobStorage(createEventoDto.Flyer, createEventoDto.Base64ImagenFlyer);
 
             var evento = _mapper.Map<Evento>(createEventoDto);
             await _eventoRepository.AddEvento(evento);
@@ -84,14 +83,15 @@ namespace Decimatio.Application.Services
                 throw new ValidationResultException(errores);
             }
 
-            if (!string.IsNullOrEmpty(updateEventoDto.Base64ImagenFlyer))
-            {
-                string imageNamePath = _containerConfig.FolderFlyerName + updateEventoDto.Flyer;
-                var flyerContent = Convert.FromBase64String(updateEventoDto.Base64ImagenFlyer);
-                await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
-            }
-
             var eventoBd = await _eventoRepository.GetById((long)updateEventoDto.IdEvento);
+            if (eventoBd is null)
+                throw new NotFoundException("No existe el evento solicitado");
+
+            if (string.IsNullOrEmpty(updateEventoDto.Flyer) && !string.IsNullOrEmpty(updateEventoDto.Base64ImagenFlyer))
+                updateEventoDto.Flyer = eventoBd.Flyer;
+
+            await SaveFlyerToBlobStorage(updateEventoDto.Flyer, updateEventoDto.Base64ImagenFlyer);
+
             var evento = _mapper.Map(updateEventoDto, eventoBd);
             return await _eventoRepository.UpdateEvento(evento);
         }
@@ -154,6 +154,37 @@ namespace Decimatio.Application.Services
         {
             filtros.PageNumber = filtros.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filtros.PageNumber;
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
+        }
+
+        private async Task SaveFlyerToBlobStorage(string flyer, string base64ImagenFlyer)
+        {
+            if (string.IsNullOrEmpty(base64ImagenFlyer))
+            {
+                _logger.LogWarning("AddEvento/UpdateEvento: no se recibió Base64ImagenFlyer, el evento se guardará sin actualizar el flyer.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(flyer))
+            {
+                throw new ValidationResultException(new List<string> { "Flyer: debe indicar el nombre del archivo cuando se envía Base64ImagenFlyer." });
+            }
+
+            string imageNamePath = _containerConfig.FolderFlyerName + flyer;
+            byte[] flyerContent;
+            try
+            {
+                // Algunos clientes envían el Data URI completo (ej: "data:image/png;base64,xxxx").
+                var base64Data = base64ImagenFlyer.Contains(",") ? base64ImagenFlyer.Substring(base64ImagenFlyer.IndexOf(",") + 1) : base64ImagenFlyer;
+                flyerContent = Convert.FromBase64String(base64Data);
+            }
+            catch (FormatException ex)
+            {
+                _logger.LogWarning(ex, "AddEvento/UpdateEvento: Base64ImagenFlyer inválido para {ImageNamePath}.", imageNamePath);
+                throw new ValidationResultException(new List<string> { "Base64ImagenFlyer: el contenido no es un Base64 válido." });
+            }
+
+            await _blobFilesService.AddFlyerBlobStorage(flyerContent, imageNamePath);
+            _logger.LogInformation("Flyer guardado correctamente en Blob Storage: {ImageNamePath}.", imageNamePath);
         }
 
         private async Task LoadEventImage(IEnumerable<Evento> eventos)

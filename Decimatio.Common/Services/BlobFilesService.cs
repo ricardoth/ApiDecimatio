@@ -66,7 +66,8 @@ namespace Decimatio.Common.Services
                 {
                     HttpHeaders = new BlobHttpHeaders
                     {
-                        ContentType = "image/jpeg"
+                        ContentType = GetContentType(fileName),
+                        CacheControl = "no-cache, max-age=0, must-revalidate"
                     }
                 };
 
@@ -83,10 +84,24 @@ namespace Decimatio.Common.Services
             var containerClient = _blobServiceClient.GetBlobContainerClient(_containerConfig.ContainerName);
             var blobClient = containerClient.GetBlobClient(imageNamePath);
 
-            if (!blobClient.Exists())
+            if (!await blobClient.ExistsAsync())
                 return null;
 
-            return blobClient.Uri.ToString();
+            var properties = await blobClient.GetPropertiesAsync();
+            return $"{blobClient.Uri}?v={properties.Value.LastModified.UtcTicks}";
+        }
+
+        private static string GetContentType(string fileName)
+        {
+            var extension = Path.GetExtension(fileName)?.ToLowerInvariant();
+            return extension switch
+            {
+                ".png" => "image/png",
+                ".gif" => "image/gif",
+                ".webp" => "image/webp",
+                ".svg" => "image/svg+xml",
+                _ => "image/jpeg"
+            };
         }
     }
 }

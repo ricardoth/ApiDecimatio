@@ -53,9 +53,6 @@
             };
 
             var usuariosFiltered = await _usuarioRepository.GetAllUsersPaginated(filters);
-            if (!usuariosFiltered.Any())
-                throw new NotFoundException("No se econtraron usuarios");
-
             var usuarios = _mapper.Map<IEnumerable<UsuarioDto>>(usuariosFiltered);
             return usuarios;
 

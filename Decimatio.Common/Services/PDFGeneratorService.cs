@@ -186,8 +186,8 @@ namespace Decimatio.Common.Services
                             col.Item().Text("Este ticket es tu entrada al evento, posee un código único e intransferible y es la garantía de acceso. Si tienes algún problema sobre el acceso del ticket, por favor comunicate con nosotros para ayudarte.")
                                 .FontSize(9).FontColor(Colors.Black);
                             col.Item().PaddingVertical(5).LineHorizontal(1).LineColor(Colors.Grey.Medium);
-                            //col.Item().Text("Para ingresar al evento deberás presentar este ticket con el QR legible y el documento de identidad asociado a esta entrada").FontSize(9).FontColor(Colors.Black);
-                            //col.Item().PaddingVertical(5).LineHorizontal(1).LineColor(Colors.Grey.Medium);
+                            col.Item().Text("Para ingresar al evento deberás presentar este ticket con el QR legible y el documento de identidad asociado a esta entrada").FontSize(9).FontColor(Colors.Black);
+                            col.Item().PaddingVertical(5).LineHorizontal(1).LineColor(Colors.Grey.Medium);
                         });
 
                     row.ConstantItem(45).Padding(5).Column(col =>

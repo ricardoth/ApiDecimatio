@@ -41,6 +41,9 @@
     <None Update="Template\decimatio2.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Template\preventa.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Template\pruebamasacre.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

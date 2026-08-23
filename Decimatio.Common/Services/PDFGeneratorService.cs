@@ -115,7 +115,7 @@ namespace Decimatio.Common.Services
         private void ComposeContent(IContainer container, RequestTicketBodyQRDto ticket, string base64Pdf)
         {
             string warningIconImage = Path.Combine(currentDirectory, "attention.png");
-            string logoImage = Path.Combine(currentDirectory, "pruebamasacre.png");
+            string logoImage = Path.Combine(currentDirectory, "preventa.png");
             string formatDay = ticket.FechaEvento.ToString("dddd", new CultureInfo("es-ES"));
             string anio = ticket.FechaEvento.ToString("yyyy", new CultureInfo("es-ES"));
             string formatDate = ticket.FechaEvento.ToString("d' de 'MMMM", new CultureInfo("es-ES"));

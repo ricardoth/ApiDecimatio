@@ -1,4 +1,5 @@
 ﻿
+using System.Drawing.Imaging;
 using Decimatio.Common.DTOs;
 
 namespace Decimatio.Common.Services
@@ -6,6 +7,10 @@ namespace Decimatio.Common.Services
     public class PDFGeneratorService : IPDFGeneratorService
     {
         private readonly string currentDirectory = Directory.GetCurrentDirectory() + "\\Template";
+        private const float BackgroundImageOpacity = 0.15f;
+
+        private static byte[]? _cachedFadedBackground;
+        private static readonly object _fadeLock = new();
 
         public PDFGeneratorService()
         {
@@ -16,11 +21,15 @@ namespace Decimatio.Common.Services
         {
             try
             {
-                var document = Document.Create(container => 
+                string backgroundImage = Path.Combine(currentDirectory, "pruebamasacre.png");
+                byte[] fadedBackground = GetFadedBackgroundImage(backgroundImage, BackgroundImageOpacity);
+
+                var document = Document.Create(container =>
                 {
-                    container.Page(p => 
+                    container.Page(p =>
                     {
                         p.Size(PageSizes.A4);
+                        p.Background().Image(fadedBackground).FitArea();
                         p.Header().Element(headerContainer => ComposeHeader(headerContainer, ticket));
                         p.Content().Element(contentContainer => ComposeContent(contentContainer, ticket, base64Pdf));
                     });
@@ -83,26 +92,73 @@ namespace Decimatio.Common.Services
             return ms;
         }
 
+        private byte[] GetFadedBackgroundImage(string imagePath, float opacity)
+        {
+            if (_cachedFadedBackground is not null)
+                return _cachedFadedBackground;
+
+            lock (_fadeLock)
+            {
+                if (_cachedFadedBackground is not null)
+                    return _cachedFadedBackground;
+
+                using var original = new Bitmap(imagePath);
+
+                // A4 aspect ratio (width/height). Crop the source image to this ratio so it
+                // covers the full page with no letterboxing once placed as the page background.
+                const float pageAspect = 595.28f / 841.89f;
+                float sourceAspect = (float)original.Width / original.Height;
+
+                Rectangle cropSource;
+                if (sourceAspect > pageAspect)
+                {
+                    int croppedWidth = (int)(original.Height * pageAspect);
+                    int x = (original.Width - croppedWidth) / 2;
+                    cropSource = new Rectangle(x, 0, croppedWidth, original.Height);
+                }
+                else
+                {
+                    int croppedHeight = (int)(original.Width / pageAspect);
+                    int y = (original.Height - croppedHeight) / 2;
+                    cropSource = new Rectangle(0, y, original.Width, croppedHeight);
+                }
+
+                using var faded = new Bitmap(cropSource.Width, cropSource.Height);
+                using var graphics = System.Drawing.Graphics.FromImage(faded);
+
+                var colorMatrix = new ColorMatrix { Matrix33 = opacity };
+                using var imageAttributes = new ImageAttributes();
+                imageAttributes.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
+                graphics.DrawImage(original, new Rectangle(0, 0, cropSource.Width, cropSource.Height), cropSource.X, cropSource.Y, cropSource.Width, cropSource.Height, GraphicsUnit.Pixel, imageAttributes);
+
+                using var ms = new MemoryStream();
+                faded.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                _cachedFadedBackground = ms.ToArray();
+                return _cachedFadedBackground;
+            }
+        }
+
         private void ComposeHeader(IContainer container, RequestTicketBodyQRDto ticket)
         {
             //string logoImage = Path.Combine(currentDirectory, "logoMors2.png");
 
-            container.Row(row =>
+            container.Background(Colors.Black).Row(row =>
             {
                 row.RelativeItem()
                     .PaddingLeft(10)
-                    .PaddingTop(10)
+                    .PaddingVertical(10)
                     .Column(col =>
                 {
-                    col.Item().Text($"{ticket.ProductoraResponsable} Presenta").FontSize(13).FontColor(Colors.Black).SemiBold();
+                    col.Item().Text($"{ticket.ProductoraResponsable} Presenta").FontSize(13).FontColor(Colors.White).SemiBold();
                 });
 
                 row.RelativeItem()
-                    .PaddingTop(10)
+                    .PaddingVertical(10)
                     .PaddingRight(25)
                     .Column(col =>
                 {
-                    col.Item().Text($"Ticket N°{ticket.IdTicket}").FontSize(11).FontColor(Colors.Black);
+                    col.Item().Text($"Ticket N°{ticket.IdTicket}").FontSize(11).FontColor(Colors.White);
                 });
 
                 //row.ConstantItem(45).Padding(5).Column(col =>
@@ -115,7 +171,6 @@ namespace Decimatio.Common.Services
         private void ComposeContent(IContainer container, RequestTicketBodyQRDto ticket, string base64Pdf)
         {
             string warningIconImage = Path.Combine(currentDirectory, "attention.png");
-            string logoImage = Path.Combine(currentDirectory, "preventa.png");
             string formatDay = ticket.FechaEvento.ToString("dddd", new CultureInfo("es-ES"));
             string anio = ticket.FechaEvento.ToString("yyyy", new CultureInfo("es-ES"));
             string formatDate = ticket.FechaEvento.ToString("d' de 'MMMM", new CultureInfo("es-ES"));
@@ -125,12 +180,7 @@ namespace Decimatio.Common.Services
 
             container.Column(col =>
             {
-                col.Item().Element(innerContainer =>
-                {
-                    innerContainer.Image(logoImage);
-                });
-
-                col.Item().Row(row =>
+                col.Item().PaddingTop(20).Row(row =>
                     {
                         row.RelativeItem()
                             .Padding(25)

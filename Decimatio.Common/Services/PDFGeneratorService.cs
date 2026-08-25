@@ -204,10 +204,10 @@ namespace Decimatio.Common.Services
 
                         row.RelativeItem().Column(innerCol =>
                         {
-                            innerCol.Item().Height(300).Element(innerContainer =>
+                            innerCol.Item().Height(300).AlignCenter().AlignMiddle().Element(innerContainer =>
                             {
                                 var imageStream = Base64ToImageStream(base64Pdf);
-                                innerContainer.Image(imageStream);
+                                innerContainer.Image(imageStream).FitArea();
                             });
 
                         });

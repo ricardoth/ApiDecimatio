@@ -3,6 +3,7 @@
     public interface IUsuarioRepository
     {
         Task<IEnumerable<Usuario>> GetAllUsersPaginated(UsuarioQueryFilter filtros);
+        Task<int> GetUsersCount(UsuarioQueryFilter filtros);
         Task<Usuario> GetById(long idUsuario);
         Task<Usuario> GetByRutDv(string rutDv);
         Task<Usuario> GetByCorreo(Usuario usuario);

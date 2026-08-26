@@ -3,23 +3,20 @@
     internal sealed class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
-        private readonly IRepository _genericRepository;
         private readonly PaginationOptions _paginationOptions;
         private readonly IValidator<CreateUsuarioDto> _createUsuarioValidator;
         private readonly IValidator<UpdateUsuarioDto> _updateUsuarioValidator;
         private readonly IPasswordService _passwordService;
         private readonly IMapper _mapper;
 
-        public UsuarioService(IUsuarioRepository usuarioRepository, 
-            IRepository genericRepository,
+        public UsuarioService(IUsuarioRepository usuarioRepository,
             IOptions<PaginationOptions> paginationOptions,
             IValidator<CreateUsuarioDto> createUsuarioValidator,
             IValidator<UpdateUsuarioDto> updateUsuarioValidator,
             IPasswordService passwordService,
-            IMapper mapper) 
+            IMapper mapper)
         {
             _usuarioRepository = usuarioRepository;
-            _genericRepository = genericRepository;
             _paginationOptions = paginationOptions.Value;
             _createUsuarioValidator = createUsuarioValidator;
             _updateUsuarioValidator = updateUsuarioValidator;   
@@ -37,7 +34,7 @@
                 throw new NotFoundException("No existen usuarios");
 
             var usuarios = _mapper.Map<IEnumerable<UsuarioDto>>(usuariosPaginated);
-            var totalCount = await _genericRepository.GetTotalCount("Usuario");
+            var totalCount = await _usuarioRepository.GetUsersCount(filtros);
             var pagedUsuarios = PagedList<UsuarioDto>.CreatePaginationFromDb(usuarios, totalCount, filtros.PageNumber, filtros.PageSize);
             return pagedUsuarios;
             

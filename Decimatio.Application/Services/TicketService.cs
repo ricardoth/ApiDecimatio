@@ -46,7 +46,7 @@ namespace Decimatio.Application.Services
             filtros.PageSize = filtros.PageSize == 0 ? _paginationOptions.DefaultPageSize : filtros.PageSize;
 
             var tickets = await _ticketRepository.GetAllTicket(filtros);
-            var counters = await _ticketRepository.GetCounterTicket();
+            var counters = await _ticketRepository.GetCounterTicket(filtros);
             var pagedTickets = PagedList<Ticket>.CreatePaginationFromDb(tickets, counters, filtros.PageNumber, filtros.PageSize);
 
             var metaData = new MetaData

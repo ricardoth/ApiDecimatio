@@ -7,6 +7,7 @@
         public long? IdEvento { get; set; }
         public long? IdSector { get; set; }
         public long? IdMedioPago { get; set; }
+        public string? Query { get; set; }
         public int PageSize { get; set; }
         public int PageNumber { get; set; }
     }

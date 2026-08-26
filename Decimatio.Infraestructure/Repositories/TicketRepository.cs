@@ -77,9 +77,10 @@
                     ticketEntry.Evento.Lugar.Comuna = comuna;
                     return ticketEntry;
                 },
-                  new { PageNumber = filtros.PageNumber, PageSize = filtros.PageSize, 
+                  new { PageNumber = filtros.PageNumber, PageSize = filtros.PageSize,
                         IdTicket = filtros.IdTicket, IdUsuario = filtros.IdUsuario,
-                        IdEvento = filtros.IdEvento, IdSector = filtros.IdSector},
+                        IdEvento = filtros.IdEvento, IdSector = filtros.IdSector,
+                        Query = filtros.Query},
                   splitOn: "IdUsuario,IdEvento,IdSector,IdMedioPago,IdLugar,IdComuna"
                 )).ToList();
             if (result == null) throw new Exception("No se encuentra coindidencia para el Ticket");
@@ -183,10 +184,19 @@
             return await conn.ExecuteScalarAsync<bool>(Querys.VALIDAR_TICKETS_DESCARGADOS, new { TransactionId = transactionId});
         }
 
-        public async Task<int> GetCounterTicket()
+        public async Task<int> GetCounterTicket(TicketQueryFilter filtros)
         {
+            var dictionary = new Dictionary<string, object>
+            {
+                { "@IdTicket", filtros.IdTicket },
+                { "@IdUsuario", filtros.IdUsuario },
+                { "@IdEvento", filtros.IdEvento },
+                { "@IdSector", filtros.IdSector },
+                { "@Query", filtros.Query },
+            };
+            var dynamicParam = new DynamicParameters(dictionary);
             using var conn = new SqlConnection(_connection.ConnectionString);
-            return await conn.QueryFirstOrDefaultAsync<int>(Querys.GET_TICKET_COUNTER);
+            return await conn.QueryFirstOrDefaultAsync<int>(Querys.GET_TICKETS_COUNT, dynamicParam);
         }
     }
 }

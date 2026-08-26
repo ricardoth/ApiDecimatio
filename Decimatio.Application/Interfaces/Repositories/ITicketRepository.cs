@@ -7,7 +7,7 @@
         Task<Ticket> GetInfoTicket(long idTicket);
         Task<IEnumerable<Ticket>> GetAllTicket(TicketQueryFilter filtros);
         Task<IEnumerable<Ticket>> GetAllTicketReport();
-        Task<int> GetCounterTicket();
+        Task<int> GetCounterTicket(TicketQueryFilter filtros);
         Task<TicketQR> GetTicketQR(long idTicket);
         Task<bool> DeleteDownTicket(long idTicket, bool activo);
 

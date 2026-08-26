@@ -586,16 +586,6 @@ namespace Decimatio.Infraestructure.Repositories {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SELECT COUNT(*) AS Contador
-        ///FROM Ticket.
-        /// </summary>
-        internal static string GET_TICKET_COUNTER {
-            get {
-                return ResourceManager.GetString("GET_TICKET_COUNTER", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a SELECT TQ.* , T.*
         ///FROM dbo.Ticket T
         ///	LEFT JOIN dbo.TicketQR TQ ON T.IdTicket =  TQ.IdTicket
@@ -625,7 +615,17 @@ namespace Decimatio.Infraestructure.Repositories {
                 return ResourceManager.GetString("GET_TICKETS", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT COUNT(*) AS Contador
+        ///FROM Ticket t, respetando los filtros aplicados.
+        /// </summary>
+        internal static string GET_TICKETS_COUNT {
+            get {
+                return ResourceManager.GetString("GET_TICKETS_COUNT", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Busca una cadena traducida similar a SELECT t.IdTicket, t.IdUsuario, t.IdEvento, t.IdSector, t.IdMedioPago,
         ///        t.MontoPago, t.MontoTotal, t.FechaTicket, t.Activo, t.FechaCreacion, t.FechaModified,
@@ -799,7 +799,17 @@ namespace Decimatio.Infraestructure.Repositories {
                 return ResourceManager.GetString("GET_USUARIOS_PAGINATED", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT COUNT(*) AS Contador
+        ///FROM Usuario U, respetando el filtro Query.
+        /// </summary>
+        internal static string GET_USUARIOS_COUNT {
+            get {
+                return ResourceManager.GetString("GET_USUARIOS_COUNT", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Busca una cadena traducida similar a INSERT INTO dbo.AccesoEvento
         ///(

@@ -34,6 +34,18 @@
             return result;
         }
 
+        public async Task<int> GetUsersCount(UsuarioQueryFilter filtros)
+        {
+            var dictionary = new Dictionary<string, object>
+            {
+                { "@Query", filtros.Query },
+            };
+            var dynamicParam = new DynamicParameters(dictionary);
+
+            using var conn = new SqlConnection(_connection.ConnectionString);
+            return await conn.QueryFirstOrDefaultAsync<int>(Querys.GET_USUARIOS_COUNT, dynamicParam);
+        }
+
         public async Task<Usuario> GetById(long idUsuario)
         {
             var dictionary = new Dictionary<string, object>

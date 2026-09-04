@@ -158,7 +158,7 @@ namespace Decimatio.Common.Services
                     .PaddingRight(25)
                     .Column(col =>
                 {
-                    col.Item().Text($"Ticket N°{ticket.IdTicket}").FontSize(11).FontColor(Colors.White);
+                    //col.Item().Text($"Ticket N°{ticket.IdTicket}").FontSize(11).FontColor(Colors.White);
                 });
 
                 //row.ConstantItem(45).Padding(5).Column(col =>
